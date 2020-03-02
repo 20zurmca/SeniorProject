@@ -18,11 +18,11 @@ for i, row in df.iterrows():
         address = row['ADDRESS2']
     
     ls = [row['INSTITUTION'],
-                 address,
-                 row['CITY'],
-                 row['PROVINCE'],
-                 row['ZIP'],
-                 row['COUNTRY']]
+          address,
+          row['CITY'],
+          row['PROVINCE'],
+          row['ZIP'],
+          row['COUNTRY']]
     
     addr = ' '.join(str(v) for v in ls)
     
