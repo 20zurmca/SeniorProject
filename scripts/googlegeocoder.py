@@ -5,7 +5,7 @@ script that acquires longitude and latitude data for foreign schools
 import pandas
 import googlemaps
 
-df = pandas.read_csv("../data/International_High_Schools_Copy.csv")
+df = pandas.read_csv("../data/International_High_Schools.csv")
 API_KEY = "" #your api key
 gmaps = googlemaps.Client(key=API_KEY)
 
@@ -31,4 +31,4 @@ for i, row in df.iterrows():
         df.at[i, 'LONGITUDE'] = result[0]['geometry']['location']['lng']
         print("Added location for record ", i)
         
-df.to_csv("../data/International_High_Schools_Copy.csv")
+df.to_csv("../data/International_High_Schools.csv")
