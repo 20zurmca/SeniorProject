@@ -31,4 +31,4 @@ for i, row in df.iterrows():
         df.at[i, 'LONGITUDE'] = result[0]['geometry']['location']['lng']
         print("Added location for record ", i)
         
-df.to_csv("../data/International_High_Schools_Copy.csv.csv")
+df.to_csv("../data/International_High_Schools_Copy.csv")
