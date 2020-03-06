@@ -1,8 +1,8 @@
-#Database Aggregation
+--Database Aggregation
 
 
 
-#Goal 1, Step 1
+--Goal 1, Step 1
 
 CREATE TABLE roster_starter_data AS (
 	SELECT roster_data.Roster_Year, roster_data.Player_Number, roster_data.First_Name, roster_data.Last_Name, roster_data.Year, roster_data.Position1, roster_data.Position2, roster_data.Position3, roster_data.Height, roster_data.Weight, roster_data.Home_Town, roster_data.State_or_Country, roster_data.High_School, roster_data.Alternative_School, roster_data.College, roster_data.College_League, roster_data.Bio_Link, starter_data.Potential_Starts, starter_data.GP, starter_data.GS, starter_data.Is_Starter 
@@ -12,7 +12,7 @@ CREATE TABLE roster_starter_data AS (
 );
 
 
-#Goal 1, Step 2
+--Goal 1, Step 2
 
 CREATE TABLE roster_master_data AS (
 	SELECT roster_data.Roster_Year, roster_data.Player_Number, roster_data.First_Name, roster_data.Last_Name, roster_data.Year, roster_data.Position1, roster_data.Position2, roster_data.Position3, roster_data.Height, roster_data.Weight, roster_data.Home_Town, roster_data.State_or_Country, roster_data.High_School, roster_data.Alternative_School, roster_data.College, roster_data.College_League, roster_data.Bio_Link, starter_data.Potential_Starts, starter_data.GP, starter_data.GS, starter_data.Is_Starter, acollade_data.Accolade 
@@ -22,7 +22,7 @@ CREATE TABLE roster_master_data AS (
 );
 
 
-#Goal 1, Step 3
+--Goal 1, Step 3
 
 DROP TABLE roster_data;
 DROP TABLE starter_data;
@@ -30,7 +30,7 @@ DROP TABLE accolade_data;
 DROP TABLE roster_starter_data;
 
 
-#Goal 1, Step 4
+--Goal 1, Step 4
 
 ALTER TABLE roster_master_data RENAME COLUMN roster_data.Roster_Year TO Roster_Year;
 ALTER TABLE roster_master_data RENAME COLUMN roster_data.First_Name TO First_Name;
@@ -55,7 +55,7 @@ ALTER TABLE roster_master_data RENAME COLUMN starter_data.Is_Starter TO Is_Start
 ALTER TABLE roster_master_data RENAME COLUMN acollade_data.Accolade TO Accolade;
 
 
-#Goal 2, Step 1
+--Goal 2, Step 1
 
 CREATE TABLE starter_years_roster AS (
 	SELECT temp4b.First_Name, temp4b.Last_Name, temp4b.Home_Town, temp4b.State_or_Country, temp4b.College, temp4b.Is_Starter_Freshman, temp4b.Is_Starter_Sophomore, temp4b.Is_Starter_Junior, temp4b.Is_Starter_Senior, temp5.Is_Starter_Graduate
@@ -100,7 +100,7 @@ CREATE TABLE starter_years_roster AS (
 );
 
 
-#Goal 2, Step 2
+--Goal 2, Step 2
 
 CREATE TABLE starter_count_roster AS (
 	SELECT First_Name, Last_Name, Home_Town, State_or_Country, College, count(Is_Starter) AS Starter_Count 
@@ -110,7 +110,7 @@ CREATE TABLE starter_count_roster AS (
 );
 
 
-#Goal 2, Step 3
+--Goal 2, Step 3
 
 CREATE TABLE height_roster AS (
 	SELECT temp4b.First_Name, temp4b.Last_Name, temp4b.Home_Town, temp4b.State_or_Country, temp4b.College, temp4b.Height_Freshman, temp4b.Height_Sophomore, temp4b.Height_Junior, temp4b.Height_Senior, temp5.Height_Graduate
@@ -155,7 +155,7 @@ CREATE TABLE height_roster AS (
 );
 
 
-#Goal 2, Step 4
+--Goal 2, Step 4
 CREATE TABLE weight_roster AS (
 	SELECT temp4b.First_Name, temp4b.Last_Name, temp4b.Home_Town, temp4b.State_or_Country, temp4b.College, temp4b.Weight_Freshman, temp4b.Weight_Sophomore, temp4b.Weight_Junior, temp4b.Weight_Senior, temp5.Weight_Graduate
 	FROM (
@@ -199,7 +199,7 @@ CREATE TABLE weight_roster AS (
 );
 
 
-#Goal 2, Step 5
+--Goal 2, Step 5
 CREATE TABLE accolade_roster AS (
 	SELECT temp4b.First_Name, temp4b.Last_Name, temp4b.Home_Town, temp4b.State_or_Country, temp4b.College, temp4b.Accolade_Freshman, temp4b.Accolade_Sophomore, temp4b.Accolade_Junior, temp4b.Accolade_Senior, temp5.Accolade_Graduate
 	FROM (
@@ -243,7 +243,7 @@ CREATE TABLE accolade_roster AS (
 );
 
 
-#Goal 2, Step 6
+--Goal 2, Step 6
 
 CREATE TABLE bio_link_roster AS (
 	SELECT First_Name, Last_Name, Home_Town, State_or_Country, College, Bio_Link
@@ -257,7 +257,7 @@ CREATE TABLE bio_link_roster AS (
 );
 
 
-#Goal 2, Step 7
+--Goal 2, Step 7
 
 CREATE TABLE final_roster_data AS ( 
 	SELECT temp4.First_Name, temp4.Last_Name, temp4.Home_Town, temp4.State_or_Country, temp4.College, temp4.Starter_Count, temp4.Is_Starter_Freshman, temp4.Is_Starter_Sophomore, temp4.Is_Starter_Junior, temp4.Is_Starter_Senior, temp4.Is_Starter_Senior, temp4.Is_Starter_Graduate, temp4.Height_Freshman, temp4.Height_Sophomore, temp4.Height_Junior, temp4.Height_Senior, temp4.Height_Graduate, temp4.Weight_Freshman, temp4.Weight_Sophomore, temp4.Weight_Junior, temp4.Weight_Senior, temp4.Weight_Graduate, temp4.Accolade_Freshman, temp4.Accolade_Sophomore, temp4.Accolade_Junior, temp4.Accolade_Senior, temp4.Accolade_Graduate, bio_link_roster.Bio_Link
@@ -287,7 +287,7 @@ CREATE TABLE final_roster_data AS (
 );
 
 
-#Goal 2, Step 8
+--Goal 2, Step 8
 
 DROP TABLE roster_master_data;
 DROP TABLE starter_years_roster;
