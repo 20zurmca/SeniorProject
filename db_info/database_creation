@@ -72,6 +72,12 @@ ALTER TABLE roster_master_data RENAME COLUMN "starter_data.GS" TO GS;
 ALTER TABLE roster_master_data RENAME COLUMN "starter_data.Is_Starter" TO Is_Starter;
 ALTER TABLE roster_master_data RENAME COLUMN "accolade_data.Accolade" TO Accolade;
 
+ALTER TABLE roster_master_data DROP COLUMN Position2;
+ALTER TABLE roster_master_data DROP COLUMN Position3;
+ALTER TABLE roster_master_data DROP COLUMN Potential_Starts;
+ALTER TABLE roster_master_data DROP COLUMN GP;
+ALTER TABLE roster_master_data DROP COLUMN GS;
+
 
 -- \Copy roster_master_data to 'roster_master_data.csv' DELIMITER ',' CSV HEADER;
 
