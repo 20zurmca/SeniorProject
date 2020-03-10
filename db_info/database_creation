@@ -96,7 +96,7 @@ CREATE TABLE roster_high_school_data AS (
 	SELECT *
 	FROM roster_master_data
 	LEFT JOIN high_school_data
-	ON LOWER(roster_master_data.High_School) = LOWER(high_school_data.Institution)
+	ON LOWER(roster_master_data.High_School) = LOWER(high_school_data.Institution) AND (LOWER(high_school_data."State/Province") = LOWER(roster_master_data.State_or_Country) OR LOWER(high_school_data.Country) = LOWER(roster_master_data.State_or_Country))
 );
 
 -- \Copy roster_high_school_data to 'roster_high_school_data.csv' DELIMITER ',' CSV HEADER;
