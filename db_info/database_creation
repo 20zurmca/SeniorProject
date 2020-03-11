@@ -2,25 +2,22 @@
 
 
 
---Goal 1, Step 1
+--Create tables for roster data aggregation and copy in data
 
 CREATE TABLE roster_data ("roster_data.Roster_Year" INT, "roster_data.Player_Number" VARCHAR(20), "roster_data.First_Name" VARCHAR(50), "roster_data.Last_Name" VARCHAR(50),  "roster_data.Year" VARCHAR(10), "roster_data.Position1" VARCHAR(20), "roster_data.Position2" VARCHAR(20), "roster_data.Position3" VARCHAR(10), "roster_data.Height" VARCHAR(10), "roster_data.Weight" INT, "roster_data.Home_Town" VARCHAR(30), "roster_data.State_or_Country" VARCHAR(20), "roster_data.High_School" VARCHAR(100), "roster_data.Alternative_School" VARCHAR(50), "roster_data.College" VARCHAR(50), "roster_data.College_League" VARCHAR(50), "roster_data.Bio_Link" VARCHAR(100));
 
-CREATE TABLE starter_data("starter_data.Roster_Year" INT, "starter_data.Number" INT, "starter_data.First_Name" VARCHAR(50), "starter_data.Last_Name" VARCHAR(50), "starter_data.Potential_Starts" INT, "starter_data.GP" INT, "starter_data.GS" INT, "starter_data.Is_Starter" VARCHAR(1), "starter_data.College" VARCHAR(50));
-
 \COPY roster_data FROM 'roster_data.csv' DELIMITER ',' CSV HEADER;
 
+CREATE TABLE starter_data("starter_data.Roster_Year" INT, "starter_data.Number" INT, "starter_data.First_Name" VARCHAR(50), "starter_data.Last_Name" VARCHAR(50), "starter_data.Potential_Starts" INT, "starter_data.GP" INT, "starter_data.GS" INT, "starter_data.Is_Starter" VARCHAR(1), "starter_data.College" VARCHAR(50));
+
 \COPY starter_data FROM 'starter_data.csv' DELIMITER ',' CSV HEADER;
-
-
---Goal 1, Step 2
 
 CREATE TABLE accolade_data("accolade_data.Roster_Year" INT, "accolade_data.First_Name" VARCHAR(50), "accolade_data.Last_Name" VARCHAR(50), "accolade_data.Accolade" VARCHAR(20), "accolade_data.College" VARCHAR(50));
 
 \COPY accolade_data FROM 'accolades.csv' DELIMITER ',' CSV HEADER;
 
 
---Goal 1, Step 1
+--Join with starter data
 
 CREATE TABLE roster_starter_data AS (
 	SELECT "roster_data.Roster_Year", "roster_data.Player_Number", "roster_data.First_Name", "roster_data.Last_Name", "roster_data.Year", "roster_data.Position1", "roster_data.Position2", "roster_data.Position3", "roster_data.Height", "roster_data.Weight", "roster_data.Home_Town", "roster_data.State_or_Country", "roster_data.High_School", "roster_data.Alternative_School", "roster_data.College", "roster_data.College_League", "roster_data.Bio_Link", "starter_data.Potential_Starts", "starter_data.GP", "starter_data.GS", "starter_data.Is_Starter" 
@@ -30,7 +27,7 @@ CREATE TABLE roster_starter_data AS (
 );
 
 
---Goal 1, Step 2
+--Join with accolade data
 
 CREATE TABLE roster_master_data AS (
 	SELECT "roster_data.Roster_Year", "roster_data.Player_Number", "roster_data.First_Name", "roster_data.Last_Name", "roster_data.Year", "roster_data.Position1", "roster_data.Position2", "roster_data.Position3", "roster_data.Height", "roster_data.Weight", "roster_data.Home_Town", "roster_data.State_or_Country", "roster_data.High_School", "roster_data.Alternative_School", "roster_data.College", "roster_data.College_League", "roster_data.Bio_Link", "starter_data.Potential_Starts", "starter_data.GP", "starter_data.GS", "starter_data.Is_Starter", "accolade_data.Accolade" 
@@ -40,7 +37,7 @@ CREATE TABLE roster_master_data AS (
 );
 
 
---Goal 1, Step 3
+--Drop extra tables
 
 DROP TABLE roster_data;
 DROP TABLE starter_data;
@@ -48,7 +45,7 @@ DROP TABLE accolade_data;
 DROP TABLE roster_starter_data;
 
 
---Goal 1, Step 4
+--Rename attributes without the table name
 
 ALTER TABLE roster_master_data RENAME COLUMN "roster_data.Roster_Year" TO Roster_Year;
 ALTER TABLE roster_master_data RENAME COLUMN "roster_data.First_Name" TO First_Name;
@@ -72,12 +69,34 @@ ALTER TABLE roster_master_data RENAME COLUMN "starter_data.GS" TO GS;
 ALTER TABLE roster_master_data RENAME COLUMN "starter_data.Is_Starter" TO Is_Starter;
 ALTER TABLE roster_master_data RENAME COLUMN "accolade_data.Accolade" TO Accolade;
 
+
+--Drop unneeded columns
+
 ALTER TABLE roster_master_data DROP COLUMN Position2;
 ALTER TABLE roster_master_data DROP COLUMN Position3;
 ALTER TABLE roster_master_data DROP COLUMN Potential_Starts;
 ALTER TABLE roster_master_data DROP COLUMN GP;
 ALTER TABLE roster_master_data DROP COLUMN GS;
 
-
 -- \Copy roster_master_data to 'roster_master_data.csv' DELIMITER ',' CSV HEADER;
 
+
+--Create table for high school data and copy in the data
+
+CREATE TABLE high_school_data (City VARCHAR(30), Institution VARCHAR(100), "State/Province" VARCHAR(20), Country VARCHAR(50), Latitude DOUBLE PRECISION, Longitude DOUBLE PRECISION, "Public/Private/International" VARCHAR(20));
+
+\COPY high_school_data FROM 'CombinedHighSchools.csv' DELIMITER ',' CSV HEADER;
+
+-- \Copy high_school_data to 'high_school_data.csv' DELIMITER ',' CSV HEADER;
+
+
+--Join tables to get high school information for each student
+
+CREATE TABLE roster_high_school_data AS (
+	SELECT *
+	FROM roster_master_data
+	LEFT JOIN high_school_data
+	ON LOWER(roster_master_data.High_School) = LOWER(high_school_data.Institution) AND (LOWER(high_school_data."State/Province") = LOWER(roster_master_data.State_or_Country) OR LOWER(high_school_data.Country) = LOWER(roster_master_data.State_or_Country))
+);
+
+-- \Copy roster_high_school_data to 'roster_high_school_data.csv' DELIMITER ',' CSV HEADER;
