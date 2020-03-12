@@ -78,12 +78,8 @@ WSGI_APPLICATION = 'soccersite.wsgi.application'
 #TODO: set up the database
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'soccer',
-        'USER':'zurmuhlc',
-        'PASSWORD': 'Lafayette2020',
-        'HOST': '139.247.9.242',
-        'PORT': 3333
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
     }
 }
 
