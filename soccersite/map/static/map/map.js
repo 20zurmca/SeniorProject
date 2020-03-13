@@ -3,5 +3,5 @@ function initMap() {
   var map = new google.maps.Map(
     document.getElementByID('map'), {zoom: 4, center: laf})
   );
-  var marker = new google.maps.Marker({position: easton, map: map});
+  var marker = new google.maps.Marker({position: laf, map: map});
 }
