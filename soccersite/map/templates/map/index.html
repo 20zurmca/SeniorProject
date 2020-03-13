@@ -1,9 +1,18 @@
 <!DOCTYPE html>
-{% load static %}
 
 <html lang="en" dir="ltr">
   <head>
     <meta charset="utf-8">
+    {% load static %}
+    <!-- map applicaton static files -->
+    <link rel="stylesheet" type="text/css" href="{% static 'map/style.css' %}">
+    <link rel="javascript" type="text/javascript" href = "{% static 'map/map.js' %}">
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <!-- jQuery library -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <!-- Latest compiled JavaScript -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
     <title>Lafayette Soccer Project</title>
   </head>
   <body>
@@ -14,11 +23,13 @@
         to find players.
       </p>
 
-
     <div id="dropdowns">
     </div>
 
     <div id="go-button">
+    </div>
+
+    <div id="table">
     </div>
 
     <script async defer
