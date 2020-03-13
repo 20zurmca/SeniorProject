@@ -1,5 +1,3 @@
-console.log("Hello World!")
-
 function initMap() {
   // The location of Uluru
   var uluru = {lat: -25.344, lng: 131.036};
