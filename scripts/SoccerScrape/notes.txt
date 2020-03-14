@@ -1,0 +1,17 @@
+
+GSGP notes:
+
+Duke-Will need to do text files
+
+Location Data notes:
+Use Geocoder.komoot for free
+
+Add 'High School' if in the states
+do not add 'High School' if not in the states
+Need to manually check for NA, else bogus coordinates return
+Probably will just eliminate the text in ()
+
+HOly cross has class year 'UNK'
+
+To access gis:
+gis = GIS("https://www.arcgis.com", "arcgis_python", "P@ssword123")

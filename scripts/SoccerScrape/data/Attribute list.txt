@@ -1,0 +1,33 @@
+roster_data:
+
+['Roster_Year',
+ 'Player_Number',
+ 'First_Name',
+ 'Last_Name',
+ 'Year',
+ 'Position',
+ 'Height',
+ 'Weight',
+ 'Home_Town',
+ 'State_or_Country',
+ 'High_School',
+ 'Previous_School',
+ 'College',
+ 'College_League',
+ 'Bio_Link']
+
+starter_data:
+
+['Roster_Year',
+ 'Number',
+ 'First_Name',
+ 'Last_Name',
+ 'Potential_Starts',
+ 'GP',
+ 'GS',
+ 'Is_Starter',
+ 'College']
+
+accolades_data:
+
+['Roster_Year', 'First_Name', 'Last_Name', 'Accolade', 'College']

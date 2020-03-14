@@ -7,9 +7,11 @@
     <!-- Latest compiled and minified CSS -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
     <!-- jQuery library -->
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
-    <!-- Latest compiled JavaScript -->
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <!-- Popper js -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <!--Bootstrap.js -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
     <!-- Google Font -->
     <link href="https://fonts.googleapis.com/css?family=Cabin&display=swap" rel="stylesheet">
     <!-- map applicaton static files -->
@@ -29,7 +31,38 @@
       </p>
     </div>
 
-    <div id="dropdowns"></div>
+    <div class="forms"> <!-- using bootstrap to create selectors -->
+      <select class="custom-select" id="leagueSelector">
+        <!-- TODO: Use the database and django template language to create the options -->
+        <option value="" disabled selected>League</option>
+      </select>
+
+      <select class="custom-select" id="collegeSelector">
+        <!-- TODO: Use the database and django template language to create the options -->
+        <option value="" disabled selected>College</option>
+      </select>
+
+      <select class="custom-select" id="positionSelector">
+        <!-- TODO: Use the database and django template language to create the options -->
+        <option value="" disabled selected>Position</option>
+      </select>
+
+      <select class="custom-select" id="starterSelector">
+        <option disabled selected>Number of Years Starter</option>
+        <option value=1>1</option>
+        <option value=2>2</option>
+        <option value=3>3</option>
+        <option value=4>4+</option>
+      </select>
+
+      <select class="custom-select" id="conferenceSelector">
+        <option disabled selected>Number of Years All-Conference</option>
+        <option value=1>1</option>
+        <option value=2>2</option>
+        <option value=3>3</option>
+        <option value=4>4+</option>
+      </select>
+    </div>
 
     <div id="go-button"></div>
 

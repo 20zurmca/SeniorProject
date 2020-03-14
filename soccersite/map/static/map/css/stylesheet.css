@@ -16,6 +16,10 @@ a {
   font-size: 80%;
 }
 
+.dropdowns{
+  display: inline-block;
+}
+
 #name{
   font-family: 'Cabin', sans-serif;
   font-weight: bold;
