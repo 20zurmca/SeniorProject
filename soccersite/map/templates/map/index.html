@@ -4,31 +4,30 @@
 <html lang="en" dir="ltr">
   <head>
     <meta charset="utf-8">
-
-    <!-- map applicaton static files -->
-    <link rel="stylesheet" type="text/css" href="{% static 'map/css/stylesheet.css' %}">
-    <link rel="shortcut icon" href="{% static 'map/img/favicon.ico' %}" />
-    <script src="{% static 'map/js/map.js' %}"></script>
     <!-- Latest compiled and minified CSS -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
     <!-- jQuery library -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
     <!-- Latest compiled JavaScript -->
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+    <!-- Google Font -->
+    <link href="https://fonts.googleapis.com/css?family=Cabin&display=swap" rel="stylesheet">
+    <!-- map applicaton static files -->
+    <link rel="stylesheet" type="text/css" href="{% static 'map/css/stylesheet.css' %}">
+    <link rel="shortcut icon" href="{% static 'map/img/favicon.ico' %}" />
+    <script src="{% static 'map/js/map.js' %}"></script>
+
     <title>Lafayette Soccer Project</title>
   </head>
 
   <body>
-    <div id="header">
-      <div class="content">
-        <center>
-          <h2 id="name">Soccer Hotspots</h2>
-          <p id="instruction">
-            Select filters to find players of interest. Then, click the submit button
-            to view their high schools.
-          </p>
-      </center>
-      </div>
+    <div class="header">
+      <h2 id="name">Soccer Hotspots</h2>
+      <p id="instruction">
+        Select filters to find players of interest. Then, click the submit button
+        to view their high schools.
+      </p>
+    </div>
 
     <div id="dropdowns"></div>
 
@@ -37,6 +36,20 @@
     <div id = "map"></div>
 
     <div id="table"></div>
+
+    <div class="footer">
+        <p>
+          Designed and Developed By:
+          <br>
+          <a href = "https://www.linkedin.com/in/cameron-zurmuhl/" target = "_blank" >Cameron Zurmuhl '20</a>
+          <br>
+          Joseph Teddick '20
+          <br>
+          Xingwen Wei '20
+          <br>
+          Matthew Gerber '20
+        </p>
+    </div>
 
     <script async defer
     src="https://maps.googleapis.com/maps/api/js?key={{API_KEY}}&callback=initMap">

@@ -122,7 +122,7 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 STATICFILES_DIRS = [
-    '../map/static/css',
-    '../map/static/img',
-    '../map/static/js'
+    '../map/static/map/css',
+    '../map/static/map/img',
+    '../map/static/map/js'
 ]

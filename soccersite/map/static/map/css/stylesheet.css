@@ -1,4 +1,33 @@
+body {
+  background-color: #010133;
+}
+
 #map{
   height: 600px;
-  width: 75%;
+  width: 90%;
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: 150px;
+  margin-bottom: 50px;
+}
+
+.header{
+  text-align: center;
+}
+
+#name{
+  font-family: 'Cabin', sans-serif;
+  font-weight: bold;
+  color: white
+}
+
+#instruction {
+  font-size: 150%;
+  color: white
+}
+
+.footer {
+  text-align: center;
+  color: white;
+  font-size: 80%;
 }
