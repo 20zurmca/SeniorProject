@@ -2,17 +2,18 @@ body {
   background-color: #010133;
 }
 
-#map{
-  height: 600px;
-  width: 90%;
-  margin-left: auto;
-  margin-right: auto;
-  margin-top: 150px;
-  margin-bottom: 50px;
+a {
+  color: white;
 }
 
 .header{
   text-align: center;
+}
+
+.footer {
+  text-align: center;
+  color: white;
+  font-size: 80%;
 }
 
 #name{
@@ -26,8 +27,11 @@ body {
   color: white
 }
 
-.footer {
-  text-align: center;
-  color: white;
-  font-size: 80%;
+#map{
+  height: 600px;
+  width: 90%;
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: 150px;
+  margin-bottom: 50px;
 }
