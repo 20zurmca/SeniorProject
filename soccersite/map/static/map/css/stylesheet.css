@@ -8,6 +8,7 @@ a {
 
 .header{
   text-align: center;
+  margin-top: 50px;
 }
 
 .footer {
@@ -16,15 +17,16 @@ a {
   font-size: 80%;
 }
 
-.dropdown-forms{
-  margin-left: auto;
+.selectors{
+  margin-left: 50px;
   margin-right: auto;
 }
 
 #name{
   font-family: 'Cabin', sans-serif;
   font-weight: bold;
-  color: white
+  color: white;
+  margin-top:50px;
 }
 
 #instruction {
