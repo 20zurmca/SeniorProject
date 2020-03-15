@@ -5,14 +5,15 @@
   <head>
     <meta charset="utf-8">
     <!-- bootstrap stuff -->
+    <!-- map applicaton static files -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
     <!-- google font -->
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Cabin&display=swap">
-    <!-- tail select -->
-    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/tail.select@latest/css/bootstrap4/tail.select-default.css">
-    <!-- map applicaton static files -->
     <link rel="shortcut icon" href="{% static 'map/img/favicon.ico' %}" />
     <link rel="stylesheet" type="text/css" href="{% static 'map/css/stylesheet.css' %}">
+    <!-- tail select -->
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/tail.select@latest/css/bootstrap4/tail.select-default.css">
+
 
     <title>Lafayette Soccer Project</title>
   </head>
@@ -75,6 +76,12 @@
     </div>
 
     <div id = "map"></div>
+
+    <div class = "csv-button">
+      <button type="button" class="btn btn-primary btn-small" data-toggle="button" aria-pressed="false" onclick="csv()" id="button2">
+        CSV
+      </button>
+    </div>
     <div class ="table">
       <!--TODO: work on the table -->
       <table class="table table-striped table-hover table-dark" id="resultTable">
@@ -127,9 +134,8 @@
           <a href = "https://www.goleopards.com/sports/mens-soccer/roster/coaches/dennis-bohn/511" target = "_blank">Dennis Bohn</a>
         </p>
     </div>
-
-    <script async defer src="https://maps.googleapis.com/maps/api/js?key={{API_KEY}}&callback=initMap"></script>
     <script src="{% static 'map/js/map.js' %}"></script>
+    <script async defer src="https://maps.googleapis.com/maps/api/js?key={{API_KEY}}&callback=initMap"></script>
    <!-- jQuery library -->
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
    <!-- Popper js -->
