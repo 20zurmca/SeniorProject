@@ -59,6 +59,13 @@ a {
   border-color: #1d6f42;
 }
 
+#button3{
+  border: none;
+  text-align: right;
+  margin-right: 100px;
+  margin-top: 20px;
+}
+
 #resultTable{
   margin-bottom: 300px;
   margin-top: 10px;

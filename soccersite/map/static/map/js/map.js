@@ -31,7 +31,7 @@ var center_ = {lat: 32.560742, lng: -3.9314364} //somewhere near the Mediterrane
    controlText.innerHTML          = 'Center Map';
    controlUI.appendChild(controlText);
 
-   // Setup the click event listeners: simply set the map to Chicago.
+   // recenters the maps upon click.
    controlUI.addEventListener('click', function() {
       map.setCenter(center_);
       map.setZoom(2);
@@ -71,8 +71,14 @@ var center_ = {lat: 32.560742, lng: -3.9314364} //somewhere near the Mediterrane
    controlText.innerHTML          = 'Toggle Heat Map';
    controlUI.appendChild(controlText);
 
-   // Setup the click event listeners: simply set the map to Chicago.
+   let clickCount = 0; //counter for toggling bold text
    controlUI.addEventListener('click', function() {
+     clickCount++;
+     if(clickCount % 2) {
+       controlText.style.fontWeight = "bold";
+     } else {
+       controlText.style.fontWeight = "normal";
+     }
       //TODO: implement functionality
     });
 }
@@ -83,7 +89,6 @@ var center_ = {lat: 32.560742, lng: -3.9314364} //somewhere near the Mediterrane
  * @constructor
  */
  function MarkerControl(controlDiv, map) {
-
    // Set CSS for the control border.
    var controlUI = document.createElement('div');
    controlUI.style.backgroundColor = '#fff';
@@ -97,7 +102,6 @@ var center_ = {lat: 32.560742, lng: -3.9314364} //somewhere near the Mediterrane
    controlUI.style.textAlign       = 'center';
    controlUI.style.display         = 'inline-block';
    controlUI.style.height          = '39px';
-   controlUI.style.hover           = true;
    controlUI.title                 = 'Click to toggle map pins';
    controlDiv.appendChild(controlUI);
 
@@ -112,8 +116,15 @@ var center_ = {lat: 32.560742, lng: -3.9314364} //somewhere near the Mediterrane
    controlText.innerHTML          = 'Toggle Markers';
    controlUI.appendChild(controlText);
 
-   // Setup the click event listeners: simply set the map to Chicago.
+   let clickCount = 0; //counter for toggling bold text
    controlUI.addEventListener('click', function() {
+      clickCount++;
+      if(clickCount % 2) {
+        controlText.style.fontWeight = "bold";
+      } else {
+        controlText.style.fontWeight = "normal";
+      }
+
       //TODO: implement functionality
     });
 }
@@ -133,10 +144,10 @@ function initMap() {
   var heatMapControl    = new HeatMapControl(heatMapControlDiv, map);
   var markerControl     = new MarkerControl(markerControlDiv, map);
 
-  centerControlDiv.index  = 1;
+  centerControlDiv.index  = 1; //index will determine where the control is put in the control block array
   heatMapControlDiv.index = 3;
   markerControlDiv.index  = 4;
-  map.controls[google.maps.ControlPosition.TOP_CENTER].push(centerControlDiv);
-  map.controls[google.maps.ControlPosition.TOP_LEFT].push(heatMapControlDiv);
-  map.controls[google.maps.ControlPosition.TOP_LEFT].push(markerControlDiv);
+  map.controls[google.maps.ControlPosition.TOP_CENTER].push(centerControlDiv); //center of screen
+  map.controls[google.maps.ControlPosition.TOP_LEFT].push(heatMapControlDiv); //top left 3rd position
+  map.controls[google.maps.ControlPosition.TOP_LEFT].push(markerControlDiv); //top right fourth position
 }
