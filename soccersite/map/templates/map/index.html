@@ -29,27 +29,25 @@
     <div class="selectors">
       <select class="select-search" multiple id="collegeLeagueSelector">
           <optgroup label="College League">
-              <!-- TODO: use the db and django to loop through and create all option tags -->
-              <option>Patriot</option>
-              <option>Ivy</option>
-              <option>Southern</option>
+            {% for league in leagues %}
+              <option>{{league}}</option>
+            {% endfor %}
           </optgroup>
       </select>
 
       <select class="select-search" multiple id="collegeSelector">
           <optgroup label="College">
-             <!-- TODO: use the db and django to loop through and create all option tags -->
-              <option>Lafayette College</option>
-              <option>Lehigh University</option>
-              <option>Harvard University</option>
+             {% for college in colleges %}
+                <option>{{college}}</option>
+             {% endfor %}
           </optgroup>
       </select>
 
       <select class="select-search" multiple id="positionSelector">
           <optgroup label="Position">
-             <!-- TODO: use the db and django to loop through and create all option tags -->
-              <option>Goalie</option>
-              <option>Midfielder</option>
+              {% for position in positions %}
+                <option>{{position}}</option>
+              {% endfor %}
           </optgroup>
       </select>
 

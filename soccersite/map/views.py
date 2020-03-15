@@ -1,9 +1,16 @@
 from django.shortcuts import render
 from django.http import HttpResponse
 from django.conf import settings
+from .models import RosterMasterData
 
 # Create your views here.
 
 def index(request):
-    context = {'API_KEY': settings.GOOGLE_MAPS_API_KEY}
+    colleges  = RosterMasterData.objects.values_list('college', flat=True).distinct().order_by('college')
+    leagues   = RosterMasterData.objects.values_list('collegeLeague', flat=True).distinct().order_by('collegeLeague')
+    positions = RosterMasterData.objects.values_list('position1', flat=True).distinct().order_by('position1')
+    context   = {'API_KEY': settings.GOOGLE_MAPS_API_KEY,
+               'colleges': colleges,
+               'leagues': leagues,
+               'positions': positions}
     return render(request, 'map/index.html', context)
