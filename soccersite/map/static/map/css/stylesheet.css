@@ -25,14 +25,14 @@ a {
 .submit-button{
   text-align: center;
   margin-top: 200px;
+  margin-bottom: 120px;
 }
 
-.map{
-  height: 600px;
-  width: 90%;
+#map{
+  height: 700px;
+  width: 98%;
   margin-left: auto;
   margin-right: auto;
-  margin-top: 150px;
   margin-bottom: 125px;
 }
 
@@ -54,6 +54,7 @@ a {
 
 #resultTable{
   margin-bottom: 300px;
+  margin-top: 10px;
   width: 98%;
   margin-left: auto;
   margin-right: auto;
