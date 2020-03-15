@@ -16,8 +16,9 @@ a {
   font-size: 80%;
 }
 
-.dropdowns{
-  display: inline-block;
+.dropdown-forms{
+  margin-left: auto;
+  margin-right: auto;
 }
 
 #name{
