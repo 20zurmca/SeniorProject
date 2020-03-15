@@ -45,34 +45,40 @@
           </optgroup>
       </select>
 
-      <select class="select" multiple id="starterSelector">
-          <optgroup label="Years Starter">
-              <option>1</option>
-              <option>2</option>
-              <option>3</option>
-              <option>4+</option>
+      <select class="select-search" multiple id="positionSelector">
+          <optgroup label="Position">
+             <!-- TODO: use the db and django to loop through and create all option tags -->
+              <option>Goalie</option>
+              <option>Midfielder</option>
           </optgroup>
+      </select>
+
+      <select class="select" multiple id="starterSelector">
+          <option>0</option>
+          <option>1</option>
+          <option>2</option>
+          <option>3</option>
+          <option>4+</option>
       </select>
 
       <select class="select" multiple id="allConferenceSelector">
-          <optgroup label="Years All-Conference">
-              <option>1</option>
-              <option>2</option>
-              <option>3</option>
-              <option>4+</option>
-          </optgroup>
+          <option>0</option>
+          <option>1</option>
+          <option>2</option>
+          <option>3</option>
+          <option>4+</option>
       </select>
+    </div>
 
-      <button type="button" class="btn btn-primary btn-lg" data-toggle="button" aria-pressed="false">
+    <div class = "submit-button">
+      <button type="button" class="btn btn-primary btn-lg" data-toggle="button" aria-pressed="false" id="button1">
         Submit
       </button>
     </div>
 
-    <div id="go-button"></div>
+    <div class = "map"></div>
 
-    <div id = "map"></div>
-
-    <div id="table"></div>
+    <div class ="table"></div>
 
     <div class="footer">
         <p>
@@ -80,7 +86,7 @@
           <br>
           <a href = "https://www.linkedin.com/in/cameron-zurmuhl/" target = "_blank" >Cameron Zurmuhl '20</a>
           <br>
-          Joseph Teddick '20
+          <a href = "https://www.linkedin.com/in/joseph-teddick-670242191/" target = "_blank">Joseph Teddick '20</a>
           <br>
           Xingwen Wei '20
           <br>

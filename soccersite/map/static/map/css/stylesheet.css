@@ -8,7 +8,8 @@ a {
 
 .header{
   text-align: center;
-  margin-top: 50px;
+  margin-bottom: 50px;
+  padding-top: 50px;
 }
 
 .footer {
@@ -18,15 +19,21 @@ a {
 }
 
 .selectors{
-  margin-left: 50px;
-  margin-right: auto;
+  text-align: center;
 }
 
-#name{
-  font-family: 'Cabin', sans-serif;
-  font-weight: bold;
-  color: white;
-  margin-top:50px;
+.submit-button{
+  text-align: center;
+  margin-top: 200px;
+}
+
+.map{
+  height: 600px;
+  width: 90%;
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: 150px;
+  margin-bottom: 125px;
 }
 
 #instruction {
@@ -34,11 +41,13 @@ a {
   color: white
 }
 
-#map{
-  height: 600px;
-  width: 90%;
-  margin-left: auto;
-  margin-right: auto;
-  margin-top: 150px;
-  margin-bottom: 125px;
+#name{
+  font-family: 'Cabin', sans-serif;
+  font-weight: bold;
+  color: white;
+  margin-bottom: 10px;
+}
+
+#button1{
+  width: 300px;
 }
