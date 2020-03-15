@@ -51,3 +51,10 @@ a {
 #button1{
   width: 300px;
 }
+
+#resultTable{
+  margin-bottom: 300px;
+  width: 98%;
+  margin-left: auto;
+  margin-right: auto;
+}
