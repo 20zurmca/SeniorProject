@@ -41,3 +41,13 @@ class HighSchool(models.Model):
         val = str(' '.join([city, institution, stateOrProvince, country,
 		                    latitude, longitude, schoolType]))
         return val
+
+class BoardingSchool(models.Model):
+    name      = models.CharField(max_length = 100)
+    state     = models.CharField(max_length = 2)
+    latitude  = models.FloatField()
+    longitude = models.FloatField()
+
+    def __str__(self):
+        val = str(' '.join([name, address, state, latitude, longitude]))
+        return val
