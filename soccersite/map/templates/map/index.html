@@ -19,12 +19,12 @@
   <body>
     <div class="header-button">
       <button type="button" class="btn btn-primary bg-dark btn-sm"
-      id="button3">
+      aria-pressed="true" id="button3">
         Admin Login
       </button>
 
       <button type="button" class="btn btn-primary bg-dark btn-sm"
-      id="button4">
+      aria-pressed="true" id="button4">
         About
       </button>
     </div>
@@ -59,7 +59,9 @@
         <select class="select-search" multiple name="position" id="positionSelector">
             <optgroup label="Position">
                 {% for position in positions %}
+                  {% if position and position.strip %} <!-- do not include empty positions -->
                   <option>{{position}}</option>
+                  {% endif %}
                 {% endfor %}
             </optgroup>
         </select>
@@ -89,7 +91,7 @@
     <div id = "map"></div>
 
     <div class = "csv-button">
-      <button type="button" class="btn btn-primary btn-small" id="button2">
+      <button type="button" class="btn btn-primary btn-small" aria-pressed="true" id="button2">
         CSV
       </button>
     </div>
@@ -150,9 +152,11 @@
     <script src="{% static 'map/js/map.js' %}"></script>
   -->
     <script src="{% static 'map/js/buttons.js' %}"></script>
+    <!--
     <script async defer src="https://maps.googleapis.com/maps/api/js?key={{API_KEY}}&callback=initMap"></script>
+  -->
    <!-- jQuery library -->
-    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+   <script src="https://code.jquery.com/jquery-3.4.1.js" integrity="sha256-WpOohJOqMqqyKL9FccASB9O0KwACQJpFTUBLTYOVvVU=" crossorigin="anonymous"></script>
    <!-- Popper js -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
    <!--Bootstrap.js -->
@@ -160,5 +164,6 @@
     <!--Tail select -->
     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/tail.select@0.5.15/js/tail.select.min.js"></script>
     <script src="{% static 'map/js/selectors.js' %}"></script>
+    <script src="{% static 'map/js/form.js' %}"></script>
   </body>
 </html>
