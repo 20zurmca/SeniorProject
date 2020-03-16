@@ -5,10 +5,10 @@
   <head>
     <meta charset="utf-8">
     <!-- bootstrap stuff -->
-    <!-- map applicaton static files -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
     <!-- google font -->
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Cabin&display=swap">
+    <!-- map applicaton static files -->
     <link rel="shortcut icon" href="{% static 'map/img/favicon.ico' %}" />
     <link rel="stylesheet" type="text/css" href="{% static 'map/css/stylesheet.css' %}">
     <!-- tail select -->
@@ -16,15 +16,14 @@
 
     <title>Lafayette Soccer Project</title>
   </head>
-
   <body>
     <div class="header-button">
-      <button type="button" class="btn btn-primary bg-dark btn-sm" data-toggle="button" aria-pressed="false"
+      <button type="button" class="btn btn-primary bg-dark btn-sm"
       id="button3">
         Admin Login
       </button>
 
-      <button type="button" class="btn btn-primary bg-dark btn-sm" data-toggle="button" aria-pressed="false"
+      <button type="button" class="btn btn-primary bg-dark btn-sm"
       id="button4">
         About
       </button>
@@ -39,57 +38,58 @@
     </div>
 
     <div class="selectors">
-      <select class="select-search" multiple id="collegeLeagueSelector">
-          <optgroup label="College League">
-            {% for league in leagues %}
-              <option>{{league}}</option>
-            {% endfor %}
-          </optgroup>
-      </select>
-
-      <select class="select-search" multiple id="collegeSelector">
-          <optgroup label="College">
-             {% for college in colleges %}
-                <option>{{college}}</option>
-             {% endfor %}
-          </optgroup>
-      </select>
-
-      <select class="select-search" multiple id="positionSelector">
-          <optgroup label="Position">
-              {% for position in positions %}
-                <option>{{position}}</option>
+      <form method="POST" id="filterForm">
+        {% csrf_token %}
+        <select class="select-search" multiple name="collegeLeague" id="collegeLeagueSelector">
+            <optgroup label="College League">
+              {% for league in leagues %}
+                <option>{{league}}</option>
               {% endfor %}
-          </optgroup>
-      </select>
+            </optgroup>
+        </select>
 
-      <select class="select" multiple id="starterSelector">
-          <option>0</option>
-          <option>1</option>
-          <option>2</option>
-          <option>3</option>
-          <option>4+</option>
-      </select>
+        <select class="select-search" multiple name="college" id="collegeSelector">
+            <optgroup label="College">
+               {% for college in colleges %}
+                  <option>{{college}}</option>
+               {% endfor %}
+            </optgroup>
+        </select>
 
-      <select class="select" multiple id="allConferenceSelector">
-          <option>0</option>
-          <option>1</option>
-          <option>2</option>
-          <option>3</option>
-          <option>4+</option>
-      </select>
-    </div>
+        <select class="select-search" multiple name="position" id="positionSelector">
+            <optgroup label="Position">
+                {% for position in positions %}
+                  <option>{{position}}</option>
+                {% endfor %}
+            </optgroup>
+        </select>
 
-    <div class = "submit-button">
-      <button type="button" class="btn btn-primary btn-lg" data-toggle="button" aria-pressed="false" id="button1">
-        Submit
-      </button>
+        <select class="select" multiple name="starterYears" id="starterSelector">
+            <option>0</option>
+            <option>1</option>
+            <option>2</option>
+            <option>3</option>
+            <option>4+</option>
+        </select>
+
+        <select class="select" multiple name="allConferenceYears" id="allConferenceSelector">
+            <option>0</option>
+            <option>1</option>
+            <option>2</option>
+            <option>3</option>
+            <option>4+</option>
+        </select>
+
+        <div class = "submit-button">
+          <input type="submit" class="btn btn-primary btn-lg" value="Submit" id="button1"></input>
+        </div>
+      </form>
     </div>
 
     <div id = "map"></div>
 
     <div class = "csv-button">
-      <button type="button" class="btn btn-primary btn-small" data-toggle="button" aria-pressed="false" id="button2">
+      <button type="button" class="btn btn-primary btn-small" id="button2">
         CSV
       </button>
     </div>

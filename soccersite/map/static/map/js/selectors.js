@@ -18,6 +18,7 @@ tail.select("#positionSelector", {
 });
 
 tail.select("#starterSelector", {
+  multiSelectAll: true,
   placeholder: "Number of Years Starter",
 });
 
