@@ -12,8 +12,8 @@ def index(request):
     positions = RosterMasterData.objects.values_list('position1', flat=True).distinct().order_by('position1')
 
     if(request.method == 'POST'):
-        payload = request.POST.get('json_data')
-        print(payload)
+        payload = json.loads(request.POST.get('json_data'))
+        print(payload['collegeLeagues'])
 
     context = {'API_KEY': settings.GOOGLE_MAPS_API_KEY,
                'colleges': colleges,
