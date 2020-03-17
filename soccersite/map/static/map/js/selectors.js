@@ -61,6 +61,43 @@ tail.select("#allConferenceSelector", {
   width: 330
 });
 
-function fillCollegeValues(){
+/**
+ * inArray if an element is in an in an array
+ * @param arr and array of strings
+ * @param str string to search
+ * @return true if str is in arr, false otherwise
+*/
+function inArray(arr, str){
+  for(var i in str){
+    if(!i.localeCompare(str)){
+      return true;
+    }
+  }
+  return false;
+}
+
+/**
+ *
+*/
+function deselectAllColleges(){
 
 }
+
+/**
+ * JQuery that listens for changes on the collegeLeagueSelector <select> element
+ * then preselects the appropriate colleges that are in a selected league
+ * if the league is deselected, then all colleges in that league are deslected
+*/
+$(function collegeLeagueChange() {
+    $('#collegeLeagueSelector').change(function(e) {
+        var selected = $(e.target).val(); //returns an array of selected leagues
+        if(selected.length == 0){
+          deselectAllColleges();
+        }
+        for(var key in leagueDict){
+           if()
+
+        }
+
+    });
+});

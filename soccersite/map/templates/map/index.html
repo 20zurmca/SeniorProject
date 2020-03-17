@@ -43,7 +43,7 @@
         <select class="select-search" multiple name="collegeLeague" id="collegeLeagueSelector">
             <optgroup label="College League">
               {% for league in leagues %}
-                <option>{{league}}</option>
+                <option value="{{league}}" id="{{league}}">{{league}}</option>
               {% endfor %}
             </optgroup>
         </select>
@@ -51,7 +51,7 @@
         <select class="select-search" multiple name="college" id="collegeSelector">
             <optgroup label="College">
                {% for college in colleges %}
-                  <option>{{college}}</option>
+                  <option value="{{college}}" id="{{college}}">{{college}}</option>
                {% endfor %}
             </optgroup>
         </select>
