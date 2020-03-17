@@ -40,7 +40,7 @@
     <div class="selectors">
       <form method="POST" id="filterForm">
         {% csrf_token %}
-        <select class="select-search" multiple name="collegeLeague" id="collegeLeagueSelector">
+        <select class="select-search" multiple name="collegeLeagues" id="collegeLeagueSelector">
             <optgroup label="College League">
               {% for league in leagues %}
                 <option value="{{league}}" id="{{league}}">{{league}}</option>
@@ -48,7 +48,7 @@
             </optgroup>
         </select>
 
-        <select class="select-search" multiple name="college" id="collegeSelector">
+        <select class="select-search" multiple name="colleges" id="collegeSelector">
             <optgroup label="College">
                {% for college in colleges %}
                   <option value="{{college}}" id="{{college}}">{{college}}</option>
@@ -56,7 +56,7 @@
             </optgroup>
         </select>
 
-        <select class="select-search" multiple name="position" id="positionSelector">
+        <select class="select-search" multiple name="positions" id="positionSelector">
             <optgroup label="Position">
                 {% for position in positions %}
                   {% if position and position.strip %} <!-- do not include empty positions -->
