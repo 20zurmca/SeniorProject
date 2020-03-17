@@ -60,18 +60,3 @@ tail.select("#allConferenceSelector", {
   multiSelectAll: true,
   width: 330
 });
-
-/**
- * inArray if an element is in an in an array
- * @param arr and array of strings
- * @param str string to search
- * @return true if str is in arr, false otherwise
-*/
-function inArray(arr, str){
-  for(var i in arr){
-    if(!i.localeCompare(str)){
-      return true;
-    }
-  }
-  return false;
-}
