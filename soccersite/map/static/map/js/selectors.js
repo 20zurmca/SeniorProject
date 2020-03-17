@@ -1,29 +1,89 @@
-tail.select("#collegeLeagueSelector", {
+leagueDict ={
+
+        'PATRIOT' : ['Lafayette College', 'Lehigh University', 'American University',
+                      'Army West Point', 'Naval Academy', 'Boston University',
+                      'Bucknell University', 'Colgate University', 'College of the Holy Cross',
+                      'Loyola University Maryland'],
+
+        'IVY'     : ['University of Pennsylvania', 'Harvard University', 'Yale University',
+                     'Brown University', 'Cornell University', 'Dartmouth College', 'Columbia University',
+                     'Princeton University'],
+
+        'PAC-12'  : ['Stanford University'],
+
+        'COLONIAL ATHLETIC ASSOCIATION' : ['Northeastern University', 'College of William & Mary'],
+
+        'ATLANTIC COAST' : ['Boston College', 'University of Notre Dame', 'Syracuse University',
+                            'Wake Forest University', 'Duke University'],
+
+        'BIG EAST' : ['Georgetown University', 'Villanova University'],
+
+        'A-10'     : ['Davidson College'],
+
+        'BIG TEN'  : ['Northwestern University'],
+
+        'SOUTHERN' : ['Furman University', 'Wofford College'],
+
+        'WAC' : ['Air Force Academy'],
+
+        'AMERICAN ATHLETIC': ['Southern Methodist University'],
+
+    }
+
+priorSelectedLeagues = {'PATRIOT': false, 'IVY': false, 'PAC-12': false, 'COLONIAL ATHLETIC ASSOCIATION': false, 'ATLANTIC COAST': false,
+                      'BIG EAST': false, 'A-10': false, 'BIG TEN': false, 'SOUTHERN': false, 'WAC': false, 'AMERICAN ATHLETIC': false};
+
+var leagueSelector = tail.select("#collegeLeagueSelector", {
   search: true,
   multiSelectAll: true,
   placeholder: "College League",
   width: 330
 });
 
-tail.select("#collegeSelector", {
+var collegeSelector = tail.select("#collegeSelector", {
   search: true,
   multiSelectAll: true,
   placeholder: "College",
 });
 
-tail.select("#positionSelector", {
+var positionSelector = tail.select("#positionSelector", {
   search: true,
   multiSelectAll: true,
   placeholder: "Position",
 });
 
-tail.select("#starterSelector", {
+var starterSelector = tail.select("#starterSelector", {
   multiSelectAll: true,
   placeholder: "Number of Years Starter",
 });
 
-tail.select("#allConferenceSelector", {
+var allConferenceSelector = tail.select("#allConferenceSelector", {
   placeholder: "Number of Years All-Conference",
   multiSelectAll: true,
   width: 330
+});
+
+/**
+ * Functionality to selected/deselect all colleges in a selected league
+*/
+leagueSelector.on("change", function(){
+  leagues = leagueSelector.options.items["College League"]; //dictionary of leagues
+  for(var league in leagues){ //iterating over the keys
+    colleges = leagueDict[league];
+    if(leagues[league]['selected']){ //selecton made
+      if(!priorSelectedLeagues[league]){ //new selection
+        colleges.forEach(function(c){
+          collegeSelector.options.select(c, "College");
+       });
+      priorSelectedLeagues[league] = !priorSelectedLeagues[league]; //change state
+    }
+  } else { //unselection made
+      if(priorSelectedLeagues[league]){ //undo a prior selection
+        colleges.forEach(function(c){
+          collegeSelector.options.unselect(c, "College");
+       });
+      priorSelectedLeagues[league] = !priorSelectedLeagues[league]; //change state
+     }
+   }
+ }
 });
