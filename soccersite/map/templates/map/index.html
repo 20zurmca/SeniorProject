@@ -16,8 +16,13 @@
     <link rel="stylesheet" type="text/css" href="{% static 'map/css/stylesheet.css' %}">
 
     <title>Lafayette Soccer Project</title>
+    <style>
+      body {
+        background-image: repeating-linear-gradient(lightgreen,green, lightgreen);
+      }
+    </style>
   </head>
-  <body>
+  <body>   
     <div class="header-button">
       <button type="button" class="btn btn-primary bg-dark btn-sm"
       aria-pressed="true" id="button3">
@@ -83,7 +88,7 @@
               <option>3</option>
               <option>4+</option>
           </select>
-
+          
           <div class = "submit-button">
             <input type="submit" class="btn btn-primary btn-lg" value="Submit" id="button1"></input>
           </div>
