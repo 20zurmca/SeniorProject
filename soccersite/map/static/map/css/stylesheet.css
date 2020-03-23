@@ -1,5 +1,5 @@
 body {
-  background-color: #010133;
+  background-color: #404040;
 }
 
 th{
@@ -12,6 +12,12 @@ td {
 
 a {
   color: white;
+}
+
+.container-bgimage{
+  background-image: url('../img/grass.jpg');
+  background-size: cover;
+  padding-bottom: 50px;
 }
 
 .header{
@@ -47,7 +53,7 @@ a {
 
 #map{
   height: 700px;
-  width: 98%;
+  width: 79%;
   margin-left: auto;
   margin-right: auto;
   margin-bottom: 125px;
@@ -70,6 +76,7 @@ a {
 }
 
 #button2{
+  margin-top: 25px;
   margin-left: 15px;
   width: 75px;
   background: #1d6f42;
