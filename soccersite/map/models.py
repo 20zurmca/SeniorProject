@@ -44,7 +44,7 @@ class HighSchool(models.Model):
 
 class BoardingSchool(models.Model):
     name      = models.CharField(max_length = 100)
-    address   = models.CharField(max_length = 2)
+    state     = models.CharField(max_length = 2)
     latitude  = models.FloatField()
     longitude = models.FloatField()
 
