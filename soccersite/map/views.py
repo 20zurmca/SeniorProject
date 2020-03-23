@@ -22,3 +22,6 @@ def index(request):
                }
 
     return render(request, 'map/index.html', context)
+
+def about(request):
+    return render(request, 'map/about.html')

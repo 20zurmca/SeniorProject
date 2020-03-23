@@ -1,0 +1,55 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title>Lafayette Soccer Project - About</title>
+    <!-- bootstrap stuff -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <!-- map applicaton static files -->
+    <link rel="shortcut icon" href="{% static 'map/img/favicon.ico' %}" />
+    <link rel="stylesheet" type="text/css" href="{% static 'map/css/about.css' %}">
+  </head>
+  <body>
+    <div class="header-button">
+      <button type="button" class="btn btn-primary bg-dark btn-sm"
+      aria-pressed="true" id="adminButton">
+        Admin Login
+      </button>
+
+      <button type="button" class="btn btn-primary bg-dark btn-sm"
+      aria-pressed="true" id="returnButton">
+        Home Page
+      </button>
+    </div>
+
+    <div class="header">
+      <h2 id="name">About The Project</h2>
+    </div>
+
+    <p id="info">
+      Blah blah blah
+    </p>
+
+    <div class="header">
+      <h2 id="PO">
+        The Product Owner
+      </h2>
+    </div>
+
+    <div class="header">
+      <h2 id="Developers">
+        The Developers
+      </h2>
+    </div>
+
+
+    <script src="{% static 'map/js/aboutPageButtons.js' %}"></script>
+    <!-- jQuery library -->
+    <script src="https://code.jquery.com/jquery-3.4.1.js" integrity="sha256-WpOohJOqMqqyKL9FccASB9O0KwACQJpFTUBLTYOVvVU=" crossorigin="anonymous"></script>
+    <!-- Popper js -->
+     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+    <!--Bootstrap.js -->
+     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+  </body>
+</html>
