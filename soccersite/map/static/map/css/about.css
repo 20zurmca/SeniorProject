@@ -2,16 +2,6 @@ body {
   background-color: #010133;
 }
 
-#adminButton{
-  border: none;
-  margin-right: 2px;
-}
-
-#returnButton{
-  border:none;
-  margin-right: 20px;
-}
-
 .header-button{
   text-align: right;
   margin-top: 5px;
@@ -21,18 +11,30 @@ body {
   text-align: center;
   margin-bottom: 50px;
   padding-top: 50px;
+  font-weight: bold;
   color: white;
 }
 
-#name{
+.info {
+  font-size: 125%;
+  color: white;
+  text-align: justify;
+  margin-left: 70px;
+  padding-right: 70px;
+}
+
+.name{
   font-family: 'Cabin', sans-serif;
   font-weight: bold;
   margin-bottom: 10px;
 }
 
-#info {
-  font-size: 125%;
-  color: white;
-  text-align: left;
-  margin-left: 100px;
+#adminButton{
+  border: none;
+  margin-right: 2px;
+}
+
+#returnButton{
+  border:none;
+  margin-right: 20px;
 }
