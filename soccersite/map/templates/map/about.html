@@ -6,6 +6,8 @@
     <title>Lafayette Soccer Project - About</title>
     <!-- bootstrap stuff -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <!-- google font -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Cabin&display=swap">
     <!-- map applicaton static files -->
     <link rel="shortcut icon" href="{% static 'map/img/favicon.ico' %}" />
     <link rel="stylesheet" type="text/css" href="{% static 'map/css/about.css' %}">
@@ -55,19 +57,52 @@
       </h2>
     </div>
 
+    <div class="bio">
+      <div class = "bio-section-1">
+        <h4 class="bio-name">
+          Dennis Bohn
+        </h4>
+      </div>
+
+      <div class = "bio-section-2">
+        <p class = "bio-info">
+          Mr. Bohn is Lafayette College's Men's Soccer Head Coach. He proposed
+          the project in the Fall of 2018. Read more about Dennis's accomplishments
+          <a href = "https://www.goleopards.com/sports/mens-soccer/roster/coaches/dennis-bohn/511">
+            here.
+          </a>
+        </p>
+      </div>
+    </div>
+
     <div class="header">
       <h2 class="name">
         The Developers
       </h2>
     </div>
 
+    <div class = "bio">
+      <div class = "bio-section-1">
+        <h4 class="bio-name">
+          Cameron Zurmuhl
+          <img class = "linkedin" src = "{% static 'map/img/linkedin_icon.png' %}" width=30 height=30
+           onclick = "cameronLinkedin()">
+        </h4>
+        <img class = "profile-img" src = "{% static 'map/img/cameron_profile_pic.jpg' %}" width = 200 height = 200>
+      </div>
+
+      <div class = "bio-section-2">
+        <p class = "bio-info">
+          Cameron is a graduating senior at Lafayette College (class of 2020) and holds
+          a B.S. in Computer Science. He is from Warminster, Pennsylvania,
+          a suburban township of Philadelphia. Cameron piloted the project with Dennis
+          as an EXCEL Scholar in 2018. After graduation, he will be working as a software
+          engineer at JPMorgan Chase & Co. while pursuing his M.S. in Computer Science from Georgia Tech.
+        </p>
+      </div>
+    </div>
 
     <script src="{% static 'map/js/aboutPageButtons.js' %}"></script>
-    <!-- jQuery library -->
-    <script src="https://code.jquery.com/jquery-3.4.1.js" integrity="sha256-WpOohJOqMqqyKL9FccASB9O0KwACQJpFTUBLTYOVvVU=" crossorigin="anonymous"></script>
-    <!-- Popper js -->
-     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
-    <!--Bootstrap.js -->
-     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+    <script type="text/javascript" src="https://platform.linkedin.com/badges/js/profile.js" async defer></script>
   </body>
 </html>
