@@ -68,6 +68,7 @@ a {
   box-shadow: 0 1px 2px rgba(0,0,0,0.6);
   transition: all 0.3s ease-in-out;
   margin-left: 10px;
+  color: #010133;
 }
 
 /* Scale up the box */
