@@ -37,11 +37,6 @@ a {
   display: inline-block;
 }
 
-.bio-section-2{
-  position: relative;
-  bottom: 200px;
-}
-
 .bio-name{
   color: white;
   font-family: 'Cabin', sans-serif;
@@ -89,8 +84,13 @@ a {
   margin-right: 20px;
 }
 
+#camBioInfo{
+  position: relative;
+  bottom: 200px;
+}
+
 #badgeDiv{
   display: inline-block;
   position: relative;
-  top: 5px;
+  top: 6px;
 }
