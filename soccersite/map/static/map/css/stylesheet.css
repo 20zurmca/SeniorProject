@@ -1,5 +1,5 @@
 body {
-  background-color: #010133;
+  background-color: #272525;
 }
 
 th{
@@ -14,16 +14,15 @@ a {
   color: white;
 }
 
+.container-bgimage{
+  background-image: url('../img/grass.jpg');
+  background-size: cover;
+}
+
 .header{
   text-align: center;
   margin-bottom: 75px;
   padding-top: 50px;
-}
-
-.footer {
-  text-align: center;
-  color: white;
-  font-size: 80%;
 }
 
 .selectors{
@@ -47,15 +46,15 @@ a {
 
 #map{
   height: 700px;
-  width: 98%;
+  width: 79%;
   margin-left: auto;
   margin-right: auto;
-  margin-bottom: 125px;
+  margin-bottom: 100px;
 }
 
 #instruction {
   font-size: 150%;
-  color: white
+  color: white;
 }
 
 #name{
@@ -70,7 +69,9 @@ a {
 }
 
 #button2{
+  margin-top: 25px;
   margin-left: 15px;
+  margin-bottom: 25px;
   width: 75px;
   background: #1d6f42;
   border-color: #1d6f42;

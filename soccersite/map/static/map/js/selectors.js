@@ -30,8 +30,10 @@ leagueDict ={
 
     }
 
-priorSelectedLeagues = {'PATRIOT': false, 'IVY': false, 'PAC-12': false, 'COLONIAL ATHLETIC ASSOCIATION': false, 'ATLANTIC COAST': false,
-                      'BIG EAST': false, 'A-10': false, 'BIG TEN': false, 'SOUTHERN': false, 'WAC': false, 'AMERICAN ATHLETIC': false};
+priorSelectedLeagues = {'PATRIOT': false, 'IVY': false, 'PAC-12': false,
+                        'COLONIAL ATHLETIC ASSOCIATION': false, 'ATLANTIC COAST': false,
+                        'BIG EAST': false, 'A-10': false, 'BIG TEN': false, 'SOUTHERN': false,
+                        'WAC': false, 'AMERICAN ATHLETIC': false};
 
 var leagueSelector = tail.select("#collegeLeagueSelector", {
   search: true,
@@ -55,12 +57,14 @@ var positionSelector = tail.select("#positionSelector", {
 var starterSelector = tail.select("#starterSelector", {
   multiSelectAll: true,
   placeholder: "Number of Years Starter",
+  multiShowCount: false,
 });
 
 var allConferenceSelector = tail.select("#allConferenceSelector", {
   placeholder: "Number of Years All-Conference",
   multiSelectAll: true,
-  width: 330
+  width: 330,
+  multiShowCount: false,
 });
 
 /**
@@ -70,7 +74,7 @@ leagueSelector.on("change", function(){
   leagues = leagueSelector.options.items["College League"]; //dictionary of leagues
   for(var league in leagues){ //iterating over the keys
     colleges = leagueDict[league];
-    if(leagues[league]['selected']){ //selecton made
+    if(leagues[league]['selected']){ //selection made
       if(!priorSelectedLeagues[league]){ //new selection
         colleges.forEach(function(c){
           collegeSelector.options.select(c, "College");
