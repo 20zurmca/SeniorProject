@@ -106,7 +106,7 @@ CREATE TABLE roster_high_school_data AS (
 -- \Copy roster_high_school_data to 'roster_high_school_data.csv' DELIMITER ',' CSV HEADER;
 
 
---Data that matched name but not state/country
+--Data that matched name but not state/country IGNORE FROM HERE
 
 CREATE TABLE unmatched_data AS (
 	SELECT *
@@ -133,8 +133,64 @@ CREATE TABLE unmatched_data AS (
 -- \Copy unmatched_data to 'unmatched_data.csv' DELIMITER ',' CSV HEADER;
 
 
-SELECT Institution, "State/Province", COUNT(Institution)
+SELECT Institution, "State/Province", City, COUNT(Institution)
 FROM high_school_data
 WHERE "Public/Private/International" = 'PUBLIC'
-GROUP BY Institution, "State/Province"
+GROUP BY Institution, "State/Province", City
 HAVING high_school_data.count > 1;
+
+SELECT Institution, Country, City, COUNT(Institution)
+FROM high_school_data
+WHERE "Public/Private/International" = 'INTERNATIONAL'
+GROUP BY Institution, Country, City
+HAVING high_school_data.count > 1;
+
+
+
+--TO HERE
+
+
+--Guaranteed matched Public School data
+
+CREATE TABLE roster_public_school1 AS (
+	SELECT *
+	FROM roster_master_data
+	JOIN high_school_data
+	ON high_school_data."Public/Private/International" = 'PUBLIC' AND (
+		LOWER(roster_master_data.High_School) = LOWER(high_school_data.Institution)
+	) AND (
+		LOWER(high_school_data."State/Province") = LOWER(roster_master_data.State_or_Country)
+	)
+)
+
+CREATE TABLE roster_public_school2 AS (
+	SELECT *
+	FROM roster_master_data
+	JOIN high_school_data
+	ON high_school_data."Public/Private/International" = 'PUBLIC' AND (
+		LOWER(roster_master_data.High_School) = LOWER(high_school_data.Institution)
+	) AND (
+		LOWER(high_school_data."State/Province") = LOWER(roster_master_data.State_or_Country)
+	) AND (
+		LOWER(roster_master_data.Home_Town) = LOWER(high_school_data.City)
+	)
+)
+
+
+
+
+
+
+
+CREATE TABLE roster_international_school AS (
+	SELECT *
+	FROM roster_master_data
+	JOIN high_school_data
+	ON high_school_data."Public/Private/International" = 'INTERNATIONAL' AND (
+		LOWER(roster_master_data.High_School) = LOWER(high_school_data.Institution)
+	) AND (
+		LOWER(high_school_data.Country) = LOWER(roster_master_data.State_or_Country)
+	) AND (
+		LOWER(roster_master_data.Home_Town) = LOWER(high_school_data.City)
+	)
+)
