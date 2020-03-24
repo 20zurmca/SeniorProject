@@ -16,87 +16,84 @@
     <link rel="stylesheet" type="text/css" href="{% static 'map/css/stylesheet.css' %}">
 
     <title>Lafayette Soccer Project</title>
-    <style>
-      body {
-        background-image: repeating-linear-gradient(lightgreen,green, lightgreen);
-      }
-    </style>
   </head>
   <body>
-    <div class="header-button">
-      <button type="button" class="btn btn-primary bg-dark btn-sm"
-      aria-pressed="true" id="button3">
-        Admin Login
-      </button>
+    <div class="container-bgimage">
+      <div class="header-button">
+        <button type="button" class="btn btn-primary bg-dark btn-sm"
+        aria-pressed="true" id="button3">
+          Admin Login
+        </button>
 
-      <button type="button" class="btn btn-primary bg-dark btn-sm"
-      aria-pressed="true" id="button4">
-        About
-      </button>
-    </div>
-
-    <div class="header">
-      <h2 id="name">Soccer Hotspots</h2>
-      <p id="instruction">
-        Select filters to find players of interest. Then, click the submit button
-        to view their high schools.
-      </p>
-    </div>
-
-    <div class="fouc">
-      <div class="selectors">
-        <form method="POST" id="filterForm">
-          {% csrf_token %}
-          <select class="select-search" multiple name="collegeLeagues" id="collegeLeagueSelector">
-              <optgroup label="College League">
-                {% for league in leagues %}
-                  <option value="{{league}}" id="{{league}}">{{league}}</option>
-                {% endfor %}
-              </optgroup>
-          </select>
-
-          <select class="select-search" multiple name="colleges" id="collegeSelector">
-              <optgroup label="College">
-                 {% for college in colleges %}
-                    <option value="{{college}}" id="{{college}}">{{college}}</option>
-                 {% endfor %}
-              </optgroup>
-          </select>
-
-          <select class="select-search" multiple name="positions" id="positionSelector">
-              <optgroup label="Position">
-                  {% for position in positions %}
-                    {% if position and position.strip %} <!-- do not include empty positions -->
-                    <option>{{position}}</option>
-                    {% endif %}
-                  {% endfor %}
-              </optgroup>
-          </select>
-
-          <select class="select" multiple name="starterYears" id="starterSelector">
-              <option>0</option>
-              <option>1</option>
-              <option>2</option>
-              <option>3</option>
-              <option>4+</option>
-          </select>
-
-          <select class="select" multiple name="allConferenceYears" id="allConferenceSelector">
-              <option>0</option>
-              <option>1</option>
-              <option>2</option>
-              <option>3</option>
-              <option>4+</option>
-          </select>
-
-          <div class = "submit-button">
-            <input type="submit" class="btn btn-primary btn-lg" value="Submit" id="button1"></input>
-          </div>
-        </form>
+        <button type="button" class="btn btn-primary bg-dark btn-sm"
+        aria-pressed="true" id="button4">
+          About
+        </button>
       </div>
-    </div>
+
+      <div class="header">
+        <h2 id="name">Soccer Hotspots</h2>
+        <p id="instruction">
+          Select filters to find players of interest. Then, click the submit button
+          to view their high schools.
+        </p>
+      </div>
+
+      <div class="fouc">
+        <div class="selectors">
+          <form method="POST" id="filterForm">
+            {% csrf_token %}
+            <select class="select-search" multiple name="collegeLeagues" id="collegeLeagueSelector">
+                <optgroup label="College League">
+                  {% for league in leagues %}
+                    <option value="{{league}}" id="{{league}}">{{league}}</option>
+                  {% endfor %}
+                </optgroup>
+            </select>
+
+            <select class="select-search" multiple name="colleges" id="collegeSelector">
+                <optgroup label="College">
+                   {% for college in colleges %}
+                      <option value="{{college}}" id="{{college}}">{{college}}</option>
+                   {% endfor %}
+                </optgroup>
+            </select>
+
+            <select class="select-search" multiple name="positions" id="positionSelector">
+                <optgroup label="Position">
+                    {% for position in positions %}
+                      {% if position and position.strip %} <!-- do not include empty positions -->
+                      <option>{{position}}</option>
+                      {% endif %}
+                    {% endfor %}
+                </optgroup>
+            </select>
+
+            <select class="select" multiple name="starterYears" id="starterSelector">
+                <option>0</option>
+                <option>1</option>
+                <option>2</option>
+                <option>3</option>
+                <option>4+</option>
+            </select>
+
+            <select class="select" multiple name="allConferenceYears" id="allConferenceSelector">
+                <option>0</option>
+                <option>1</option>
+                <option>2</option>
+                <option>3</option>
+                <option>4+</option>
+            </select>
+
+            <div class = "submit-button">
+              <input type="submit" class="btn btn-primary btn-lg" value="Submit" id="button1"></input>
+            </div>
+          </form>
+        </div>
+      </div>
 
     <div id = "map"></div>
+    </div>
 
     <div class = "csv-button">
       <button type="button" class="btn btn-primary btn-small" aria-pressed="true" id="button2">
