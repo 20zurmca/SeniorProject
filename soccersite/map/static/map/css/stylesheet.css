@@ -25,12 +25,6 @@ a {
   padding-top: 50px;
 }
 
-.footer {
-  text-align: center;
-  color: white;
-  font-size: 80%;
-}
-
 .selectors{
   text-align: center;
 }
@@ -60,7 +54,7 @@ a {
 
 #instruction {
   font-size: 150%;
-  color: white
+  color: white;
 }
 
 #name{
