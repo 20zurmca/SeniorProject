@@ -1,5 +1,7 @@
 function submit() {
   location.href = "#map";
+  // toggle markers on
+  
 }
 
 
