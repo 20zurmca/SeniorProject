@@ -44,6 +44,18 @@ a {
   visibility: hidden;
 }
 
+.tail-select.no-classes.multiple{
+  width: 19%;
+}
+
+.label-inner{
+  font-size: calc(7px + .6vw);
+}
+
+.label-count{
+  font-size: 1vw;
+}
+
 #map{
   height: 700px;
   width: 79%;

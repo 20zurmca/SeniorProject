@@ -39,7 +39,6 @@ var leagueSelector = tail.select("#collegeLeagueSelector", {
   search: true,
   multiSelectAll: true,
   placeholder: "College League",
-  width: 330
 });
 
 var collegeSelector = tail.select("#collegeSelector", {
@@ -63,7 +62,6 @@ var starterSelector = tail.select("#starterSelector", {
 var allConferenceSelector = tail.select("#allConferenceSelector", {
   placeholder: "Number of Years All-Conference",
   multiSelectAll: true,
-  width: 330,
   multiShowCount: false,
 });
 
