@@ -49,12 +49,8 @@ a {
   width: 19%;
 }
 
-.label-inner{
-  font-size: calc(7px + .6vw);
-}
-
-.label-count{
-  font-size: 1vw;
+.select-label{
+  font-size: calc(5px + .70vw);
 }
 
 #map{
@@ -66,7 +62,7 @@ a {
 }
 
 #instruction {
-  font-size: 150%;
+  font-size: calc(15px + .5vw);
   color: white;
 }
 

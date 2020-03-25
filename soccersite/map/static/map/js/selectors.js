@@ -38,7 +38,7 @@ priorSelectedLeagues = {'PATRIOT': false, 'IVY': false, 'PAC-12': false,
 var leagueSelector = tail.select("#collegeLeagueSelector", {
   search: true,
   multiSelectAll: true,
-  placeholder: "College League",
+  placeholder: "College League"
 });
 
 var collegeSelector = tail.select("#collegeSelector", {
