@@ -1,5 +1,5 @@
 body {
-  background-color: #272525;
+  background-color: #21252b;
 }
 
 th{
@@ -15,8 +15,9 @@ a {
 }
 
 .container-bgimage{
-  background-image: url('../img/grass.jpg');
-  background-size: cover;
+  background-image: url('../img/grass.png');
+  background-size: contain;
+  background-repeat: no-repeat;
 }
 
 .header{
