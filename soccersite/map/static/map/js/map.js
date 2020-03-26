@@ -120,7 +120,7 @@ var markers = []; //to be filled based on querie
 
    controlUI.addEventListener('click', function() {
     var bounds = new google.maps.LatLngBounds();
-    map.fitBounds(bounds); 
+    map.fitBounds(bounds);
         for (var i = 0; i < markers.length; i++) {
           bounds.extend(markers[i].getPosition());
         }
@@ -156,6 +156,7 @@ function MarkerControl(controlDiv, map) {
   var controlText = document.createElement('div');
   controlText.style.color        = 'rgb(25,25,25)';
   controlText.style.fontFamily   = 'Roboto,Arial,sans-serif';
+  controlText.style.fontWeight   = "bold";
   controlText.style.fontSize     = '16px';
   controlText.style.lineHeight   = '39px';
   controlText.style.paddingLeft  = '5px';
@@ -168,22 +169,23 @@ function MarkerControl(controlDiv, map) {
   var marker1 = new google.maps.Marker({position: NJ, map: map, title: 'Indian Hills High School',  animation: google.maps.Animation.DROP});
   var PA = {lat: 40.6826, lng: -75.2527};
   var marker2 = new google.maps.Marker({position: PA, map: map, title: 'Easton High School',  animation: google.maps.Animation.DROP});
-  
+
   markers[0] = marker1;
   markers[1] = marker2;
-  
 
 
+  var firstTime = true;
   let clickCount = 0; //counter for toggling bold text
   controlUI.addEventListener('click', function() {
      clickCount++;
-     if(clickCount % 2) {
+     if(clickCount % 2 && !firstTime) {
        controlText.style.fontWeight = "bold";
        for (var i = 0; i < markers.length; i++) {
         markers[i].setMap(map);
        }
      } else {
        controlText.style.fontWeight = "normal";
+       firstTime=false;
        for (var i = 0; i < markers.length; i++) {
         markers[i].setMap(null);
        }
