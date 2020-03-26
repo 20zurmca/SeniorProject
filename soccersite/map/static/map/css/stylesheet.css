@@ -28,6 +28,11 @@ a {
 
 .selectors{
   text-align: center;
+  width: 100%;
+}
+
+.tail-select .select-label {
+  padding: 0 0 0 0;
 }
 
 .submit-button{
@@ -45,14 +50,6 @@ a {
   visibility: hidden;
 }
 
-.tail-select.no-classes.multiple{
-  width: 19%;
-}
-
-.select-label{
-  font-size: calc(5px + .70vw);
-}
-
 #map{
   height: 700px;
   width: 79%;
@@ -62,7 +59,7 @@ a {
 }
 
 #instruction {
-  font-size: calc(15px + .5vw);
+  font-size: 150%;
   color: white;
 }
 
