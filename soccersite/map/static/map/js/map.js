@@ -201,6 +201,15 @@ function initMap() {
       document.getElementById('map'), {
         center: center_,
         zoom: 2,
+        minZoom: 2,
+        restriction: {
+            latLngBounds: {
+                north: 85,
+                south: -85,
+                west: -180,
+                east: 180
+            }
+        },
         gestureHandling: 'greedy'
       });
 
