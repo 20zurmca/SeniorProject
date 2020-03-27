@@ -89,6 +89,11 @@ a {
   bottom: 200px;
 }
 
+#xingwenBioInfo{
+  position: relative;
+  bottom: 200px;
+}
+
 #badgeDiv{
   display: inline-block;
   position: relative;
