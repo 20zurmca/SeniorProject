@@ -11,6 +11,9 @@ def index(request):
     leagues   = RosterMasterData.objects.values_list('collegeLeague', flat=True).distinct().order_by('collegeLeague')
     positions = RosterMasterData.objects.values_list('position1', flat=True).distinct().order_by('position1')
 
+    #everything
+    players = RosterMasterData.objects.all()
+
     if(request.method == 'POST'):
         payload = json.loads(request.POST.get('json_data'))
         print(payload['collegeLeagues'])
@@ -18,7 +21,8 @@ def index(request):
     context = {'API_KEY': settings.GOOGLE_MAPS_API_KEY,
                'colleges': colleges,
                'leagues': leagues,
-               'positions': positions
+               'positions': positions,
+               'players': players
                }
 
     return render(request, 'map/index.html', context)

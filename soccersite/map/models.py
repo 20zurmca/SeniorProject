@@ -21,12 +21,15 @@ class RosterMasterData(models.Model):
     isStarter = models.CharField(max_length = 1, null = True)
     accolade = models.CharField(max_length = 20, null = True)
 
+    #this part is buggy, not working correctly with view. Thus, Xingwen commented it out
+    """
     def __str__(self):
         val = str(' '.join([rosterYear, playerNumber, firstName, lastName,
 		                    position1, height, weight, homeTown, stateOrCountry,
 							highSchool, alternativeSchool, college, collegeLeague,
 							bioLink, isStarter, accolade]))
         return val
+    """
 
 class HighSchool(models.Model):
     city            = models.CharField(max_length = 30)

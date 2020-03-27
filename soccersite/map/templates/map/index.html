@@ -120,20 +120,24 @@
           </tr>
         </thead>
         <tbody>
+
+          {% for player in players %}
           <tr>
-            <td>2017</td>
-            <td>Paul</td>
-            <td>Allen</td>
-            <td>Junior</td>
-            <td>Midfielder</td>
+            <td>{{player.rosterYear}}</td>
+            <td>{{player.firstName}}</td>
+            <td>{{player.lastName}}</td>
+            <td>{{player.year}}</td>
+            <td>{{player.position1}}</td>
             <td>3</td>
             <td>2</td>
-            <td>PATRIOT</td>
-            <td>Lafayette College</td>
-            <td>Warrington</td>
-            <td>PA</td>
-            <td>Central Bucks South</td>
+            <td>{{player.collegeLeague}}</td>
+            <td>{{player.college}}</td>
+            <td>{{player.homeTown}}</td>
+            <td>{{player.stateOrCountry}}</td>
+            <td>{{player.highSchool}}</td>
           </tr>
+          {% endfor %}
+
         </tbody>
       </table>
     </div>
