@@ -120,7 +120,7 @@
           </tr>
         </thead>
         <tbody>
-
+         <!--
           {% for player in players %}
           <tr>
             <td>{{player.rosterYear}}</td>
@@ -137,11 +137,12 @@
             <td>{{player.highSchool}}</td>
           </tr>
           {% endfor %}
+        -->
 
         </tbody>
       </table>
     </div>
-
+    <!-- <script>console.log({{players}})</script> -->
     <script src="{% static 'map/js/map.js' %}"></script>
     <script src="{% static 'map/js/homePageButtons.js' %}"></script>
     <script async defer src="https://maps.googleapis.com/maps/api/js?key={{API_KEY}}&callback=initMap"></script>

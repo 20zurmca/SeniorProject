@@ -2,6 +2,7 @@ from django.shortcuts import render
 from django.http import HttpResponse
 from django.conf import settings
 from .models import RosterMasterData
+from django.core import serializers
 import json
 
 # Create your views here.
@@ -12,7 +13,7 @@ def index(request):
     positions = RosterMasterData.objects.values_list('position1', flat=True).distinct().order_by('position1')
 
     #everything
-    players = RosterMasterData.objects.all()
+    players = serializers.serialize("json", RosterMasterData.objects.all());
 
     if(request.method == 'POST'):
         payload = json.loads(request.POST.get('json_data'))
