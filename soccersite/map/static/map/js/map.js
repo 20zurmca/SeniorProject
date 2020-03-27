@@ -2,6 +2,51 @@ var center_ = {lat: 32.560742, lng: -3.9314364} //somewhere near the Mediterrane
 
 var markers = []; //to be filled based on querie
 
+//test data for demo
+var data = [
+  {'schoolName' : 'Delbarton School',
+   'highSchoolLat': 40.78836,
+   'highSchoolLng': -74.531258,
+   'numPlayers': 2, //number of players for the query
+   'players': [
+      { 'rosterYear': 2008,
+      'playerNumber': 25,
+      'firstName': 'Donnie',
+      'lastName': 'Surdoval',
+      'year': 'Junior',
+      'position1': 'Defender',
+      'height': "6'0",
+      'weight': 170,
+      'homeTown': 'Sparta',
+      'stateOrCountry': 'NJ',
+      'highSchool': 'Delbarton School',
+      'college': 'Dartmouth College',
+      'collegeLeague': 'IVY',
+      'bioLink': "https://dartmouthsports.com/roster.aspx?rp_id=3259",
+      'isStarter': 'Y',
+      'accolade': 'Honorable Mention'
+      },
+      { 'rosterYear': 2013,
+      'playerNumber': 31,
+      'firstName': 'Greg',
+      'lastName': 'Seifert',
+      'year': 'Freshman',
+      'position1': 'Midfielder',
+      'height': "6'0",
+      'weight': 180,
+      'homeTown': 'Woodland Park',
+      'stateOrCountry': 'NJ',
+      'highSchool': 'Delbarton School',
+      'college': 'Princeton University',
+      'collegeLeague': 'IVY',
+      'bioLink': "https://dartmouthsports.com/roster.aspx?rp_id=3259",
+      'isStarter': 'N',
+      'accolade': null
+      },
+   ] //end player list
+  },
+] //end data list
+
 /**
  * The CenterControl adds a control to the map that recenters the map
  * This constructor takes the control DIV as an argument.
@@ -163,16 +208,6 @@ function MarkerControl(controlDiv, map) {
   controlText.innerHTML          = 'Toggle Markers';
   controlUI.appendChild(controlText);
 
-  // Test data for demo
-  var NJ = {lat: 41.0222, lng: -74.2316};
-  var marker1 = new google.maps.Marker({position: NJ, map: map, title: 'Indian Hills High School',  animation: google.maps.Animation.DROP});
-  var PA = {lat: 40.6826, lng: -75.2527};
-  var marker2 = new google.maps.Marker({position: PA, map: map, title: 'Easton High School',  animation: google.maps.Animation.DROP});
-
-  markers[0] = marker1;
-  markers[1] = marker2;
-
-
   var firstTime = true;
   let clickCount = 0; //counter for toggling bold text
   controlUI.addEventListener('click', function() {
@@ -232,4 +267,36 @@ function initMap() {
   map.controls[google.maps.ControlPosition.TOP_LEFT].push(heatMapControlDiv); //top left 3rd position
   map.controls[google.maps.ControlPosition.TOP_LEFT].push(markerControlDiv); //top right fourth position
   map.controls[google.maps.ControlPosition.TOP_LEFT].push(zoomControlDiv); //top left 5th position
+
+  for(var i = 0; i < data.length; i++){
+    var pos = {lat: data[i]['highSchoolLat'], lng: data[i]['highSchoolLng']};
+    var marker = new google.maps.Marker({
+      position: pos,
+      map: map,
+      title: data[i]['schoolName'],
+      label: {
+        text: String(data[i]['numPlayers']),
+        fontWeight: "bold",
+        optimized: false
+      },
+      animation: google.maps.Animation.DROP
+    });
+    markers[i] = marker;
+    var contentString = '<div id="content">'+
+         '<div id="siteNotice">'+
+         '</div>'+
+         '<h1 id="firstHeading" class="firstHeading">'+ data[i]['schoolName']+'</h1>'+
+         '<div id="bodyContent">'+
+         '<p></p>'+
+         '</div>'+
+         '</div>';
+
+     var infowindow = new google.maps.InfoWindow({
+       content: contentString
+     });
+
+    marker.addListener('click', function() {
+      infowindow.open(map, marker);
+    });
+  }
 }
