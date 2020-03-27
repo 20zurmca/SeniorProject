@@ -287,7 +287,12 @@ function initMap() {
          '</div>'+
          '<h1 id="firstHeading" class="firstHeading">'+ data[i]['schoolName']+'</h1>'+
          '<div id="bodyContent">'+
-         '<p></p>'+
+         '<p>'+
+
+         "Roster Year: " + data[i]['rosterYear'] +
+         ""
+
+         +'</p>'+
          '</div>'+
          '</div>';
 
