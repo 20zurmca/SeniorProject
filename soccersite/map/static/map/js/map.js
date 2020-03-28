@@ -305,6 +305,13 @@ function initMap() {
     });
   }
 
+  var markerCluster = new MarkerClusterer(map, markers,
+    {imagePath: 'https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/m'});
+    // {imagePath: 'map/img/ball'});
+
+
+    // '../img/linkedin_icon.PNG'
+
    heatmap = new google.maps.visualization.HeatmapLayer({
      data: heatMapData
    });
