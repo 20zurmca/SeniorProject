@@ -142,16 +142,21 @@
         </tbody>
       </table>
     </div>
-    <!-- <script>console.log({{players}})</script> -->
-    <script> var playerData = {{jsData|safe}}; </script>
+
+    {{jsData|json_script:"playerData"}}
+    <!-- jQuery library -->
+    <script src="https://code.jquery.com/jquery-3.4.1.js" integrity="sha256-WpOohJOqMqqyKL9FccASB9O0KwACQJpFTUBLTYOVvVU="
+    crossorigin="anonymous"></script>
+    <!-- underscore Library -->
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.9.1/underscore-min.js"></script>
+
+    <!-- get query data from the view and send to the template so map.js can see it -->
+    <script> var playerData = JSON.parse(document.getElementById('playerData').textContent); </script>
     <script src="{% static 'map/js/map.js' %}"></script>
     <script src="{% static 'map/js/homePageButtons.js' %}"></script>
     <script async defer
     src="https://maps.googleapis.com/maps/api/js?key={{API_KEY}}&libraries=visualization&callback=initMap"></script>
 
-   <!-- jQuery library -->
-   <script src="https://code.jquery.com/jquery-3.4.1.js" integrity="sha256-WpOohJOqMqqyKL9FccASB9O0KwACQJpFTUBLTYOVvVU="
-   crossorigin="anonymous"></script>
    <!-- Popper js -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
     integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"

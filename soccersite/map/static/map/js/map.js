@@ -1,9 +1,20 @@
 var center_ = {lat: 32.560742, lng: -3.9314364} //somewhere near the Mediterranean Sea
 
+var playerData = JSON.parse(playerData);
 var markers = []; //to be filled based on querie
 var heatMapData = []; //data for heatmap
 var heatMap;
-console.log(playerData);
+
+const groupBy = key => array =>
+  array.reduce((objectsByKeyValue, playerData) => {
+    const value = playerData['fields'][key];
+    objectsByKeyValue[value] = (objectsByKeyValue[value] || []).concat(playerData);
+    return objectsByKeyValue;
+  }, {});
+
+const groupByHighSchool = groupBy('highSchool');
+
+console.log(groupByHighSchool);
 
 //test data for demo
 var data = [
@@ -295,10 +306,7 @@ function initMap() {
          '<div id="bodyContent">'+
          '<p>'+
 
-         "Roster Year: " + data[i]['rosterYear'] +
-         ""
-
-         +'</p>'+
+         "Roster Year: " + String(data[i]['rosterYear']) +'</p>'+
          '</div>'+
          '</div>';
 
