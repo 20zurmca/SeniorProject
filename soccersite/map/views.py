@@ -13,8 +13,8 @@ def index(request):
     positions = RosterMasterData.objects.values_list('position1', flat=True).distinct().order_by('position1')
 
     #everything
-    #players = serializers.serialize("json", RosterMasterData.objects.all());
-    #print(players)
+    players =  RosterMasterData.objects.all()
+    jsData  =  serializers.serialize("json", players)
 
     if(request.method == 'POST'):
         payload = json.loads(request.POST.get('json_data'))
@@ -24,7 +24,8 @@ def index(request):
                'colleges': colleges,
                'leagues': leagues,
                'positions': positions,
-               #'players': players
+               'players': players,
+               'jsData' : jsData
                }
 
     return render(request, 'map/index.html', context)

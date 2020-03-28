@@ -3,6 +3,7 @@ var center_ = {lat: 32.560742, lng: -3.9314364} //somewhere near the Mediterrane
 var markers = []; //to be filled based on querie
 var heatMapData = []; //data for heatmap
 var heatMap;
+console.log(playerData);
 
 //test data for demo
 var data = [
