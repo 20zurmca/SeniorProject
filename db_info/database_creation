@@ -3,7 +3,7 @@
 
 --Create tables for roster data aggregation and copy in data
 
-CREATE TABLE roster_data ("roster_data.Roster_Year" INT, "roster_data.Player_Number" INT, "roster_data.First_Name" VARCHAR(50), "roster_data.Last_Name" VARCHAR(50),  "roster_data.Year" VARCHAR(10), "roster_data.Position1" VARCHAR(20), "roster_data.Position2" VARCHAR(20), "roster_data.Position3" VARCHAR(10), "roster_data.Height" VARCHAR(10), "roster_data.Weight" INT, "roster_data.Home_Town" VARCHAR(30), "roster_data.State_or_Country" VARCHAR(20), "roster_data.High_School" VARCHAR(100), "roster_data.Alternative_School" VARCHAR(50), "roster_data.College" VARCHAR(50), "roster_data.College_League" VARCHAR(50), "roster_data.Bio_Link" VARCHAR(100));
+CREATE TABLE roster_data ("roster_data.Roster_Year" INT, "roster_data.Player_Number" VARCHAR(10), "roster_data.First_Name" VARCHAR(50), "roster_data.Last_Name" VARCHAR(50),  "roster_data.Year" VARCHAR(10), "roster_data.Position1" VARCHAR(20), "roster_data.Position2" VARCHAR(20), "roster_data.Position3" VARCHAR(10), "roster_data.Height" VARCHAR(10), "roster_data.Weight" INT, "roster_data.Home_Town" VARCHAR(30), "roster_data.State_or_Country" VARCHAR(20), "roster_data.High_School" VARCHAR(100), "roster_data.Alternative_School" VARCHAR(50), "roster_data.College" VARCHAR(50), "roster_data.College_League" VARCHAR(50), "roster_data.Bio_Link" VARCHAR(100));
 
 \COPY roster_data FROM 'roster_data.csv' DELIMITER ',' CSV HEADER;
 
