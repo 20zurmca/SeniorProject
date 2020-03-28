@@ -1,5 +1,5 @@
 var center_ = {lat: 32.560742, lng: -3.9314364} //somewhere near the Mediterranean Sea
-
+var playerData = JSON.parse(playerData);
 var markers = []; //to be filled based on querie
 var heatMapData = []; //data for heatmap
 var heatMap;
