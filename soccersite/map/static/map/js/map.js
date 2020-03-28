@@ -1,6 +1,8 @@
 var center_ = {lat: 32.560742, lng: -3.9314364} //somewhere near the Mediterranean Sea
 
 var markers = []; //to be filled based on querie
+var heatMapData = []; //data for heatmap
+var heatMap;
 
 //test data for demo
 var data = [
@@ -122,11 +124,12 @@ var data = [
      clickCount++;
      if(clickCount % 2) {
        controlText.style.fontWeight = "bold";
+       heatmap.setMap(map);
      } else {
        controlText.style.fontWeight = "normal";
+       heatmap.setMap(null);
      }
-      //TODO: implement functionality
-    });
+  });
 }
 
 /**
@@ -224,8 +227,6 @@ function MarkerControl(controlDiv, map) {
         markers[i].setMap(null);
        }
      }
-
-     //TODO: implement functionality
    });
 }
 
@@ -268,6 +269,7 @@ function initMap() {
   map.controls[google.maps.ControlPosition.TOP_LEFT].push(markerControlDiv); //top right fourth position
   map.controls[google.maps.ControlPosition.TOP_LEFT].push(zoomControlDiv); //top left 5th position
 
+//building heatmap and marker data
   for(var i = 0; i < data.length; i++){
     var pos = {lat: data[i]['highSchoolLat'], lng: data[i]['highSchoolLng']};
     var marker = new google.maps.Marker({
@@ -281,7 +283,10 @@ function initMap() {
       },
       animation: google.maps.Animation.DROP
     });
-    markers[i] = marker;
+
+    heatMapData.push({location: new google.maps.LatLng(data[i]['highSchoolLat'], data[i]['highSchoolLng']), weight: data[i]['numPlayers']});
+
+    markers.push(marker);
     var contentString = '<div id="content">'+
          '<div id="siteNotice">'+
          '</div>'+
@@ -304,4 +309,8 @@ function initMap() {
       infowindow.open(map, marker);
     });
   }
-}
+
+   heatmap = new google.maps.visualization.HeatmapLayer({
+     data: heatMapData
+   });
+  }
