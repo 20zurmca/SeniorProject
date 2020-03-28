@@ -1,65 +1,49 @@
 var center_ = {lat: 32.560742, lng: -3.9314364} //somewhere near the Mediterranean Sea
 
-var playerData = JSON.parse(playerData);
 var markers = []; //to be filled based on querie
 var heatMapData = []; //data for heatmap
 var heatMap;
 
-const groupBy = key => array =>
-  array.reduce((objectsByKeyValue, playerData) => {
-    const value = playerData['fields'][key];
-    objectsByKeyValue[value] = (objectsByKeyValue[value] || []).concat(playerData);
-    return objectsByKeyValue;
-  }, {});
+var groupedHighSchoolData = {};
 
-const groupByHighSchool = groupBy('highSchool');
+//TODO: grouping the data by lat long instead!
+for(var i = 0; i < playerData.length; i++){
+  hs = playerData[i]['fields']['highSchool'];
+  player = {}
+  player['rosterYear'] = playerData[i]['fields']['rosterYear'];
+  player['playerNumber'] = playerData[i]['fields']['playerNumber'];
+  player['firstName'] = playerData[i]['fields']['firstName'];
+  player['lastName'] = playerData[i]['fields']['lastName'];
+  player['year'] = playerData[i]['fields']['year'];
+  player['position1'] = playerData[i]['fields']['position1'];
+  player['height'] = playerData[i]['fields']['height'];
+  player['weight'] = playerData[i]['fields']['weight'];
+  player['homeTown'] = playerData[i]['fields']['homeTown'];
+  player['stateOrCountry'] = playerData[i]['fields']['stateOrCountry'];
+  player['highSchool'] = playerData[i]['fields']['highSchool'];
+  player['alternativeSchool'] = playerData[i]['fields']['alternativeSchool'];
+  player['college'] = playerData[i]['fields']['college'];
+  player['collegeLeague'] = playerData[i]['fields']['collegeLeague'];
+  player['bioLink'] = playerData[i]['fields']['bioLink'];
+  player['isStarter'] = playerData[i]['fields']['isStarter'];
+  player['accolade'] = playerData[i]['fields']['accolade'];
 
-console.log(groupByHighSchool);
+  if(!groupedHighSchoolData[hs]){
+    groupedHighSchoolData[hs] = {};
+    groupedHighSchoolData[hs]['playerCount'] = 1;
+    groupedHighSchoolData[hs]['lat'] = playerData[i]['fields']['latitude'];
+    groupedHighSchoolData[hs]['lng'] = playerData[i]['fields']['longitude'];
+    groupedHighSchoolData[hs]['players'] = [];
+    players = groupedHighSchoolData[hs]['players'];
+    players.push(player)
+  } else {
+    groupedHighSchoolData[hs]['playerCount'] = groupedHighSchoolData[hs]['playerCount']  + 1;
+    players = groupedHighSchoolData[hs]['players'];
+    players.push(player);
+  }
+}
 
-//test data for demo
-var data = [
-  {'schoolName' : 'Delbarton School',
-   'highSchoolLat': 40.78836,
-   'highSchoolLng': -74.531258,
-   'numPlayers': 2, //number of players for the query
-   'players': [
-      { 'rosterYear': 2008,
-      'playerNumber': 25,
-      'firstName': 'Donnie',
-      'lastName': 'Surdoval',
-      'year': 'Junior',
-      'position1': 'Defender',
-      'height': "6'0",
-      'weight': 170,
-      'homeTown': 'Sparta',
-      'stateOrCountry': 'NJ',
-      'highSchool': 'Delbarton School',
-      'college': 'Dartmouth College',
-      'collegeLeague': 'IVY',
-      'bioLink': "https://dartmouthsports.com/roster.aspx?rp_id=3259",
-      'isStarter': 'Y',
-      'accolade': 'Honorable Mention'
-      },
-      { 'rosterYear': 2013,
-      'playerNumber': 31,
-      'firstName': 'Greg',
-      'lastName': 'Seifert',
-      'year': 'Freshman',
-      'position1': 'Midfielder',
-      'height': "6'0",
-      'weight': 180,
-      'homeTown': 'Woodland Park',
-      'stateOrCountry': 'NJ',
-      'highSchool': 'Delbarton School',
-      'college': 'Princeton University',
-      'collegeLeague': 'IVY',
-      'bioLink': "https://dartmouthsports.com/roster.aspx?rp_id=3259",
-      'isStarter': 'N',
-      'accolade': null
-      },
-   ] //end player list
-  },
-] //end data list
+console.log(groupedHighSchoolData);
 
 /**
  * The CenterControl adds a control to the map that recenters the map
@@ -282,31 +266,33 @@ function initMap() {
   map.controls[google.maps.ControlPosition.TOP_LEFT].push(zoomControlDiv); //top left 5th position
 
 //building heatmap and marker data
-  for(var i = 0; i < data.length; i++){
-    var pos = {lat: data[i]['highSchoolLat'], lng: data[i]['highSchoolLng']};
+  for(var highSchool in groupedHighSchoolData){
+    var pos = {lat: groupedHighSchoolData[highSchool]['lat'], lng: groupedHighSchoolData[highSchool]['lng']};
+    console.log(pos);
     var marker = new google.maps.Marker({
       position: pos,
       map: map,
-      title: data[i]['schoolName'],
+      title: groupedHighSchoolData[highSchool]['highSchool'], //high school name
       label: {
-        text: String(data[i]['numPlayers']),
-        fontWeight: "bold",
-        optimized: false
+        text: String(groupedHighSchoolData[highSchool]['playerCount']),
+        fontWeight: "bold"
       },
       animation: google.maps.Animation.DROP
     });
 
-    heatMapData.push({location: new google.maps.LatLng(data[i]['highSchoolLat'], data[i]['highSchoolLng']), weight: data[i]['numPlayers']});
-
+    heatMapData.push({location: new google.maps.LatLng(groupedHighSchoolData[highSchool]['lat'],
+                                                      groupedHighSchoolData['lng']), weight: groupedHighSchoolData[highSchool]['playerCount']});
     markers.push(marker);
+
+    //builiding info window
     var contentString = '<div id="content">'+
          '<div id="siteNotice">'+
          '</div>'+
-         '<h1 id="firstHeading" class="firstHeading">'+ data[i]['schoolName']+'</h1>'+
+         '<h1 id="firstHeading" class="firstHeading">'+ String(groupedHighSchoolData[highSchool]['highSchool'])+'</h1>'+
          '<div id="bodyContent">'+
          '<p>'+
 
-         "Roster Year: " + String(data[i]['rosterYear']) +'</p>'+
+         "Roster Year: " +'</p>'+
          '</div>'+
          '</div>';
 

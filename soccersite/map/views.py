@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from django.http import HttpResponse
 from django.conf import settings
-from .models import RosterMasterData
+from .models import RosterMasterData, MatchedHighSchool
 from django.core import serializers
 import json
 
@@ -13,7 +13,7 @@ def index(request):
     positions = RosterMasterData.objects.values_list('position1', flat=True).distinct().order_by('position1')
 
     #everything
-    players =  RosterMasterData.objects.all()
+    players =  MatchedHighSchool.objects.all()
     jsData  =  serializers.serialize("json", players)
 
     if(request.method == 'POST'):
