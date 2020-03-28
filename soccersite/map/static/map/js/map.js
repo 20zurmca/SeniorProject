@@ -44,7 +44,7 @@ var data = [
       'accolade': null
       },
    ] //end player list
-  },
+  }, 
 ] //end data list
 
 /**
@@ -282,6 +282,8 @@ function initMap() {
       animation: google.maps.Animation.DROP
     });
     markers[i] = marker;
+    var markerCluster = new MarkerClusterer(map, markers,
+      {imagePath: 'https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/m'});
     var contentString = '<div id="content">'+
          '<div id="siteNotice">'+
          '</div>'+
