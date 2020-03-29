@@ -1,8 +1,15 @@
 var center_ = {lat: 32.560742, lng: -3.9314364} //somewhere near the Mediterranean Sea
-var playerData = JSON.parse(playerData);
+
+if(playerData){
+  playerData = JSON.parse(playerData);
+} else {
+  console.log("playerData: " + playerData);
+}
+
 var markers = []; //to be filled based on querie
 var heatMapData = []; //data for heatmap
 var heatMap;
+var markerCluster;
 
 var groupedHighSchoolData = {};
 
@@ -43,7 +50,7 @@ for(var i = 0; i < playerData.length; i++){
   }
 }
 
-console.log(groupedHighSchoolData);
+console.log("grouped High School Data: " + groupedHighSchoolData);
 
 /**
  * The HeatMapControl adds a control to the map that toggles a heat map
@@ -174,17 +181,24 @@ function MarkerControl(controlDiv, map) {
   let clickCount = 0; //counter for toggling bold text
   controlUI.addEventListener('click', function() {
      clickCount++;
+
      if(clickCount % 2 && !firstTime) {
        controlText.style.fontWeight = "bold";
        for (var i = 0; i < markers.length; i++) {
         markers[i].setMap(map);
        }
+       markerCluster = new MarkerClusterer(map, markers,
+         {imagePath: 'https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/m'});
+
      } else {
        controlText.style.fontWeight = "normal";
        firstTime=false;
+
        for (var i = 0; i < markers.length; i++) {
         markers[i].setMap(null);
        }
+       markerCluster.setMap(null);
+       markerCluster.clearMarkers();
      }
    });
 }
@@ -264,7 +278,7 @@ function initMap() {
     markers.push(marker);
   }
 
-  var markerCluster = new MarkerClusterer(map, markers,
+  markerCluster = new MarkerClusterer(map, markers,
     {imagePath: 'https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/m'});
     // {imagePath: 'map/img/ball'});
 
