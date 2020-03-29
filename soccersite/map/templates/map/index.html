@@ -140,21 +140,17 @@
       </table>
     </div>
 
-    {{jsData|json_script:"playerData"}}
     <!-- jQuery library -->
     <script src="https://code.jquery.com/jquery-3.4.1.js" integrity="sha256-WpOohJOqMqqyKL9FccASB9O0KwACQJpFTUBLTYOVvVU="
     crossorigin="anonymous"></script>
-    <!-- underscore Library -->
-    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.9.1/underscore-min.js"></script>
 
-    <!-- get query data from the view and send to the template so map.js can see it -->
+    {{jsData|json_script:"playerData"}}
+      <!-- get query data from the view and send to the template so map.js can see it -->
     <script> var playerData = JSON.parse(document.getElementById('playerData').textContent); </script>
-    <script src="{% static 'map/js/map.js' %}"></script>
-    <script src="{% static 'map/js/homePageButtons.js' %}"></script>
     <script src="https://unpkg.com/@google/markerclustererplus@4.0.1/dist/markerclustererplus.min.js"></script>
     <script async defer
     src="https://maps.googleapis.com/maps/api/js?key={{API_KEY}}&libraries=visualization&callback=initMap"></script>
-
+    <script src="{% static 'map/js/map.js' %}"></script>
    <!-- Popper js -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
     integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
@@ -167,6 +163,7 @@
     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/tail.select@0.5.15/js/tail.select.min.js"></script>
     <script src="{% static 'map/js/selectors.js' %}"></script>
     <script src="{% static 'map/js/form.js' %}"></script>
+    <script src="{% static 'map/js/homePageButtons.js' %}"></script>
     <!-- eliminating flash of unstyled content (FOUC) -->
     <script>
       $(document).ready(function(){
