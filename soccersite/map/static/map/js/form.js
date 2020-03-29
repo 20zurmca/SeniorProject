@@ -19,21 +19,26 @@ function getCookie(c_name)
 
 $(document).on('submit', '#filterForm', function(e){
   e.preventDefault(); //prevent refresh
-  $.ajaxSetup({
-         headers: { "X-CSRFToken": getCookie("csrftoken") }
-     });
-  $.ajax({
-    type: 'POST',
-    url: '/',
-    data: { json_data: JSON.stringify({
-      collegeLeagues:$('#collegeLeagueSelector').val(),
-      colleges:$('#collegeSelector').val(),
-      positions:$('#positionSelector').val(),
-      starterYears:$('#starterSelector').val(),
-      allConferenceYears:$('#allConferenceYears').val(),
-    })},
-    success:function(){
-      console.log("Form submitted to server!")
-    }
-  });
+  selectedColleges = collegeSelector.options.find("selected", "any");
+  if(selectedColleges.length == 0){
+    alert("Select at least one college to query.");
+  } else {
+    $.ajaxSetup({
+           headers: { "X-CSRFToken": getCookie("csrftoken") }
+       });
+    $.ajax({
+      type: 'POST',
+      url: '/',
+      data: { json_data: JSON.stringify({
+        collegeLeagues:$('#collegeLeagueSelector').val(),
+        colleges:$('#collegeSelector').val(),
+        positions:$('#positionSelector').val(),
+        starterYears:$('#starterSelector').val(),
+        allConferenceYears:$('#allConferenceSelector').val()
+      })},
+      success:function(){
+        console.log("Form submitted to server!")
+      }
+    });
+  }
 });
