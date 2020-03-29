@@ -46,43 +46,6 @@ for(var i = 0; i < playerData.length; i++){
 console.log(groupedHighSchoolData);
 
 /**
- * The CenterControl adds a control to the map that recenters the map
- * This constructor takes the control DIV as an argument.
- * @constructor
- */
- function CenterControl(controlDiv, map) {
-
-   // Set CSS for the control border.
-   var controlUI = document.createElement('div');
-   controlUI.style.backgroundColor = '#fff';
-   controlUI.style.border          = '2px solid #fff';
-   controlUI.style.borderRadius    = '3px';
-   controlUI.style.boxShadow       = '0 2px 6px rgba(0,0,0,.3)';
-   controlUI.style.cursor          = 'pointer';
-   controlUI.style.marginBottom    = '22px';
-   controlUI.style.textAlign       = 'center';
-   controlUI.title                 = 'Click to recenter the map';
-   controlDiv.appendChild(controlUI);
-
-    // Set CSS for the control interior.
-   var controlText = document.createElement('div');
-   controlText.style.color        = 'rgb(25,25,25)';
-   controlText.style.fontFamily   = 'Roboto,Arial,sans-serif';
-   controlText.style.fontSize     = '16px';
-   controlText.style.lineHeight   = '38px';
-   controlText.style.paddingLeft  = '5px';
-   controlText.style.paddingRight = '5px';
-   controlText.innerHTML          = 'Center Map';
-   controlUI.appendChild(controlText);
-
-   // recenters the maps upon click.
-   controlUI.addEventListener('click', function() {
-      map.setCenter(center_);
-      map.setZoom(2);
-    });
-}
-
-/**
  * The HeatMapControl adds a control to the map that toggles a heat map
  * This constructor takes the control DIV as an argument.
  * @constructor
@@ -244,35 +207,31 @@ function initMap() {
         gestureHandling: 'greedy'
       });
 
-  var centerControlDiv  = document.createElement('div');
   var heatMapControlDiv = document.createElement('div');
   var markerControlDiv  = document.createElement('div');
   var zoomControlDiv  = document.createElement('div');
 
-  var centerControl     = new CenterControl(centerControlDiv, map);
   var heatMapControl    = new HeatMapControl(heatMapControlDiv, map);
   var markerControl     = new MarkerControl(markerControlDiv, map);
   var zoomControl     = new ZoomControl(zoomControlDiv, map);
 
-  centerControlDiv.index  = 1; //index will determine where the control is put in the control block array
   heatMapControlDiv.index = 3;
   markerControlDiv.index  = 4;
   zoomControlDiv.index  = 5;
 
-
-  map.controls[google.maps.ControlPosition.BOTTOM_CENTER].push(centerControlDiv); //center of screen
   map.controls[google.maps.ControlPosition.TOP_LEFT].push(heatMapControlDiv); //top left 3rd position
   map.controls[google.maps.ControlPosition.TOP_LEFT].push(markerControlDiv); //top right fourth position
   map.controls[google.maps.ControlPosition.TOP_LEFT].push(zoomControlDiv); //top left 5th position
 
 //building heatmap and marker data
   for(var highSchool in groupedHighSchoolData){
-    var pos = {lat: groupedHighSchoolData[highSchool]['lat'], lng: groupedHighSchoolData[highSchool]['lng']};
-    console.log(pos);
+    latitude = groupedHighSchoolData[highSchool]['lat'];
+    longitude = groupedHighSchoolData[highSchool]['lng']
+    var pos = {lat: latitude, lng: longitude};
     var marker = new google.maps.Marker({
       position: pos,
       map: map,
-      title: groupedHighSchoolData[highSchool]['highSchool'], //high school name
+      title: highSchool, //high school name
       label: {
         text: String(groupedHighSchoolData[highSchool]['playerCount']),
         fontWeight: "bold"
@@ -280,15 +239,13 @@ function initMap() {
       animation: google.maps.Animation.DROP
     });
 
-    heatMapData.push({location: new google.maps.LatLng(groupedHighSchoolData[highSchool]['lat'],
-                                                      groupedHighSchoolData['lng']), weight: groupedHighSchoolData[highSchool]['playerCount']});
-    markers.push(marker);
+    heatMapData.push({location: new google.maps.LatLng(latitude, longitude), weight: groupedHighSchoolData[highSchool]['playerCount']});
 
     //builiding info window
     var contentString = '<div id="content">'+
          '<div id="siteNotice">'+
          '</div>'+
-         '<h1 id="firstHeading" class="firstHeading">'+ String(groupedHighSchoolData[highSchool]['highSchool'])+'</h1>'+
+         '<h1 id="firstHeading" class="firstHeading">'+ highSchool +'</h1>'+
          '<div id="bodyContent">'+
          '<p>'+
 
@@ -303,6 +260,8 @@ function initMap() {
     marker.addListener('click', function() {
       infowindow.open(map, marker);
     });
+
+    markers.push(marker);
   }
 
    heatmap = new google.maps.visualization.HeatmapLayer({
