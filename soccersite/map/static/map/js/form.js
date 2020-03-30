@@ -19,7 +19,7 @@ function getCookie(c_name)
 
 $(document).on('submit', '#filterForm', function(e){
   e.preventDefault(); //prevent refresh
-  selectedColleges = collegeSelector.options.find("selected", "any");
+  selectedColleges = collegeSelector.options.find("selected", "any"); //from selectors.js
   if(selectedColleges.length == 0){
     alert("Select at least one college to query.");
   } else {

@@ -55,11 +55,11 @@
       Our visualization is made up of two components: a heat map and markers.
       Both components can be toggled by the user. Each marker represents a high
       school that had at least one player that met the query criteria. Each marker
-      has a label for the number of players who attended that high school. When
-      the map is zoomed out, markers will cluster. The label on the cluster represents
-      the number of markers in a region, and therefore the number of high schools in a region. The
-      heatmap is a good method for visualizing the concentration of players. The more players
-      a high school has per query, the more red the area.
+      has a label for the number of players who attended that high school under the
+      given the criteria. When the map is zoomed out, markers will cluster. The label
+      on the cluster represents the number of markers in a region, and therefore the number
+      of high schools in a region. The heatmap is a good method for visualizing the concentration
+      of players. The more players a high school has per query, the more red the area.
     </p>
 
     <div class="header">
@@ -73,6 +73,7 @@
         <h4 class="bio-name">
           Dennis Bohn
         </h4>
+        <img class = "profile-img" src = "{% static 'map/img/stick_figure.jpg' %}" width = 200 height = 200>
       </div>
 
       <div class = "bio-section-2">
@@ -113,14 +114,51 @@
         </p>
       </div>
 
-      <div class = "bio_section-3">
+      <div class = "bio_section-1">
+        <h4 class="bio-name">
+          Joseph Teddick
+          <div id="badgeDiv">
+            <button class = "linkedin" id="josephProfile"></button>
+          </div>
+        </h4>
+        <img class = "profile-img" src = "{% static 'map/img/joseph_profile_pic.jpg' %}" width = 200 height = 200>
+      </div>
+
+      <div class = "bio-section-2">
+        <p class = "bio-info" id="josephBioInfo">
+          Joseph is a graduate of Lafayette College (class of 2020) and holds
+          a B.S. in Computer Science and a minor in Mathematics. He is from Washington, NJ.
+         After graduation, he will be working as a software engineer at Johnson & Johnson in Raritan, NJ.
+        </p>
+      </div>
+
+      <div class = "bio_section-1">
+        <h4 class="bio-name">
+          Matt Gerber
+          <div id="badgeDiv">
+            <button class = "linkedin" id="mattProfile"></button>
+          </div>
+        </h4>
+        <img class = "profile-img" src = "{% static 'map/img/matt_profile_pic.jpg' %}" width = 200 height = 200>
+      </div>
+
+      <div class = "bio-section-2">
+        <p class = "bio-info" id="mattBioInfo">
+          Matt is a Computer Science graduate of Lafayette College with an interest in Tech Writing.
+          He is from Franklin Lakes, New Jersey. He has been a part of many on campus activities
+          and organizations, including serving as the general manager for WJRH, the college’s own radio station,
+          as well as working for the Lafayette College Writing Program as a Writing Associate.
+        </p>
+      </div>
+
+      <div class = "bio_section-1">
         <h4 class="bio-name">
           Xingwen Wei
         </h4>
         <img class = "profile-img" src = "{% static 'map/img/xingwen_profile_pic.jpg' %}" width = 200 height = 200>
       </div>
 
-      <div class = "bio-section-4">
+      <div class = "bio-section-2">
         <p class = "bio-info" id="xingwenBioInfo">
           Xingwen is a graduate of Lafayette College (class of 2020) and holds
           a B.S. in Computer Science. He does not know where he will go for his graduate study at this moment.

@@ -1,7 +1,8 @@
 function submit() {
-  location.href = "#map";
-  // toggle markers on
-  
+  selectedColleges = collegeSelector.options.find("selected", "any"); //from selectors.js
+  if(selectedColleges.length > 0){
+      location.href = "#map";
+    }
 }
 
 

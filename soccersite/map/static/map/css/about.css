@@ -1,5 +1,5 @@
 body {
-  background-color: #010133;
+  background-color: #21252b;
 }
 
 a {
@@ -90,6 +90,21 @@ a {
 }
 
 #xingwenBioInfo{
+  position: relative;
+  bottom: 200px;
+}
+
+#josephBioInfo{
+  position: relative;
+  bottom: 200px;
+}
+
+#mattBioInfo{
+  position: relative;
+  bottom: 200px;
+}
+
+#bohnBioInfo{
   position: relative;
   bottom: 200px;
 }

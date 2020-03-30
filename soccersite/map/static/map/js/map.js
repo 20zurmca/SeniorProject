@@ -1,10 +1,6 @@
 var center_ = {lat: 32.560742, lng: -3.9314364} //somewhere near the Mediterranean Sea
 
-if(playerData){
-  playerData = JSON.parse(playerData);
-} else {
-  console.log("playerData: " + playerData);
-}
+playerData = JSON.parse(playerData);
 
 var markers = []; //to be filled based on querie
 var heatMapData = []; //data for heatmap
@@ -118,6 +114,7 @@ console.log("grouped High School Data: " + groupedHighSchoolData);
    controlUI.style.display         = 'inline-block';
    controlUI.style.height          = '39px';
    controlUI.title                 = 'Click to zoom to map pins';
+   controlUI.id                    = 'zoomControl';
    controlDiv.appendChild(controlUI);
 
     // Set CSS for the control interior.
@@ -129,6 +126,7 @@ console.log("grouped High School Data: " + groupedHighSchoolData);
    controlText.style.paddingLeft  = '5px';
    controlText.style.paddingRight = '5px';
    controlText.innerHTML          = 'Auto Zoom';
+   controlText.id                 = 'zoomControlText';
    controlUI.appendChild(controlText);
 
    controlUI.addEventListener('click', function() {
@@ -163,18 +161,20 @@ function MarkerControl(controlDiv, map) {
   controlUI.style.display         = 'inline-block';
   controlUI.style.height          = '39px';
   controlUI.title                 = 'Click to toggle map pins';
+  controlUI.id                    = 'markerControl';
   controlDiv.appendChild(controlUI);
 
    // Set CSS for the control interior.
   var controlText = document.createElement('div');
   controlText.style.color        = 'rgb(25,25,25)';
   controlText.style.fontFamily   = 'Roboto,Arial,sans-serif';
-  controlText.style.fontWeight   = "bold";
   controlText.style.fontSize     = '16px';
   controlText.style.lineHeight   = '39px';
   controlText.style.paddingLeft  = '5px';
   controlText.style.paddingRight = '5px';
   controlText.innerHTML          = 'Toggle Markers';
+  controlText.style.fontWeight   = "bold";
+  controlText.id                 = 'markerControlText';
   controlUI.appendChild(controlText);
 
   var firstTime = true;

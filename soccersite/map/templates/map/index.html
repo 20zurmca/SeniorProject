@@ -148,9 +148,9 @@
       <!-- get query data from the view and send to the template so map.js can see it -->
     <script> var playerData = JSON.parse(document.getElementById('playerData').textContent); </script>
     <script src="https://unpkg.com/@google/markerclustererplus@4.0.1/dist/markerclustererplus.min.js"></script>
+    <script src="{% static 'map/js/map.js' %}"></script>
     <script async defer
     src="https://maps.googleapis.com/maps/api/js?key={{API_KEY}}&libraries=visualization&callback=initMap"></script>
-    <script src="{% static 'map/js/map.js' %}"></script>
    <!-- Popper js -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
     integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
