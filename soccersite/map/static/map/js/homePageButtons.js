@@ -2,6 +2,10 @@ function submit() {
   selectedColleges = collegeSelector.options.find("selected", "any"); //from selectors.js
   if(selectedColleges.length > 0){
       location.href = "#map";
+      document.getElementById('markerControl').style.fontWeight   = "bold";
+      document.getElementById('markerControl').disabled = false;
+      document.getElementById('zoomControl').disabled = false;
+      document.getElementById('heatMapControl').disabled = false;
     }
 }
 

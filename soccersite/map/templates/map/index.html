@@ -144,9 +144,6 @@
     <script src="https://code.jquery.com/jquery-3.4.1.js" integrity="sha256-WpOohJOqMqqyKL9FccASB9O0KwACQJpFTUBLTYOVvVU="
     crossorigin="anonymous"></script>
 
-    {{jsData|json_script:"playerData"}}
-      <!-- get query data from the view and send to the template so map.js can see it -->
-    <script> var playerData = JSON.parse(document.getElementById('playerData').textContent); </script>
     <script src="https://unpkg.com/@google/markerclustererplus@4.0.1/dist/markerclustererplus.min.js"></script>
     <script src="{% static 'map/js/map.js' %}"></script>
     <script async defer

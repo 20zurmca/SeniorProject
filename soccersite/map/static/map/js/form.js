@@ -28,7 +28,7 @@ $(document).on('submit', '#filterForm', function(e){
        });
     $.ajax({
       type: 'POST',
-      url: '/',
+      url: window.location,
       data: { json_data: JSON.stringify({
         collegeLeagues:$('#collegeLeagueSelector').val(),
         colleges:$('#collegeSelector').val(),
@@ -36,8 +36,11 @@ $(document).on('submit', '#filterForm', function(e){
         starterYears:$('#starterSelector').val(),
         allConferenceYears:$('#allConferenceSelector').val()
       })},
-      success:function(){
-        console.log("Form submitted to server!")
+      success:function(response){
+        loadData(map, response['players']); //loading data in map.js
+      },
+      error:function(){
+        console.log("Error with form submission");
       }
     });
   }

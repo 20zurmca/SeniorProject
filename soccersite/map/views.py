@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from django.http import HttpResponse
+from django.http import HttpResponse, JsonResponse
 from django.conf import settings
 from django.db.models import Count
 from .models import RosterMasterData, MatchedHighSchool
@@ -18,24 +18,21 @@ def index(request):
                'leagues': leagues,
                'positions': positions,
                }
-    players = MatchedHighSchool.objects.all();
-    jsData  = serializers.serialize("json", players);
-    # if(request.method == 'POST'): #form.js will check for at least one college selected before submission
-    #     payload = json.loads(request.POST.get('json_data'))
-    #     colleges = payload['colleges'] #list of colleges user specified from drop down
-    #     positions = payload['positions'] #list of positions user specified from positions drop down
-    #     starterYears = payload['starterYears'] # TODO: implement queries for this
-    #     allConferenceYears = payload['allConferenceYears'] # TODO: implement queries for this
-    #     players =  MatchedHighSchool.objects.filter(college__in=colleges) \
-    #                                             .annotate(num_colleges=Count('college')) \
-    #                                             .filter(num_colleges=len(colleges))
-    #
-    #
-    #     jsData  =  serializers.serialize("json", players)
-    context['players'] = players;
-    context['jsData'] = jsData;
 
-    print(context)
+    if(request.method == 'POST'): #form.js will check for at least one college selected before submission
+        payload = json.loads(request.POST.get('json_data'))
+        c = payload['colleges'] #list of colleges user specified from drop down
+        pos = payload['positions'] #list of positions user specified from positions drop down
+        sy = payload['starterYears'] # TODO: implement queries for this
+        acy = payload['allConferenceYears'] # TODO: implement queries for this
+        players =  MatchedHighSchool.objects.filter(college__in=c) \
+                                                 .annotate(num_colleges=Count('college')) \
+                                                 .filter(num_colleges=len(c)).values()
+
+
+        data  =  {'players': list(players)}
+        return JsonResponse(data)
+
     return render(request, 'map/index.html', context)
 
 def about(request):
