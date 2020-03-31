@@ -102,12 +102,8 @@ function loadData(map, playerData){
 
      markerCluster = new MarkerClusterer(map, markers,
       {imagePath: 'https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/m'});
-      // {imagePath: 'map/img/ball'});
 
-
-      // '../img/linkedin_icon.PNG'
-
-     heatmap = new google.maps.visualization.HeatmapLayer({
+     heatMap = new google.maps.visualization.HeatmapLayer({
        data: heatMapData
      });
      firstLoad = false;
@@ -155,10 +151,10 @@ function loadData(map, playerData){
        clickCount++;
        if(clickCount % 2) {
          controlText.style.fontWeight = "bold";
-         heatmap.setMap(map);
+         heatMap.setMap(map);
        } else {
          controlText.style.fontWeight = "normal";
-         heatmap.setMap(null);
+         heatMap.setMap(null);
        }
      }
   });
