@@ -38,6 +38,24 @@ $(document).on('submit', '#filterForm', function(e){
       })},
       success:function(response){
         loadData(map, response['players']); //loading data in map.js
+        var player_data = '';
+        $.each(response['players'], function(key, value){
+          player_data += '<tr>';
+          player_data += '<td>' + value.rosterYear     + '</td>';
+          player_data += '<td>' + value.firstName      + '</td>';
+          player_data += '<td>' + value.lastName       + '</td>';
+          player_data += '<td>' + value.year           + '</td>';
+          player_data += '<td>' + value.position1      + '</td>';
+          player_data += '<td>' + "will implement"     + '</td>';
+          player_data += '<td>' + "will implement"     + '</td>';
+          player_data += '<td>' + value.collegeLeague  + '</td>';
+          player_data += '<td>' + value.college        + '</td>';
+          player_data += '<td>' + value.homeTown       + '</td>';
+          player_data += '<td>' + value.stateOrCountry + '</td>';
+          player_data += '<td>' + value.highSchool     + '</td>';
+          player_data += '</tr>';
+        });
+        document.getElementById('resultTableBody').innerHTML = player_data;
       },
       error:function(){
         console.log("Error with form submission");

@@ -4,6 +4,7 @@ body {
 
 th{
   text-align: center;
+  cursor: pointer;
 }
 
 td {
