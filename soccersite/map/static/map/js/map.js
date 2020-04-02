@@ -107,6 +107,7 @@ function loadData(map, playerData){
        data: heatMapData
      });
      firstLoad = false;
+    document.getElementById('zoomControl').click();
 }
 
 
