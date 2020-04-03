@@ -64,7 +64,7 @@ function loadData(map, playerData){
       latitude = groupedLatLngData[highSchool]['lat'];
       longitude = groupedLatLngData[highSchool]['lng']
       var pos = {lat: latitude, lng: longitude};
-      var marker = new google.maps.Marker({
+      let marker = new google.maps.Marker({
         position: pos,
         map: map,
         title: groupedLatLngData[highSchool]['hs'], //high school name
@@ -72,6 +72,7 @@ function loadData(map, playerData){
           text: String(groupedLatLngData[highSchool]['playerCount']),
           fontWeight: "bold"
         },
+        number: groupedLatLngData[highSchool]['playerCount'],
         animation: google.maps.Animation.DROP
       });
 
@@ -100,8 +101,42 @@ function loadData(map, playerData){
       markers.push(marker);
     }
 
-     markerCluster = new MarkerClusterer(map, markers,
-      {imagePath: 'https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/m'});
+
+    var mcOptions = {
+      //styles: clusterStyles, 
+      gridSize: 45,
+      minimumClusterSize: 2,
+      imagePath: 'https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/m'
+    };
+    
+    //  markerCluster = new MarkerClusterer(map, markers,
+    //   {imagePath: 'https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/m'});
+
+    markerCluster = new MarkerClusterer(map, markers, mcOptions);
+
+
+    markerCluster.setCalculator(function(markers, numStyles){
+      var index = 0;
+      var count = 0;
+      for (var i = 0; i < markers.length; i++) {
+        if (markers[i].number) {
+          count += markers[i].number;
+        } else {
+          count++;
+        }
+      }
+      var dv = markers.length;
+      while (dv !== 0) {
+        dv = parseInt(dv / 10, 10);
+        index++;
+      }
+  
+      index = Math.min(index, numStyles);
+      return {
+        text: count,
+        index: index
+      };
+    });
 
      heatMap = new google.maps.visualization.HeatmapLayer({
        data: heatMapData
