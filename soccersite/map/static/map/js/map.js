@@ -6,6 +6,7 @@ var heatMap;
 var markerCluster;
 var firstLoad = true;
 var groupedLatLngData = {};
+var changeTableOnZoom = false;
 
 function loadData(map, playerData){
   for (var i = 0; i < markers.length; i++) {
@@ -116,6 +117,7 @@ function loadData(map, playerData){
           player_data += '</tr>';
         }
         table.innerHTML = player_data;
+        changeTableOnZoom = true;
       });
 
       markers.push(marker);
@@ -229,26 +231,28 @@ function loadData(map, playerData){
       let table = document.getElementById('resultTableBody');
       let player_data = '';
       //table changes to marker-specific data on click
-      for(var hs in groupedLatLngData){
-        for(let i = 0; i < groupedLatLngData[hs]['players'].length; i++){
-          player_data += '<tr>';
-          player_data += '<td>' + groupedLatLngData[hs]['players'][i]['rosterYear']    + '</td>';
-          player_data += '<td>' + groupedLatLngData[hs]['players'][i]['firstName']     + '</td>';
-          player_data += '<td>' + groupedLatLngData[hs]['players'][i]['lastName']      + '</td>';
-          player_data += '<td>' + groupedLatLngData[hs]['players'][i]['year']          + '</td>';
-          player_data += '<td>' + groupedLatLngData[hs]['players'][i]['year']          + '</td>';
-          player_data += '<td>' + "will implement"     + '</td>';
-          player_data += '<td>' + "will implement"     + '</td>';
-          player_data += '<td>' + groupedLatLngData[hs]['players'][i]['collegeLeague']  + '</td>';
-          player_data += '<td>' + groupedLatLngData[hs]['players'][i]['college']        + '</td>';
-          player_data += '<td>' + groupedLatLngData[hs]['players'][i]['homeTown']       + '</td>';
-          player_data += '<td>' + groupedLatLngData[hs]['players'][i]['stateOrCountry'] + '</td>';
-          player_data += '<td>' + groupedLatLngData[hs]['players'][i]['highSchool']     + '</td>';
-          player_data += '</tr>';
+      if(changeTableOnZoom){
+        for(var hs in groupedLatLngData){
+          for(let i = 0; i < groupedLatLngData[hs]['players'].length; i++){
+            player_data += '<tr>';
+            player_data += '<td>' + groupedLatLngData[hs]['players'][i]['rosterYear']    + '</td>';
+            player_data += '<td>' + groupedLatLngData[hs]['players'][i]['firstName']     + '</td>';
+            player_data += '<td>' + groupedLatLngData[hs]['players'][i]['lastName']      + '</td>';
+            player_data += '<td>' + groupedLatLngData[hs]['players'][i]['year']          + '</td>';
+            player_data += '<td>' + groupedLatLngData[hs]['players'][i]['year']          + '</td>';
+            player_data += '<td>' + "will implement"     + '</td>';
+            player_data += '<td>' + "will implement"     + '</td>';
+            player_data += '<td>' + groupedLatLngData[hs]['players'][i]['collegeLeague']  + '</td>';
+            player_data += '<td>' + groupedLatLngData[hs]['players'][i]['college']        + '</td>';
+            player_data += '<td>' + groupedLatLngData[hs]['players'][i]['homeTown']       + '</td>';
+            player_data += '<td>' + groupedLatLngData[hs]['players'][i]['stateOrCountry'] + '</td>';
+            player_data += '<td>' + groupedLatLngData[hs]['players'][i]['highSchool']     + '</td>';
+            player_data += '</tr>';
+          }
         }
+        table.innerHTML = player_data;
+        changeTableOnZoom = false;
       }
-      table.innerHTML = player_data;
-
     }
   });
 }
