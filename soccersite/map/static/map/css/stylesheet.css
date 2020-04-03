@@ -4,10 +4,15 @@ body {
 
 th{
   text-align: center;
+  cursor: pointer;
 }
 
 td {
   text-align: center;
+}
+
+tr{
+  cursor: pointer;
 }
 
 a {
@@ -47,6 +52,10 @@ a {
 .header-button{
   text-align: right;
   margin-top: 5px;
+}
+
+.table-tools{
+  display: flex;
 }
 
 .fouc{
@@ -94,6 +103,12 @@ a {
 #button4{
   border:none;
   margin-right: 20px;
+}
+
+#searchBar{
+  width: 20%;
+  margin-left: 10px;
+  margin-top:  24px;
 }
 
 #resultTable{

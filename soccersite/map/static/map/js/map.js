@@ -1,52 +1,174 @@
 var center_ = {lat: 32.560742, lng: -3.9314364} //somewhere near the Mediterranean Sea
-
-playerData = JSON.parse(playerData);
-
-var markers = []; //to be filled based on querie
-var heatMapData = []; //data for heatmap
+var map;
+var markers = []
+var heatMapData = []
 var heatMap;
 var markerCluster;
+var firstLoad = true;
+var groupedLatLngData = {};
+var changeTableOnZoom = false;
 
-var groupedHighSchoolData = {};
-
-//TODO: grouping the data by lat long instead!
-for(var i = 0; i < playerData.length; i++){
-  hs = playerData[i]['fields']['highSchool'];
-  player = {}
-  player['rosterYear'] = playerData[i]['fields']['rosterYear'];
-  player['playerNumber'] = playerData[i]['fields']['playerNumber'];
-  player['firstName'] = playerData[i]['fields']['firstName'];
-  player['lastName'] = playerData[i]['fields']['lastName'];
-  player['year'] = playerData[i]['fields']['year'];
-  player['position1'] = playerData[i]['fields']['position1'];
-  player['height'] = playerData[i]['fields']['height'];
-  player['weight'] = playerData[i]['fields']['weight'];
-  player['homeTown'] = playerData[i]['fields']['homeTown'];
-  player['stateOrCountry'] = playerData[i]['fields']['stateOrCountry'];
-  player['highSchool'] = playerData[i]['fields']['highSchool'];
-  player['alternativeSchool'] = playerData[i]['fields']['alternativeSchool'];
-  player['college'] = playerData[i]['fields']['college'];
-  player['collegeLeague'] = playerData[i]['fields']['collegeLeague'];
-  player['bioLink'] = playerData[i]['fields']['bioLink'];
-  player['isStarter'] = playerData[i]['fields']['isStarter'];
-  player['accolade'] = playerData[i]['fields']['accolade'];
-
-  if(!groupedHighSchoolData[hs]){
-    groupedHighSchoolData[hs] = {};
-    groupedHighSchoolData[hs]['playerCount'] = 1;
-    groupedHighSchoolData[hs]['lat'] = playerData[i]['fields']['latitude'];
-    groupedHighSchoolData[hs]['lng'] = playerData[i]['fields']['longitude'];
-    groupedHighSchoolData[hs]['players'] = [];
-    players = groupedHighSchoolData[hs]['players'];
-    players.push(player)
-  } else {
-    groupedHighSchoolData[hs]['playerCount'] = groupedHighSchoolData[hs]['playerCount']  + 1;
-    players = groupedHighSchoolData[hs]['players'];
-    players.push(player);
+function loadData(map, playerData){
+  for (var i = 0; i < markers.length; i++) {
+    console.log("setting marker reference to null");
+    markers[i].setMap(null);
   }
+  markers = []; //to be filled based on query
+  heatMapData = []; //data for heatmap
+  if(!firstLoad){
+    markerCluster.setMap(null);
+    markerCluster.clearMarkers();
+  }
+
+
+   groupedLatLngData = {};
+  //grouping response data by lat and lng
+  for(var i = 0; i < playerData.length; i++){
+    lat = playerData[i]['latitude'];
+    lng = playerData[i]['longitude'];
+    key = String(lat) + lng
+    player = {}
+    player['rosterYear'] = playerData[i]['rosterYear'];
+    player['playerNumber'] = playerData[i]['playerNumber'];
+    player['firstName'] = playerData[i]['firstName'];
+    player['lastName'] = playerData[i]['lastName'];
+    player['year'] = playerData[i]['year'];
+    player['position1'] = playerData[i]['position1'];
+    player['height'] = playerData[i]['height'];
+    player['weight'] = playerData[i]['weight'];
+    player['homeTown'] = playerData[i]['homeTown'];
+    player['stateOrCountry'] = playerData[i]['stateOrCountry'];
+    player['highSchool'] = playerData[i]['highSchool'];
+    player['alternativeSchool'] = playerData[i]['alternativeSchool'];
+    player['college'] = playerData[i]['college'];
+    player['collegeLeague'] = playerData[i]['collegeLeague'];
+    player['bioLink'] = playerData[i]['bioLink'];
+    player['isStarter'] = playerData[i]['isStarter'];
+    player['accolade'] = playerData[i]['accolade'];
+
+    if(!groupedLatLngData[key]){ //new key found (new lat lng pair)
+      groupedLatLngData[key] = {};
+      groupedLatLngData[key]['playerCount'] = 1;
+      groupedLatLngData[key]['lat'] = playerData[i]['latitude'];
+      groupedLatLngData[key]['lng'] = playerData[i]['longitude'];
+      groupedLatLngData[key]['hs']  = playerData[i]['highSchool']
+      groupedLatLngData[key]['players'] = [];
+      players = groupedLatLngData[key]['players'];
+      players.push(player)
+    } else {
+      groupedLatLngData[key]['playerCount'] = groupedLatLngData[key]['playerCount']  + 1;
+      players = groupedLatLngData[key]['players'];
+      players.push(player);
+    }
+  }
+  //building heatmap and marker data
+    for(var highSchool in groupedLatLngData){
+      latitude = groupedLatLngData[highSchool]['lat'];
+      longitude = groupedLatLngData[highSchool]['lng']
+      var pos = {lat: latitude, lng: longitude};
+      let marker = new google.maps.Marker({
+        position: pos,
+        map: map,
+        title: groupedLatLngData[highSchool]['hs'], //high school name
+        label: {
+          text: String(groupedLatLngData[highSchool]['playerCount']),
+          fontWeight: "bold"
+        },
+        number: groupedLatLngData[highSchool]['playerCount'],
+        animation: google.maps.Animation.DROP
+      });
+
+      heatMapData.push({location: new google.maps.LatLng(latitude, longitude), weight: groupedLatLngData[highSchool]['playerCount']});
+
+      //builiding info window
+      var contentString = '<div id="content">'+
+           '<div id="siteNotice">'+
+           '</div>'+
+           '<h1 id="firstHeading" class="firstHeading">'+ groupedLatLngData[highSchool]['hs'] +'</h1>'+
+           '<div id="bodyContent">'+
+           '<p>'+
+
+           "Roster Year: " +'</p>'+
+           '</div>'+
+           '</div>';
+
+       var infowindow = new google.maps.InfoWindow({
+         content: contentString
+       });
+
+      marker.addListener('click', function() {
+        infowindow.open(map, marker);
+        let table = document.getElementById('resultTableBody');
+        let player_data = '';
+        //table changes to marker-specific data on click
+        for(let i = 0; i < groupedLatLngData[String(latitude) + longitude]['players'].length; i++){
+          player_data += '<tr>'
+          player_data += '<td>' + groupedLatLngData[String(latitude) + longitude]['players'][i]['rosterYear']    + '</td>';
+          player_data += '<td>' + groupedLatLngData[String(latitude) + longitude]['players'][i]['firstName']     + '</td>';
+          player_data += '<td>' + groupedLatLngData[String(latitude) + longitude]['players'][i]['lastName']      + '</td>';
+          player_data += '<td>' + groupedLatLngData[String(latitude) + longitude]['players'][i]['year']          + '</td>';
+          player_data += '<td>' + groupedLatLngData[String(latitude) + longitude]['players'][i]['position1']          + '</td>';
+          player_data += '<td>' + "will implement"     + '</td>';
+          player_data += '<td>' + "will implement"     + '</td>';
+          player_data += '<td>' + groupedLatLngData[String(latitude) + longitude]['players'][i]['collegeLeague']  + '</td>';
+          player_data += '<td>' + groupedLatLngData[String(latitude) + longitude]['players'][i]['college']        + '</td>';
+          player_data += '<td>' + groupedLatLngData[String(latitude) + longitude]['players'][i]['homeTown']       + '</td>';
+          player_data += '<td>' + groupedLatLngData[String(latitude) + longitude]['players'][i]['stateOrCountry'] + '</td>';
+          player_data += '<td>' + groupedLatLngData[String(latitude) + longitude]['players'][i]['highSchool']     + '</td>';
+          player_data += '</tr>';
+        }
+        table.innerHTML = player_data;
+        changeTableOnZoom = true;
+        $("#searchBar").val('');
+      });
+
+      markers.push(marker);
+    }
+
+
+    var mcOptions = {
+      //styles: clusterStyles, 
+      gridSize: 45,
+      minimumClusterSize: 2,
+      imagePath: 'https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/m'
+    };
+    
+    //  markerCluster = new MarkerClusterer(map, markers,
+    //   {imagePath: 'https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/m'});
+
+    markerCluster = new MarkerClusterer(map, markers, mcOptions);
+
+
+    markerCluster.setCalculator(function(markers, numStyles){
+      var index = 0;
+      var count = 0;
+      for (var i = 0; i < markers.length; i++) {
+        if (markers[i].number) {
+          count += markers[i].number;
+        } else {
+          count++;
+        }
+      }
+      var dv = markers.length;
+      while (dv !== 0) {
+        dv = parseInt(dv / 10, 10);
+        index++;
+      }
+  
+      index = Math.min(index, numStyles);
+      return {
+        text: count,
+        index: index
+      };
+    });
+
+     heatMap = new google.maps.visualization.HeatmapLayer({
+       data: heatMapData
+     });
+     firstLoad = false;
+     document.getElementById('zoomControl').click();
 }
 
-console.log("grouped High School Data: " + groupedHighSchoolData);
 
 /**
  * The HeatMapControl adds a control to the map that toggles a heat map
@@ -68,6 +190,8 @@ console.log("grouped High School Data: " + groupedHighSchoolData);
    controlUI.style.display         = 'inline-block';
    controlUI.style.height          = '39px';
    controlUI.title                 = 'Click to toggle the heat map';
+   controlUI.id                    = 'heatMapControl';
+   controlUI.disabled              = true;
    controlDiv.appendChild(controlUI);
 
     // Set CSS for the control interior.
@@ -81,15 +205,17 @@ console.log("grouped High School Data: " + groupedHighSchoolData);
    controlText.innerHTML          = 'Toggle Heat Map';
    controlUI.appendChild(controlText);
 
-   let clickCount = 0; //counter for toggling bold text
+   var clickCount = 0; //counter for toggling bold text
    controlUI.addEventListener('click', function() {
-     clickCount++;
-     if(clickCount % 2) {
-       controlText.style.fontWeight = "bold";
-       heatmap.setMap(map);
-     } else {
-       controlText.style.fontWeight = "normal";
-       heatmap.setMap(null);
+     if(!controlUI.disabled){
+       clickCount++;
+       if(clickCount % 2) {
+         controlText.style.fontWeight = "bold";
+         heatMap.setMap(map);
+       } else {
+         controlText.style.fontWeight = "normal";
+         heatMap.setMap(null);
+       }
      }
   });
 }
@@ -115,6 +241,7 @@ console.log("grouped High School Data: " + groupedHighSchoolData);
    controlUI.style.height          = '39px';
    controlUI.title                 = 'Click to zoom to map pins';
    controlUI.id                    = 'zoomControl';
+   controlUI.disabled              = true;
    controlDiv.appendChild(controlUI);
 
     // Set CSS for the control interior.
@@ -130,13 +257,44 @@ console.log("grouped High School Data: " + groupedHighSchoolData);
    controlUI.appendChild(controlText);
 
    controlUI.addEventListener('click', function() {
-    var bounds = new google.maps.LatLngBounds();
-    map.fitBounds(bounds);
-        for (var i = 0; i < markers.length; i++) {
+    if(!controlUI.disabled){
+      var bounds = new google.maps.LatLngBounds();
+      map.fitBounds(bounds);
+      for (var i = 0; i < markers.length; i++) {
           bounds.extend(markers[i].getPosition());
+      }
+      map.fitBounds(bounds);
+      let table = document.getElementById('resultTableBody');
+      let player_data = '';
+      //table changes to marker-specific data on click
+      if(changeTableOnZoom){
+        for(var hs in groupedLatLngData){
+          for(let i = 0; i < groupedLatLngData[hs]['players'].length; i++){
+            player_data += '<tr>';
+            player_data += '<td>' + groupedLatLngData[hs]['players'][i]['rosterYear']    + '</td>';
+            player_data += '<td>' + groupedLatLngData[hs]['players'][i]['firstName']     + '</td>';
+            player_data += '<td>' + groupedLatLngData[hs]['players'][i]['lastName']      + '</td>';
+            player_data += '<td>' + groupedLatLngData[hs]['players'][i]['year']          + '</td>';
+            player_data += '<td>' + groupedLatLngData[hs]['players'][i]['position1']          + '</td>';
+            player_data += '<td>' + "will implement"     + '</td>';
+            player_data += '<td>' + "will implement"     + '</td>';
+            player_data += '<td>' + groupedLatLngData[hs]['players'][i]['collegeLeague']  + '</td>';
+            player_data += '<td>' + groupedLatLngData[hs]['players'][i]['college']        + '</td>';
+            player_data += '<td>' + groupedLatLngData[hs]['players'][i]['homeTown']       + '</td>';
+            player_data += '<td>' + groupedLatLngData[hs]['players'][i]['stateOrCountry'] + '</td>';
+            player_data += '<td>' + groupedLatLngData[hs]['players'][i]['highSchool']     + '</td>';
+            player_data += '</tr>';
+          }
         }
-        map.fitBounds(bounds);
-    });
+        //reseting search bar
+        table.innerHTML = player_data;
+        changeTableOnZoom = false;
+      }
+      $("#searchBar").val('');
+      let value = $("#searchBar").val().toLowerCase();
+      $("#resultTableBody tr").css({"display": ""})
+    }
+  });
 }
 
 
@@ -162,6 +320,7 @@ function MarkerControl(controlDiv, map) {
   controlUI.style.height          = '39px';
   controlUI.title                 = 'Click to toggle map pins';
   controlUI.id                    = 'markerControl';
+  controlUI.disabled              = true;
   controlDiv.appendChild(controlUI);
 
    // Set CSS for the control interior.
@@ -173,39 +332,39 @@ function MarkerControl(controlDiv, map) {
   controlText.style.paddingLeft  = '5px';
   controlText.style.paddingRight = '5px';
   controlText.innerHTML          = 'Toggle Markers';
-  controlText.style.fontWeight   = "bold";
   controlText.id                 = 'markerControlText';
   controlUI.appendChild(controlText);
 
-  var firstTime = true;
-  let clickCount = 0; //counter for toggling bold text
+  var clickCount = 0; //counter for toggling bold text
   controlUI.addEventListener('click', function() {
-     clickCount++;
+    if(!controlUI.disabled){
+      clickCount++;
 
-     if(clickCount % 2 && !firstTime) {
-       controlText.style.fontWeight = "bold";
-       for (var i = 0; i < markers.length; i++) {
-        markers[i].setMap(map);
-       }
-       markerCluster = new MarkerClusterer(map, markers,
-         {imagePath: 'https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/m'});
+    if(clickCount % 2 ) {
+      controlText.style.fontWeight = "normal";
+      firstTime=false;
 
-     } else {
-       controlText.style.fontWeight = "normal";
-       firstTime=false;
+      for (var i = 0; i < markers.length; i++) {
+       markers[i].setMap(null);
+      }
+      markerCluster.setMap(null);
+      markerCluster.clearMarkers();
 
-       for (var i = 0; i < markers.length; i++) {
-        markers[i].setMap(null);
-       }
-       markerCluster.setMap(null);
-       markerCluster.clearMarkers();
-     }
+      } else {
+          controlText.style.fontWeight = "bold";
+          for (var i = 0; i < markers.length; i++) {
+           markers[i].setMap(map);
+          }
+          markerCluster = new MarkerClusterer(map, markers,
+            {imagePath: 'https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/m'});
+      }
+    }
    });
 }
 
 
 function initMap() {
-  var map = new google.maps.Map(
+   map = new google.maps.Map(
       document.getElementById('map'), {
         center: center_,
         zoom: 2,
@@ -223,11 +382,11 @@ function initMap() {
 
   var heatMapControlDiv = document.createElement('div');
   var markerControlDiv  = document.createElement('div');
-  var zoomControlDiv  = document.createElement('div');
+  var zoomControlDiv    = document.createElement('div');
 
   var heatMapControl    = new HeatMapControl(heatMapControlDiv, map);
   var markerControl     = new MarkerControl(markerControlDiv, map);
-  var zoomControl     = new ZoomControl(zoomControlDiv, map);
+  var zoomControl       = new ZoomControl(zoomControlDiv, map);
 
   heatMapControlDiv.index = 3;
   markerControlDiv.index  = 4;
@@ -236,56 +395,4 @@ function initMap() {
   map.controls[google.maps.ControlPosition.TOP_LEFT].push(heatMapControlDiv); //top left 3rd position
   map.controls[google.maps.ControlPosition.TOP_LEFT].push(markerControlDiv); //top right fourth position
   map.controls[google.maps.ControlPosition.TOP_LEFT].push(zoomControlDiv); //top left 5th position
-
-//building heatmap and marker data
-  for(var highSchool in groupedHighSchoolData){
-    latitude = groupedHighSchoolData[highSchool]['lat'];
-    longitude = groupedHighSchoolData[highSchool]['lng']
-    var pos = {lat: latitude, lng: longitude};
-    var marker = new google.maps.Marker({
-      position: pos,
-      map: map,
-      title: highSchool, //high school name
-      label: {
-        text: String(groupedHighSchoolData[highSchool]['playerCount']),
-        fontWeight: "bold"
-      },
-      animation: google.maps.Animation.DROP
-    });
-
-    heatMapData.push({location: new google.maps.LatLng(latitude, longitude), weight: groupedHighSchoolData[highSchool]['playerCount']});
-
-    //builiding info window
-    var contentString = '<div id="content">'+
-         '<div id="siteNotice">'+
-         '</div>'+
-         '<h1 id="firstHeading" class="firstHeading">'+ highSchool +'</h1>'+
-         '<div id="bodyContent">'+
-         '<p>'+
-
-         "Roster Year: " +'</p>'+
-         '</div>'+
-         '</div>';
-
-     var infowindow = new google.maps.InfoWindow({
-       content: contentString
-     });
-
-    marker.addListener('click', function() {
-      infowindow.open(map, marker);
-    });
-
-    markers.push(marker);
-  }
-
-  markerCluster = new MarkerClusterer(map, markers,
-    {imagePath: 'https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/m'});
-    // {imagePath: 'map/img/ball'});
-
-
-    // '../img/linkedin_icon.PNG'
-
-   heatmap = new google.maps.visualization.HeatmapLayer({
-     data: heatMapData
-   });
-  }
+}
