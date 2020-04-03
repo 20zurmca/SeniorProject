@@ -25,6 +25,15 @@ a {
   background-repeat: no-repeat;
 }
 
+.footer_image {
+  background-image: url('../img/field.png');
+  background-size: cover;
+  background-repeat: no-repeat;
+  height: 300px;
+  padding-top: 150px;
+  text-align: center;
+}
+
 .header{
   text-align: center;
   margin-bottom: 75px;
@@ -76,6 +85,13 @@ a {
 }
 
 #name{
+  font-family: 'Cabin', sans-serif;
+  font-weight: bold;
+  color: white;
+  margin-bottom: 10px;
+}
+
+#footer_name{
   font-family: 'Cabin', sans-serif;
   font-weight: bold;
   color: white;
