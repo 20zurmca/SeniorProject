@@ -101,12 +101,12 @@ function loadData(map, playerData){
         let player_data = '';
         //table changes to marker-specific data on click
         for(let i = 0; i < groupedLatLngData[String(latitude) + longitude]['players'].length; i++){
-          player_data += '<tr>';
+          player_data += '<tr>'
           player_data += '<td>' + groupedLatLngData[String(latitude) + longitude]['players'][i]['rosterYear']    + '</td>';
           player_data += '<td>' + groupedLatLngData[String(latitude) + longitude]['players'][i]['firstName']     + '</td>';
           player_data += '<td>' + groupedLatLngData[String(latitude) + longitude]['players'][i]['lastName']      + '</td>';
           player_data += '<td>' + groupedLatLngData[String(latitude) + longitude]['players'][i]['year']          + '</td>';
-          player_data += '<td>' + groupedLatLngData[String(latitude) + longitude]['players'][i]['year']          + '</td>';
+          player_data += '<td>' + groupedLatLngData[String(latitude) + longitude]['players'][i]['position1']          + '</td>';
           player_data += '<td>' + "will implement"     + '</td>';
           player_data += '<td>' + "will implement"     + '</td>';
           player_data += '<td>' + groupedLatLngData[String(latitude) + longitude]['players'][i]['collegeLeague']  + '</td>';
@@ -118,6 +118,7 @@ function loadData(map, playerData){
         }
         table.innerHTML = player_data;
         changeTableOnZoom = true;
+        $("#searchBar").val('');
       });
 
       markers.push(marker);
@@ -130,7 +131,7 @@ function loadData(map, playerData){
        data: heatMapData
      });
      firstLoad = false;
-    document.getElementById('zoomControl').click();
+     document.getElementById('zoomControl').click();
 }
 
 
@@ -239,7 +240,7 @@ function loadData(map, playerData){
             player_data += '<td>' + groupedLatLngData[hs]['players'][i]['firstName']     + '</td>';
             player_data += '<td>' + groupedLatLngData[hs]['players'][i]['lastName']      + '</td>';
             player_data += '<td>' + groupedLatLngData[hs]['players'][i]['year']          + '</td>';
-            player_data += '<td>' + groupedLatLngData[hs]['players'][i]['year']          + '</td>';
+            player_data += '<td>' + groupedLatLngData[hs]['players'][i]['position1']          + '</td>';
             player_data += '<td>' + "will implement"     + '</td>';
             player_data += '<td>' + "will implement"     + '</td>';
             player_data += '<td>' + groupedLatLngData[hs]['players'][i]['collegeLeague']  + '</td>';
@@ -250,9 +251,13 @@ function loadData(map, playerData){
             player_data += '</tr>';
           }
         }
+        //reseting search bar
         table.innerHTML = player_data;
         changeTableOnZoom = false;
       }
+      $("#searchBar").val('');
+      let value = $("#searchBar").val().toLowerCase();
+      $("#resultTableBody tr").css({"display": ""})
     }
   });
 }
