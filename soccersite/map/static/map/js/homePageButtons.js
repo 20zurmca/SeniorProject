@@ -32,6 +32,7 @@ function csv(){
   var lines = [];
   var numCols = longestRow;
   for(var row of rows){
+    if($(row).is(":hidden")) continue;
     var line = "";
 
     for(var i = 0; i < numCols; i++){
