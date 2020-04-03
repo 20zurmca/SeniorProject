@@ -5,6 +5,8 @@ var heatMapData = []
 var heatMap;
 var markerCluster;
 var firstLoad = true;
+var groupedLatLngData = {};
+var changeTableOnZoom = false;
 
 function loadData(map, playerData){
   for (var i = 0; i < markers.length; i++) {
@@ -18,8 +20,8 @@ function loadData(map, playerData){
     markerCluster.clearMarkers();
   }
 
-  var groupedLatLngData = {};
 
+   groupedLatLngData = {};
   //grouping response data by lat and lng
   for(var i = 0; i < playerData.length; i++){
     lat = playerData[i]['latitude'];
@@ -96,6 +98,28 @@ function loadData(map, playerData){
 
       marker.addListener('click', function() {
         infowindow.open(map, marker);
+        let table = document.getElementById('resultTableBody');
+        let player_data = '';
+        //table changes to marker-specific data on click
+        for(let i = 0; i < groupedLatLngData[String(latitude) + longitude]['players'].length; i++){
+          player_data += '<tr>'
+          player_data += '<td>' + groupedLatLngData[String(latitude) + longitude]['players'][i]['rosterYear']    + '</td>';
+          player_data += '<td>' + groupedLatLngData[String(latitude) + longitude]['players'][i]['firstName']     + '</td>';
+          player_data += '<td>' + groupedLatLngData[String(latitude) + longitude]['players'][i]['lastName']      + '</td>';
+          player_data += '<td>' + groupedLatLngData[String(latitude) + longitude]['players'][i]['year']          + '</td>';
+          player_data += '<td>' + groupedLatLngData[String(latitude) + longitude]['players'][i]['position1']          + '</td>';
+          player_data += '<td>' + "will implement"     + '</td>';
+          player_data += '<td>' + "will implement"     + '</td>';
+          player_data += '<td>' + groupedLatLngData[String(latitude) + longitude]['players'][i]['collegeLeague']  + '</td>';
+          player_data += '<td>' + groupedLatLngData[String(latitude) + longitude]['players'][i]['college']        + '</td>';
+          player_data += '<td>' + groupedLatLngData[String(latitude) + longitude]['players'][i]['homeTown']       + '</td>';
+          player_data += '<td>' + groupedLatLngData[String(latitude) + longitude]['players'][i]['stateOrCountry'] + '</td>';
+          player_data += '<td>' + groupedLatLngData[String(latitude) + longitude]['players'][i]['highSchool']     + '</td>';
+          player_data += '</tr>';
+        }
+        table.innerHTML = player_data;
+        changeTableOnZoom = true;
+        $("#searchBar").val('');
       });
 
       markers.push(marker);
@@ -142,6 +166,7 @@ function loadData(map, playerData){
        data: heatMapData
      });
      firstLoad = false;
+     document.getElementById('zoomControl').click();
 }
 
 
@@ -235,10 +260,39 @@ function loadData(map, playerData){
     if(!controlUI.disabled){
       var bounds = new google.maps.LatLngBounds();
       map.fitBounds(bounds);
-          for (var i = 0; i < markers.length; i++) {
-            bounds.extend(markers[i].getPosition());
+      for (var i = 0; i < markers.length; i++) {
+          bounds.extend(markers[i].getPosition());
+      }
+      map.fitBounds(bounds);
+      let table = document.getElementById('resultTableBody');
+      let player_data = '';
+      //table changes to marker-specific data on click
+      if(changeTableOnZoom){
+        for(var hs in groupedLatLngData){
+          for(let i = 0; i < groupedLatLngData[hs]['players'].length; i++){
+            player_data += '<tr>';
+            player_data += '<td>' + groupedLatLngData[hs]['players'][i]['rosterYear']    + '</td>';
+            player_data += '<td>' + groupedLatLngData[hs]['players'][i]['firstName']     + '</td>';
+            player_data += '<td>' + groupedLatLngData[hs]['players'][i]['lastName']      + '</td>';
+            player_data += '<td>' + groupedLatLngData[hs]['players'][i]['year']          + '</td>';
+            player_data += '<td>' + groupedLatLngData[hs]['players'][i]['position1']          + '</td>';
+            player_data += '<td>' + "will implement"     + '</td>';
+            player_data += '<td>' + "will implement"     + '</td>';
+            player_data += '<td>' + groupedLatLngData[hs]['players'][i]['collegeLeague']  + '</td>';
+            player_data += '<td>' + groupedLatLngData[hs]['players'][i]['college']        + '</td>';
+            player_data += '<td>' + groupedLatLngData[hs]['players'][i]['homeTown']       + '</td>';
+            player_data += '<td>' + groupedLatLngData[hs]['players'][i]['stateOrCountry'] + '</td>';
+            player_data += '<td>' + groupedLatLngData[hs]['players'][i]['highSchool']     + '</td>';
+            player_data += '</tr>';
           }
-          map.fitBounds(bounds);
+        }
+        //reseting search bar
+        table.innerHTML = player_data;
+        changeTableOnZoom = false;
+      }
+      $("#searchBar").val('');
+      let value = $("#searchBar").val().toLowerCase();
+      $("#resultTableBody tr").css({"display": ""})
     }
   });
 }
