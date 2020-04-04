@@ -56,3 +56,9 @@ class MatchedHighSchool(models.Model):
     latitude = models.FloatField()
     longitude = models.FloatField()
     schoolType = models.CharField(max_length = 13, null = True)
+
+#try for uploading csv
+class Document(models.Model):
+    description = models.CharField(max_length=255, blank=True)
+    document = models.FileField(upload_to='documents/')
+    uploaded_at = models.DateTimeField(auto_now_add=True)
