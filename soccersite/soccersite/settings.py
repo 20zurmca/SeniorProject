@@ -16,13 +16,16 @@ load_dotenv()
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-
+#add for getting CSV
+#MEDIA_URL = '/media'
+#MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/3.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = 'j5ykq@a=t$uet6v3!jxem!nocm#572pjo1@r0@wvpk4^#!xs7q'
+os.environ['GOOGLE_MAPS_API_KEY'] = 'AIzaSyD7mCNIDWqMQRAZ46GK6bujzQdcVbwEaPk'
 GOOGLE_MAPS_API_KEY = os.environ['GOOGLE_MAPS_API_KEY']
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True

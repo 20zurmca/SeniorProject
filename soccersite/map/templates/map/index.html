@@ -24,20 +24,22 @@
   </head>
   <body>
     <div class="container-bgimage">
-      <div class="header-button">
-        <button type="button" class="btn btn-primary bg-dark btn-sm"
-        aria-pressed="true" id="button3">
-          Admin Login
-        </button>
-
-        <button type="button" class="btn btn-primary bg-dark btn-sm"
-        aria-pressed="true" id="button4">
-          About
-        </button>
+      <div role="banner">
+        <div class="toolbar">
+          <a href='http://127.0.0.1:8000/'>
+          <img class = "block" src = "{% static 'map/img/logo.png' %}" width = 195 height = 66>
+          </a>
+          <p class="block" id="memo">Talent is in the Data</p>
+          <div class="header-button">
+            <a class="toolbarlink" href='http://127.0.0.1:8000/admin/myadmin'>Upload Data</a>
+            <a class="toolbarlink" href='http://127.0.0.1:8000/about'>About</a>
+            <a class="toolbarlink" href='http://127.0.0.1:8000/admin'>Admin Login</a>
+          </div>
+        </div>
       </div>
 
+
       <div class="header">
-        <h2 id="name">Soccer Hotspots</h2>
         <p id="instruction">
           Select filters to find players of interest. Then, click the submit button
           to view their high schools.
@@ -136,6 +138,7 @@
     <div class="footer_image">
       <!-- image details in css -->
       <h5 id="footer_name">© Copyright 2020</h5>
+      <img id="footer_img" src="{% static 'map/img/logo.png' %}" width = 195 height = 66>
     </div>
 
     <!-- jQuery library -->
@@ -147,7 +150,7 @@
     <script src="{% static 'map/js/form.js' %}"></script>
     <script src="{% static 'map/js/map.js' %}"></script>
     <script async defer
-    src="https://maps.googleapis.com/maps/api/js?key={{API_KEY}}&libraries=visualization&callback=initMap"></script>
+    src="https://maps.googleapis.com/maps/api/js?key={{GOOGLE_MAPS_API_KEY}}&libraries=visualization&callback=initMap"></script>
 
    <!--Bootstrap.js -->
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
