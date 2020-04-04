@@ -1,6 +1,8 @@
 /**
  * getCookie() is used to get the csrftoken for ajax call
 */
+var dt;
+
 function getCookie(c_name)
 {
     if (document.cookie.length > 0)
@@ -39,6 +41,9 @@ $(document).on('submit', '#filterForm', function(e){
       success:function(response){
         loadData(map, response['players']); //loading data in map.js
         var player_data = '';
+        if(dt){
+          dt.destroy();
+        }
         $.each(response['players'], function(key, value){
           player_data += '<tr>';
           player_data += '<td>' + value.rosterYear     + '</td>';
@@ -56,6 +61,8 @@ $(document).on('submit', '#filterForm', function(e){
           player_data += '</tr>';
         });
         document.getElementById('resultTableBody').innerHTML = player_data;
+        dt = $('#resultTable').DataTable();
+
       },
       error:function(){
         console.log("Error with form submission");

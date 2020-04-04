@@ -6,6 +6,10 @@ function submit() {
       document.getElementById('markerControl').disabled = false;
       document.getElementById('zoomControl').disabled = false;
       document.getElementById('heatMapControl').disabled = false;
+      if(document.getElementById('noQuerySelected')){
+        document.getElementById('noQuerySelected').style.display = "none";
+      }
+      submitted=true;
     }
 }
 
@@ -25,6 +29,10 @@ function parseCell(tableCell){
 }
 
 function csv(){
+  if(!submitted){
+    alert("Select data before exporting CSV.");
+    return;
+  }
   var table = document.getElementById('resultTable');
   var rows  = Array.from(table.querySelectorAll('tr'));
 
@@ -43,9 +51,9 @@ function csv(){
     }
     lines.push(line);
   }
-  var csvOutput    = lines.join("\n");
-  var csvBlob      = new Blob([csvOutput], {type: "text/csv"});
-  var blobUrl      = URL.createObjectURL(csvBlob);
+  var csvOutput     = lines.join("\n");
+  var csvBlob       = new Blob([csvOutput], {type: "text/csv"});
+  var blobUrl       = URL.createObjectURL(csvBlob);
   var anchorElement = document.createElement("a");
 
   anchorElement.href     = blobUrl;

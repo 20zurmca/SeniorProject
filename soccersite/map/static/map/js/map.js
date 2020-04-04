@@ -7,6 +7,7 @@ var markerCluster;
 var firstLoad = true;
 var groupedLatLngData = {};
 var changeTableOnZoom = false;
+var dataTable;
 
 function loadData(map, playerData){
   for (var i = 0; i < markers.length; i++) {
@@ -81,22 +82,21 @@ function loadData(map, playerData){
       heatMapData.push({location: new google.maps.LatLng(latitude, longitude), weight: groupedLatLngData[highSchool]['playerCount']});
 
       //builiding info window
-      var contentString = '<div id="content">'+
+      let contentString = '<div id="content">'+
            '<div id="siteNotice">'+
            '</div>'+
            '<h1 id="firstHeading" class="firstHeading">'+ groupedLatLngData[highSchool]['hs'] +'</h1>'+
            '<div id="bodyContent">'+
-           '<p>'+
-
-           "Roster Year: " +'</p>'+
+           '<p>'+'</p>'+
            '</div>'+
            '</div>';
 
-       var infowindow = new google.maps.InfoWindow({
+       let infowindow = new google.maps.InfoWindow({
          content: contentString
        });
 
       marker.addListener('click', function() {
+        dt.destroy();
         infowindow.open(map, marker);
         let table = document.getElementById('resultTableBody');
         let player_data = '';
@@ -119,7 +119,7 @@ function loadData(map, playerData){
         }
         table.innerHTML = player_data;
         changeTableOnZoom = true;
-        $("#searchBar").val('');
+        dt = $('#resultTable').DataTable();
       });
 
       markers.push(marker);
@@ -127,12 +127,12 @@ function loadData(map, playerData){
 
 
     var mcOptions = {
-      //styles: clusterStyles, 
+      //styles: clusterStyles,
       gridSize: 45,
       minimumClusterSize: 2,
       imagePath: 'https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/m'
     };
-    
+
     //  markerCluster = new MarkerClusterer(map, markers,
     //   {imagePath: 'https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/m'});
 
@@ -154,7 +154,7 @@ function loadData(map, playerData){
         dv = parseInt(dv / 10, 10);
         index++;
       }
-  
+
       index = Math.min(index, numStyles);
       return {
         text: count,
@@ -268,6 +268,7 @@ function loadData(map, playerData){
       let player_data = '';
       //table changes to marker-specific data on click
       if(changeTableOnZoom){
+        dt.destroy();
         for(var hs in groupedLatLngData){
           for(let i = 0; i < groupedLatLngData[hs]['players'].length; i++){
             player_data += '<tr>';
@@ -286,13 +287,10 @@ function loadData(map, playerData){
             player_data += '</tr>';
           }
         }
-        //reseting search bar
         table.innerHTML = player_data;
+        dt = $('#resultTable').DataTable();
         changeTableOnZoom = false;
       }
-      $("#searchBar").val('');
-      let value = $("#searchBar").val().toLowerCase();
-      $("#resultTableBody tr").css({"display": ""})
     }
   });
 }
