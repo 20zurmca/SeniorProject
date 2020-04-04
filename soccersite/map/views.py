@@ -44,6 +44,7 @@ def about(request):
     return render(request, 'map/about.html')
 
 
+
 @staff_member_required
 def upload_file(request):
     if request.method == 'POST':
@@ -60,11 +61,8 @@ def upload_file(request):
 
 
 def save_data(filename):
-    print("filename: ", filename)
-    #with open(filename, 'r') as csvfile:
     records = csv.reader(codecs.iterdecode(filename,'utf-8'))
     next(records)
-    #print("this is record", records)
     for record in records:
         input_data = MatchedHighSchool()
         input_data.rosterYear = record[1]
@@ -98,4 +96,3 @@ def save_data(filename):
         input_data.longitude = record[23]
         input_data.schoolType = record[24]
         input_data.save()
-    print("good to be here")

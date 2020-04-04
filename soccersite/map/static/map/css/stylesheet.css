@@ -1,3 +1,28 @@
+[role="banner"]{
+    background: black;
+    overflow: hidden;
+    margin: 0;
+    padding: 10px 0 6px;
+    position: relative;
+    z-index: 1;
+}
+
+.block{
+  display: inline;
+}
+
+#memo{
+  padding-left: 20px;
+  color: #44B78B;
+}
+
+.toolbarlink{
+  padding: 60px 20px;
+  font-family: "Roboto", Corbel, Avenir, "Lucida Grande", "Lucida Sans", sans-serif;
+  font-weight: bold;
+}
+
+
 body {
   background-color: #21252b;
 }
@@ -36,7 +61,7 @@ a {
 
 .header{
   text-align: center;
-  margin-bottom: 75px;
+  margin-bottom: 5px;
   padding-top: 25px;
   padding-bottom: 25px;
   margin-left: auto;
@@ -61,6 +86,10 @@ a {
 .header-button{
   text-align: right;
   margin-top: 5px;
+  margin-right: 5px;
+  display: inline;
+  position: absolute;
+  right:0;
 }
 
 .table-tools{
