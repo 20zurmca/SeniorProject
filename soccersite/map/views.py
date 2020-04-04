@@ -17,7 +17,7 @@ def index(request):
     leagues   = RosterMasterData.objects.values_list('collegeLeague', flat=True).distinct().order_by('collegeLeague')
     positions = RosterMasterData.objects.values_list('position1', flat=True).distinct().order_by('position1')
 
-    print(colleges)
+    print(settings.GOOGLE_MAPS_API_KEY)
     context = {'API_KEY': settings.GOOGLE_MAPS_API_KEY,
                'colleges': colleges,
                'leagues': leagues,
