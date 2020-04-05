@@ -133,9 +133,6 @@ function loadData(map, playerData){
       imagePath: 'https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/m'
     };
 
-    //  markerCluster = new MarkerClusterer(map, markers,
-    //   {imagePath: 'https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/m'});
-
     markerCluster = new MarkerClusterer(map, markers, mcOptions);
 
 
@@ -353,8 +350,37 @@ function MarkerControl(controlDiv, map) {
           for (var i = 0; i < markers.length; i++) {
            markers[i].setMap(map);
           }
-          markerCluster = new MarkerClusterer(map, markers,
-            {imagePath: 'https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/m'});
+          var mcOptions = {
+            gridSize: 45,
+            minimumClusterSize: 2,
+            imagePath: 'https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/m'
+          };
+      
+      
+          markerCluster = new MarkerClusterer(map, markers, mcOptions);
+      
+          markerCluster.setCalculator(function(markers, numStyles){
+            var index = 0;
+            var count = 0;
+            for (var i = 0; i < markers.length; i++) {
+              if (markers[i].number) {
+                count += markers[i].number;
+              } else {
+                count++;
+              }
+            }
+            var dv = markers.length;
+            while (dv !== 0) {
+              dv = parseInt(dv / 10, 10);
+              index++;
+            }
+      
+            index = Math.min(index, numStyles);
+            return {
+              text: count,
+              index: index
+            };
+          });
       }
     }
    });
