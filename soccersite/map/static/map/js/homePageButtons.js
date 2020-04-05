@@ -74,5 +74,5 @@ function about(){
 //add event listeners
 document.getElementById("button1").addEventListener("click", submit, false);
 document.getElementById("button2").addEventListener("click", csv, false);
-document.getElementById("button3").addEventListener("click", admin, false);
-document.getElementById("button4").addEventListener("click", about, false);
+// document.getElementById("button3").addEventListener("click", admin, false);
+// document.getElementById("button4").addEventListener("click", about, false);

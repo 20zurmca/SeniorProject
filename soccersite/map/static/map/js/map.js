@@ -8,6 +8,7 @@ var firstLoad = true;
 var groupedLatLngData = {};
 var changeTableOnZoom = false;
 var dataTable;
+var currentInfoWindow;
 
 function loadData(map, playerData){
   for (var i = 0; i < markers.length; i++) {
@@ -64,8 +65,8 @@ function loadData(map, playerData){
   }
   //building heatmap and marker data
     for(var highSchool in groupedLatLngData){
-      latitude = groupedLatLngData[highSchool]['lat'];
-      longitude = groupedLatLngData[highSchool]['lng']
+      let latitude = groupedLatLngData[highSchool]['lat'];
+      let longitude = groupedLatLngData[highSchool]['lng']
       var pos = {lat: latitude, lng: longitude};
       let marker = new google.maps.Marker({
         position: pos,
@@ -81,7 +82,7 @@ function loadData(map, playerData){
 
       heatMapData.push({location: new google.maps.LatLng(latitude, longitude), weight: groupedLatLngData[highSchool]['playerCount']});
 
-      //builiding info window
+      //building info window
       let contentString = '<div id="content">'+
            '<div id="siteNotice">'+
            '</div>'+
@@ -91,11 +92,18 @@ function loadData(map, playerData){
            '</div>'+
            '</div>';
 
-       let infowindow = new google.maps.InfoWindow({
-         content: contentString
-       });
 
       marker.addListener('click', function() {
+        if (currentInfoWindow) {
+          currentInfoWindow.close();
+        }
+
+        let infowindow = new google.maps.InfoWindow({
+          content: contentString
+        });
+
+        currentInfoWindow = infowindow;
+
         dt.destroy();
         infowindow.open(map, marker);
         let table = document.getElementById('resultTableBody');
