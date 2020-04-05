@@ -128,6 +128,7 @@ function loadData(map, playerData){
         table.innerHTML = player_data;
         changeTableOnZoom = true;
         dt = $('#resultTable').DataTable();
+        document.getElementById('resultTable').style.width = '98%';
       });
 
       markers.push(marker);
@@ -363,10 +364,10 @@ function MarkerControl(controlDiv, map) {
             minimumClusterSize: 2,
             imagePath: 'https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/m'
           };
-      
-      
+
+
           markerCluster = new MarkerClusterer(map, markers, mcOptions);
-      
+
           markerCluster.setCalculator(function(markers, numStyles){
             var index = 0;
             var count = 0;
@@ -382,7 +383,7 @@ function MarkerControl(controlDiv, map) {
               dv = parseInt(dv / 10, 10);
               index++;
             }
-      
+
             index = Math.min(index, numStyles);
             return {
               text: count,
