@@ -25,6 +25,7 @@
 
 body {
   background-color: #21252b;
+  overflow-x: hidden;
 }
 
 th{
@@ -120,6 +121,11 @@ label{
   margin-right: 1.8%;
 }
 
+#resultTable_info{
+  color: white;
+  margin-left: 3%;
+}
+
 
 #map{
   height: 700px;
@@ -178,7 +184,8 @@ label{
 #resultTable{
   margin-bottom: 300px;
   margin-top: 10px;
-  width: 98%;
+  table-layout: fixed;
+  width: 98% !important;
   margin-left: auto;
   margin-right: auto;
 }
