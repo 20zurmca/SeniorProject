@@ -1,0 +1,9 @@
+-- Add all ids to tables
+
+ALTER TABLE roster_master_data ADD COLUMN id SERIAL PRIMARY KEY;
+
+ALTER TABLE high_school_data ADD COLUMN id SERIAL PRIMARY KEY;
+
+ALTER TABLE highschool_match_master ADD COLUMN id SERIAL PRIMARY KEY;
+
+ALTER TABLE grouped_data ADD COLUMN id SERIAL PRIMARY KEY;

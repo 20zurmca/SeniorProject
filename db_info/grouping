@@ -9,4 +9,4 @@ CREATE TABLE grouped_data AS (
 	GROUP BY first_name, last_name, home_town, state_or_country, high_school, alternative_school, college, college_league
 );
 
-\Copy grouped_data to 'grouped_data.csv' DELIMITER ',' CSV HEADER;
+-- \Copy grouped_data to 'grouped_data.csv' DELIMITER ',' CSV HEADER;

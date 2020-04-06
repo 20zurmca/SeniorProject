@@ -1,5 +1,8 @@
 -- Union the new and old roster master data
 
+ALTER TABLE roster_master_data DROP COLUMN id;
+ALTER TABLE high_school_data DROP COLUMN id;
+
 CREATE TABLE roster_master_data3 AS (
 	SELECT *
 	FROM roster_master_data
