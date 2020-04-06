@@ -1,5 +1,5 @@
 [role="banner"]{
-    background: black;
+    background-color: #21252b;
     overflow: hidden;
     margin: 0;
     padding: 10px 0 6px;
@@ -39,7 +39,7 @@ body {
 th{
   text-align: center;
   cursor: pointer;
-  background-color: #070363;
+  background-color: #007bff;
 }
 
 td {
