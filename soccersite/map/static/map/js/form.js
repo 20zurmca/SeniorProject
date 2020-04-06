@@ -61,8 +61,9 @@ $(document).on('submit', '#filterForm', function(e){
           player_data += '</tr>';
         });
         document.getElementById('resultTableBody').innerHTML = player_data;
-        dt = $('#resultTable').DataTable();
-
+        dt = $('#resultTable').DataTable({
+          "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]],
+        });
       },
       error:function(){
         console.log("Error with form submission");

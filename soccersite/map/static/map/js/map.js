@@ -127,7 +127,9 @@ function loadData(map, playerData){
         }
         table.innerHTML = player_data;
         changeTableOnZoom = true;
-        dt = $('#resultTable').DataTable();
+        dt = $('#resultTable').DataTable({
+          "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]]
+        });
         document.getElementById('resultTable').style.width = '98%';
       });
 
@@ -294,7 +296,9 @@ function loadData(map, playerData){
           }
         }
         table.innerHTML = player_data;
-        dt = $('#resultTable').DataTable();
+        dt = $('#resultTable').DataTable({
+          "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]]
+        });
         changeTableOnZoom = false;
       }
     }

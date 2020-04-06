@@ -11,15 +11,23 @@
   display: inline;
 }
 
-#memo{
+#slogan{
   padding-left: 20px;
-  color: #44B78B;
+  color: white;
+  font-family: 'Lato', sans-serif;
+  font-size: 15px;
 }
 
 .toolbarlink{
   padding: 60px 20px;
   font-family: "Roboto", Corbel, Avenir, "Lucida Grande", "Lucida Sans", sans-serif;
   font-weight: bold;
+}
+
+.datatable-container{
+  width: 98% !important;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 
@@ -110,20 +118,15 @@ label{
 }
 
 .dataTables_length{
-  margin-left: 2.5%;
+  margin-left: 0.5%;
 }
 
 .dataTables_filter{
-  margin-right: 2.2%;
-}
-
-#resultTable_paginate{
-  margin-right: 1.8%;
+  margin-right: 0.5%;
 }
 
 #resultTable_info{
   color: white;
-  margin-left: 3%;
 }
 
 
@@ -160,7 +163,7 @@ label{
 
 #button2{
   margin-top: 25px;
-  margin-left: 15px;
+  margin-left: 1%;
   margin-bottom: 25px;
   width: auto;
   background: #1d6f42;
@@ -185,7 +188,7 @@ label{
   margin-bottom: 300px;
   margin-top: 10px;
   table-layout: fixed;
-  width: 98% !important;
+  width: 100% !important;
   margin-left: auto;
   margin-right: auto;
 }
