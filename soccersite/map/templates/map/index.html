@@ -95,6 +95,10 @@
             </select>
 
             <div class = "submit-button">
+              <div class="loader-wrapper">
+                <div class="loader"></div>
+              </div>
+
               <input type="submit" class="btn btn-primary btn-lg" value="Submit" id="button1"></input>
             </div>
           </form>
@@ -174,6 +178,7 @@
     <script>
     $(document).ready(function(){
       $('.fouc').css({"visibility": "visible"});
+      $('.loader').hide();
     });
     </script>
   </body>

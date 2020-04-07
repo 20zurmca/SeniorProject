@@ -184,6 +184,8 @@ function loadData(map, playerData){
        data: heatMapData
      });
      firstLoad = false;
+     $('.loader').hide();
+     document.location.href = "#map";
      document.getElementById('zoomControl').click();
 }
 
