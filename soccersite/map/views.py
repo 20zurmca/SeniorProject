@@ -16,8 +16,6 @@ def index(request):
     colleges  = RosterMasterData.objects.values_list('college', flat=True).distinct().order_by('college')
     leagues   = RosterMasterData.objects.values_list('collegeLeague', flat=True).distinct().order_by('collegeLeague')
     positions = RosterMasterData.objects.values_list('position1', flat=True).distinct().order_by('position1')
-
-    print(settings.GOOGLE_MAPS_API_KEY)
     context = {'API_KEY': settings.GOOGLE_MAPS_API_KEY,
                'colleges': colleges,
                'leagues': leagues,
@@ -28,14 +26,21 @@ def index(request):
         payload = json.loads(request.POST.get('json_data'))
         c = payload['colleges'] #list of colleges user specified from drop down
         pos = payload['positions'] #list of positions user specified from positions drop down
-        sy = payload['starterYears'] # TODO: implement queries for this
-        acy = payload['allConferenceYears'] # TODO: implement queries for this
-        players =  MatchedHighSchool.objects.filter(college__in=c) \
-                                                 .annotate(num_colleges=Count('college')) \
-                                                 .filter(num_colleges=len(c)).values()
+        sy = payload['starterYears'] #list of starterYears specified from positions drop down
+        acy = payload['allConferenceYears'] #list of allConferenceYears positioned in drop down
 
+        players = []
 
-        data  =  {'players': list(players)}
+        if(len(c) > 0):
+            players =  MatchedHighSchool.objects.filter(college__in=c)
+
+        if(len(pos) > 0):
+            if(len(players) > 0):
+                players = players.filter(position1__in=pos)
+            else:
+                players = MatchedHighSchool.objects.filter(position1__in=pos)
+
+        data  =  {'players': list(players.values())}
         return JsonResponse(data)
 
     return render(request, 'map/index.html', context)

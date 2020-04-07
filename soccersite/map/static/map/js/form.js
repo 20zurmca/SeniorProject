@@ -21,9 +21,14 @@ function getCookie(c_name)
 
 $(document).on('submit', '#filterForm', function(e){
   e.preventDefault(); //prevent refresh
-  selectedColleges = collegeSelector.options.find("selected", "any"); //from selectors.js
-  if(selectedColleges.length == 0){
-    alert("Select at least one college to query.");
+  selectedColleges           = collegeSelector.options.find("selected", "any"); //from selectors.js
+  selectedPositions          = positionSelector.options.find("selected", "any");
+  selectedStarterYears       = starterSelector.options.find("selected", "any");
+  selectedAllConferenceYears =  allConferenceSelector.options.find("selected", "any");
+  let selectedSomething = (selectedColleges.length > 0 || selectedPositions.length > 0 ||
+                          selectedStarterYears.length > 0 || selectedAllConferenceYears.length > 0);
+  if(!selectedSomething){
+    alert("Select at least one drop down to query.");
   } else {
     $.ajaxSetup({
            headers: { "X-CSRFToken": getCookie("csrftoken") }

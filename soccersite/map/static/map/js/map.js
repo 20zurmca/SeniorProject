@@ -1,7 +1,7 @@
-var center_ = {lat: 32.560742, lng: -3.9314364} //somewhere near the Mediterranean Sea
+var center_ = {lat: 32.560742, lng: -3.9314364}; //somewhere near the Mediterranean Sea
 var map;
-var markers = []
-var heatMapData = []
+var markers = [];
+var heatMapData = [];
 var heatMap;
 var markerCluster;
 var firstLoad = true;
@@ -9,27 +9,37 @@ var groupedLatLngData = {};
 var changeTableOnZoom = false;
 var dataTable;
 var currentInfoWindow;
+var clickCounts = [0, 0]; //count clicks for heatmap and marker cluster
 
 function loadData(map, playerData){
+  if(clickCounts[0] % 2){ //turn heatmap off if on
+    document.getElementById('heatMapControl').click();
+    document.getElementById('heatMapControl').style.fontWeight = "normal";
+  }
+
+  if(clickCounts[1] % 2){
+    document.getElementById('markerControl').click();
+  }
+
+  clickCounts = [0, 0];
   for (var i = 0; i < markers.length; i++) {
-    console.log("setting marker reference to null");
     markers[i].setMap(null);
   }
-  markers = []; //to be filled based on query
-  heatMapData = []; //data for heatmap
+  markers.length = 0;; //to be filled based on query
+  heatMapData.length = 0;; //data for heatmap
   if(!firstLoad){
     markerCluster.setMap(null);
     markerCluster.clearMarkers();
   }
 
 
-   groupedLatLngData = {};
+  groupedLatLngData = {};
   //grouping response data by lat and lng
   for(var i = 0; i < playerData.length; i++){
     lat = playerData[i]['latitude'];
     lng = playerData[i]['longitude'];
-    key = String(lat) + lng
-    player = {}
+    key = String(lat) + lng;
+    player = {};
     player['rosterYear'] = playerData[i]['rosterYear'];
     player['playerNumber'] = playerData[i]['playerNumber'];
     player['firstName'] = playerData[i]['firstName'];
@@ -67,7 +77,7 @@ function loadData(map, playerData){
     for(var highSchool in groupedLatLngData){
       let latitude = groupedLatLngData[highSchool]['lat'];
       let longitude = groupedLatLngData[highSchool]['lng']
-      var pos = {lat: latitude, lng: longitude};
+      let pos = {lat: latitude, lng: longitude};
       let marker = new google.maps.Marker({
         position: pos,
         map: map,
@@ -137,7 +147,7 @@ function loadData(map, playerData){
     }
 
 
-    var mcOptions = {
+    let mcOptions = {
       //styles: clusterStyles,
       gridSize: 45,
       minimumClusterSize: 2,
@@ -212,12 +222,10 @@ function loadData(map, playerData){
    controlText.style.paddingRight = '5px';
    controlText.innerHTML          = 'Toggle Heat Map';
    controlUI.appendChild(controlText);
-
-   var clickCount = 0; //counter for toggling bold text
    controlUI.addEventListener('click', function() {
      if(!controlUI.disabled){
-       clickCount++;
-       if(clickCount % 2) {
+       clickCounts[0] = clickCounts[0] + 1;
+       if(clickCounts[0] % 2) {
          controlText.style.fontWeight = "bold";
          heatMap.setMap(map);
        } else {
@@ -343,14 +351,12 @@ function MarkerControl(controlDiv, map) {
   controlText.id                 = 'markerControlText';
   controlUI.appendChild(controlText);
 
-  var clickCount = 0; //counter for toggling bold text
   controlUI.addEventListener('click', function() {
     if(!controlUI.disabled){
-      clickCount++;
+      clickCounts[1] = clickCounts[1] + 1;
 
-    if(clickCount % 2 ) {
+    if(clickCounts[1] % 2 ) {
       controlText.style.fontWeight = "normal";
-      firstTime=false;
 
       for (var i = 0; i < markers.length; i++) {
        markers[i].setMap(null);

@@ -58,9 +58,18 @@ h6 {
   color: white;
 }
 
-label{
+.dataTables_filter:nth-child(1){
   color: white;
 }
+
+.dataTables_length:nth-child(1){
+  color: white;
+}
+
+.dataTables_info{
+  color: white;
+}
+
 .container-bgimage{
   background-image: url('../img/grass.png');
   background-size: contain;
