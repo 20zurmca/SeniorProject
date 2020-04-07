@@ -230,7 +230,7 @@ function loadData(map, playerData){
        if(clickCounts[0] % 2) {
          controlText.style.fontWeight = "bold";
          heatMap.setMap(map);
-         document.querySelector("#map > div > div > div:nth-child(14) > div:nth-child(2) > div:nth-child(1)").click(); //go to sattelite mode
+         document.querySelector("#map > div > div > div:nth-child(14) > div:nth-child(2) > div:nth-child(1)").click(); //go to satellite mode
        } else {
          controlText.style.fontWeight = "normal";
          heatMap.setMap(null);
