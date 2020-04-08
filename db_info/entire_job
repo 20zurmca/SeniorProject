@@ -1,4 +1,4 @@
---Database Creation
+--Entire Job
 
 
 --Create tables for roster data aggregation and copy in data
@@ -14,6 +14,18 @@ CREATE TABLE starter_data("starter_data.Roster_Year" INT, "starter_data.Number" 
 CREATE TABLE accolade_data("accolade_data.Roster_Year" INT, "accolade_data.First_Name" VARCHAR(50), "accolade_data.Last_Name" VARCHAR(50), "accolade_data.Accolade" VARCHAR(20), "accolade_data.College" VARCHAR(50));
 
 \COPY accolade_data FROM 'accolades.csv' DELIMITER ',' CSV HEADER;
+
+
+
+--Create table for high school data and copy in the data
+
+CREATE TABLE high_school_data (City VARCHAR(30), Institution VARCHAR(100), "State/Province" VARCHAR(20), Country VARCHAR(50), Latitude DOUBLE PRECISION, Longitude DOUBLE PRECISION, "Public/Private/International" VARCHAR(20));
+
+\COPY high_school_data FROM 'CombinedHighSchools.csv' DELIMITER ',' CSV HEADER;
+
+UPDATE high_school_data SET Institution = LOWER(Institution);
+
+-- \Copy high_school_data to 'high_school_data.csv' DELIMITER ',' CSV HEADER;
 
 
 --Join with starter data
@@ -47,6 +59,7 @@ DROP TABLE roster_starter_data;
 --Rename attributes without the table name
 
 ALTER TABLE roster_master_data RENAME COLUMN "roster_data.Roster_Year" TO Roster_Year;
+ALTER TABLE roster_master_data RENAME COLUMN "roster_data.Player_Number" TO Player_Number;
 ALTER TABLE roster_master_data RENAME COLUMN "roster_data.First_Name" TO First_Name;
 ALTER TABLE roster_master_data RENAME COLUMN "roster_data.Last_Name" TO Last_Name;
 ALTER TABLE roster_master_data RENAME COLUMN "roster_data.Year" TO Year;
@@ -84,18 +97,6 @@ DELETE FROM roster_master_data
 WHERE High_School IS NULL AND Alternative_School IS NULL;
 
 -- \Copy roster_master_data to 'roster_master_data.csv' DELIMITER ',' CSV HEADER;
-
-
---Create table for high school data and copy in the data
-
-CREATE TABLE high_school_data (City VARCHAR(30), Institution VARCHAR(100), "State/Province" VARCHAR(20), Country VARCHAR(50), Latitude DOUBLE PRECISION, Longitude DOUBLE PRECISION, "Public/Private/International" VARCHAR(20));
-
-\COPY high_school_data FROM 'CombinedHighSchools.csv' DELIMITER ',' CSV HEADER;
-
-UPDATE high_school_data SET Institution = LOWER(Institution);
-
--- \Copy high_school_data to 'high_school_data.csv' DELIMITER ',' CSV HEADER;
-
 
 
 -- Matching Operations
@@ -246,12 +247,12 @@ DROP TABLE roster_public_final;
 DROP TABLE roster_international_final;
 DROP TABLE roster_unique_final;
 
-\Copy highschool_match_master to 'highschool_match_master.csv' DELIMITER ',' CSV HEADER;
+--\Copy highschool_match_master to 'highschool_match_master.csv' DELIMITER ',' CSV HEADER;
 
 -- Group entries
 
 CREATE TABLE grouped_data AS (
-	select first_name, last_name, home_town, state_or_country, high_school, alternative_school, college, college_league, MAX("Public/Private/International") AS "Public/Private/International", COUNT(is_starter = 'Y') AS starter_count, COUNT(accolade) AS accolade_count, MAX(latitude) AS latitude, MAX(longitude) AS longitude, ARRAY_AGG(roster_year) AS roster_year, ARRAY_AGG(year) AS year, ARRAY_AGG("roster_data.Player_Number") AS player_number, ARRAY_AGG(position1) AS position, ARRAY_AGG(height) AS height, ARRAY_AGG(weight) AS weight, ARRAY_AGG(bio_link) AS bio_link
+	select first_name, last_name, home_town, state_or_country, high_school, alternative_school, college, college_league, MAX("Public/Private/International") AS "Public/Private/International", COUNT(is_starter = 'Y') AS starter_count, COUNT(accolade) AS accolade_count, MAX(latitude) AS latitude, MAX(longitude) AS longitude, ARRAY_AGG(roster_year) AS roster_year, ARRAY_AGG(year) AS year, ARRAY_AGG(player_number) AS player_number, ARRAY_AGG(position1) AS position, ARRAY_AGG(height) AS height, ARRAY_AGG(weight) AS weight, ARRAY_AGG(bio_link) AS bio_link
 	FROM highschool_match_master
 	GROUP BY first_name, last_name, home_town, state_or_country, high_school, alternative_school, college, college_league
 );

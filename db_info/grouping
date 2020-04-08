@@ -1,0 +1,12 @@
+-- Group entries
+
+-- Drop old table
+DROP TABLE grouped_data;
+
+CREATE TABLE grouped_data AS (
+	select first_name, last_name, home_town, state_or_country, high_school, alternative_school, college, college_league, MAX("Public/Private/International") AS "Public/Private/International", COUNT(is_starter = 'Y') AS starter_count, COUNT(accolade) AS accolade_count, MAX(latitude) AS latitude, MAX(longitude) AS longitude, ARRAY_AGG(roster_year) AS roster_year, ARRAY_AGG(year) AS year, ARRAY_AGG(player_number) AS player_number, ARRAY_AGG(position1) AS position, ARRAY_AGG(height) AS height, ARRAY_AGG(weight) AS weight, ARRAY_AGG(bio_link) AS bio_link
+	FROM highschool_match_master
+	GROUP BY first_name, last_name, home_town, state_or_country, high_school, alternative_school, college, college_league
+);
+
+-- \Copy grouped_data to 'grouped_data.csv' DELIMITER ',' CSV HEADER;
