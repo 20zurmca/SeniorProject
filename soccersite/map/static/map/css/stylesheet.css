@@ -9,20 +9,22 @@
 
 .block{
   display: inline;
-}
-
-#slogan{
   padding-left: 20px;
+  background-color: #21252b;
   color: white;
   font-family: 'Lato', sans-serif;
   font-size: 15px;
 }
 
-.toolbarlink{
-  padding: 60px 20px;
-  font-family: "Roboto", Corbel, Avenir, "Lucida Grande", "Lucida Sans", sans-serif;
-  font-weight: bold;
+
+#index_toolbar{
+  display: inline;
+  position: absolute;
+  font-size: 20px;
+  right:15px;
+  top: 20px;
 }
+
 
 .datatable-container{
   width: 98% !important;

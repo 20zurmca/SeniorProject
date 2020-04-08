@@ -13,16 +13,22 @@
     <link rel="stylesheet" type="text/css" href="{% static 'map/css/about.css' %}">
   </head>
   <body>
-    <div class="header-button">
-      <button type="button" class="btn btn-primary bg-dark btn-sm"
-      aria-pressed="true" id="adminButton">
-        Admin Login
-      </button>
+    <div role="banner">
+      <div class="toolbar">
+        <a href='http://127.0.0.1:8000/'>
+          <img class = "block" src = "{% static 'map/img/logo.png' %}" width = 195 height = 66>
+        </a>
+        <p class="block">Talent is in the Data</p>
+        <div id='about_toolbar'>
 
-      <button type="button" class="btn btn-primary bg-dark btn-sm"
-      aria-pressed="true" id="returnButton">
-        Home Page
-      </button>
+            <a href='http://127.0.0.1:8000/upload' class="badge badge-dark">Upload Data</a>
+
+            <a href='http://127.0.0.1:8000/' class="badge badge-dark">Main</a>
+
+            <a href='http://127.0.0.1:8000/admin' class="badge badge-dark">Admin Login</a>
+
+        </div>
+      </div>
     </div>
 
     <div class="header">

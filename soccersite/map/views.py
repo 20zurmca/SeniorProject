@@ -61,7 +61,7 @@ def upload_file(request):
             return render(request, 'map/myadmin.html', {'form':form})
     else:
         form = DocumentForm()
-    return render(request, 'map/myadmin.html', {'form':form})
+    return render(request, 'map/upload.html', {'form':form})
 
 
 

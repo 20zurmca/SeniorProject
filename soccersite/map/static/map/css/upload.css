@@ -1,0 +1,50 @@
+.container-bgimage{
+  background-image: url('../img/grass.png');
+  background-size: cover;
+  background-repeat: no-repeat;
+  height: 600px;
+}
+
+.footer_image {
+  background-image: url('../img/field.png');
+  background-size: cover;
+  background-repeat: no-repeat;
+  height: 300px;
+  padding-top: 150px;
+  text-align: center;
+}
+
+.block{
+  display: inline;
+  padding-left: 20px;
+  background-color: #21252b;
+  color: white;
+  font-family: 'Lato', sans-serif;
+  font-size: 15px;
+}
+
+#upload_form{
+text-align: center;
+padding-top: 150px;
+color: white;
+font-family: 'Lato', sans-serif;
+font-size: 15px;
+}
+
+
+#upload_toolbar{
+  display: inline;
+  position: absolute;
+  font-size: 20px;
+  right:15px;
+  top: 20px;
+}
+
+[role="banner"]{
+    background-color: #21252b;
+    overflow: hidden;
+    margin: 0;
+    padding: 10px 0 6px;
+    position: relative;
+    z-index: 1;
+}
