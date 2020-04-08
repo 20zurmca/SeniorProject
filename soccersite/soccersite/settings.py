@@ -25,12 +25,11 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = 'j5ykq@a=t$uet6v3!jxem!nocm#572pjo1@r0@wvpk4^#!xs7q'
-os.environ['GOOGLE_MAPS_API_KEY'] = 'AIzaSyD7mCNIDWqMQRAZ46GK6bujzQdcVbwEaPk'
 GOOGLE_MAPS_API_KEY = os.environ['GOOGLE_MAPS_API_KEY']
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['139.147.210.9', '127.0.0.1']
 
 # Application definition
 
