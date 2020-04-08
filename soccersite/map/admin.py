@@ -5,8 +5,4 @@ from .models import RosterMasterData, HighSchool, MatchedHighSchool
 admin.site.register(RosterMasterData)
 admin.site.register(HighSchool)
 
-"""
-@admin.register(MatchedHighSchool)
-class MHSAdmin(admin.ModelAdmin):
-    def MHS_actions(self, obj):
-"""        
+   

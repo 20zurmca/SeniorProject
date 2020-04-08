@@ -6,6 +6,25 @@ a {
   color: 	#00BFFF
 }
 
+
+#about_toolbar{
+  display: inline;
+  position: absolute;
+  font-size: 20px;
+  right:15px;
+  top: 20px;
+}
+
+.block{
+  display: inline;
+  padding-left: 20px;
+  background-color: #21252b;
+  color: white;
+  font-family: 'Lato', sans-serif;
+  font-size: 15px;
+}
+
+
 .header-button{
   text-align: right;
   margin-top: 5px;

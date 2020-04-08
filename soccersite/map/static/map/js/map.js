@@ -115,10 +115,11 @@ function loadData(map, playerData){
 
         infowindow.setContent(contentString);// = contentString;
 
+        infowindow.setPosition(new google.maps.LatLng(latitude, longitude));
         currentInfoWindow = infowindow;
 
         dt.destroy();
-        infowindow.open(map, marker);
+        infowindow.open(map);
         let table = document.getElementById('resultTableBody');
         let player_data = '';
         //table changes to marker-specific data on click
