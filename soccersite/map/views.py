@@ -29,6 +29,9 @@ def index(request):
         sy = payload['starterYears'] #list of starterYears specified from positions drop down
         acy = payload['allConferenceYears'] #list of allConferenceYears positioned in drop down
 
+        starterYearFourOrMore = '4+' in sy
+        allConferenceYearsFourOrMore = '4+' in acy
+
         players = []
 
         if(len(c) > 0):
@@ -39,6 +42,38 @@ def index(request):
                 players = players.filter(position1__in=pos)
             else:
                 players = MatchedHighSchool.objects.filter(position1__in=pos)
+
+        if(len(sy) > 0):
+            if(len(players) > 0): #filter the players
+                if(starterYearFourOrmore):
+                    #use Q to build an or logic clause to account for gt equal to four. Filter players variable
+                    pass
+                else:
+                    #just use an in clause on the selections
+                    pass
+            else: #filter all the data
+                if(starterYearFourOrmore):
+                #use Q to build an or logic clause to account for gt equal to four. Filter players variable
+                    pass
+                else:
+                #just use an in clause on the selections
+                    pass
+
+        if(len(acy) > 0):
+            if(len(players) > 0): #filter the players
+                if(allConferenceYearsFourOrMore):
+                    #use Q to build an or logic clause to account for gt equal to four. Filter players variable
+                    pass
+                else:
+                    #just use an in clause on the selections
+                    pass
+            else: #filter all the data
+                if(allConferenceYearsFourOrMore):
+                #use Q to build an or logic clause to account for gt equal to four. Filter players variable
+                    pass
+                else:
+                #just use an in clause on the selections
+                    pass
 
         data  =  {'players': list(players.values())}
         return JsonResponse(data)
