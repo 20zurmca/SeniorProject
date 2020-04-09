@@ -50,6 +50,9 @@ teddickj=> \d+ grouped_data
  alternative_school           | character varying(50)  |           |          |                                          | extended |              |
  college                      | character varying(50)  |           |          |                                          | extended |              |
  college_league               | character varying(50)  |           |          |                                          | extended |              |
+ highschoolcity               | text                   |           |          |                                          | extended |              |
+ highschoolstateorprovince    | text                   |           |          |                                          | extended |              |
+ highschoolcountry            | text                   |           |          |                                          | extended |              |
  Public/Private/International | text                   |           |          |                                          | extended |              |
  starter_count                | bigint                 |           |          |                                          | plain    |              |
  accolade_count               | bigint                 |           |          |                                          | plain    |              |
