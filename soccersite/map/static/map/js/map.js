@@ -8,14 +8,17 @@ var firstLoad = true;
 var groupedLatLngData = {};
 var changeTableOnZoom = false;
 var dataTable;
-var currentInfoWindow;
 var infowindow;
 var clickCounts = [0, 0]; //count clicks for heatmap and marker cluster
 
 function loadData(map, playerData){
-  let infowindow = new google.maps.InfoWindow({
-    content: "temp"
-  });
+  if (firstLoad) {
+    infowindow = new google.maps.InfoWindow({
+      content: "temp"
+    });
+  } else {
+    infowindow.close();
+  }
 
   if(clickCounts[0] % 2){ //turn heatmap off if on
     document.getElementById('heatMapControl').click();
@@ -109,8 +112,8 @@ function loadData(map, playerData){
 
 
       marker.addListener('click', function() {
-        if (currentInfoWindow) {
-          currentInfoWindow.close();
+        if (infowindow) {
+          infowindow.close();
         }
 
         infowindow.setContent(contentString);// = contentString;
@@ -320,6 +323,7 @@ function loadData(map, playerData){
         changeTableOnZoom = false;
       }
     }
+    infowindow.close();
   });
 }
 
