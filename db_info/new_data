@@ -1,5 +1,0 @@
--- Creates table for roster_master_data being added
-
-CREATE TABLE roster_master_data2 (roster_year INT, player_number VARCHAR(10), first_name VARCHAR(50), last_name VARCHAR(50),  year VARCHAR(10), position1 VARCHAR(20), height VARCHAR(10), weight INT, home_town VARCHAR(30), state_or_country VARCHAR(20), high_school VARCHAR(100), alternative_school VARCHAR(50), college VARCHAR(50), college_League VARCHAR(50), bio_link VARCHAR(100), is_starter VARCHAR(1), accolade VARCHAR(20));
-
-\COPY roster_master_data2 FROM 'roster_master_data2.csv' DELIMITER ',' CSV HEADER;
