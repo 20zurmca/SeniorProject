@@ -234,6 +234,9 @@ function loadData(map, playerData){
          controlText.style.fontWeight = "bold";
          heatMap.setMap(map);
          document.querySelector("#map > div > div > div:nth-child(14) > div:nth-child(2) > div:nth-child(1)").click(); //go to satellite mode
+         if(!(clickCounts[1] % 2)){ //turn off markers
+           document.getElementById('markerControl').click();
+         }
        } else {
          controlText.style.fontWeight = "normal";
          heatMap.setMap(null);

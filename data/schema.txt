@@ -1,0 +1,153 @@
+teddickj=> \dt
+     
+             List of relations
+ Schema |          Name           | Type  |  Owner
+--------+-------------------------+-------+----------
+ public | accolade_data           | table | teddickj
+ public | documents               | table | teddickj
+ public | grouped_data            | table | teddickj
+ public | high_school_data        | table | teddickj
+ public | highschool_match_master | table | teddickj
+ public | roster_data             | table | teddickj
+ public | starter_data            | table | teddickj
+(7 rows)
+
+
+teddickj=> \d+ accolade_data
+                                         Table "public.accolade_data"
+   Column    |         Type          | Collation | Nullable | Default | Storage  | Stats target | Description
+-------------+-----------------------+-----------+----------+---------+----------+--------------+-------------
+ roster_year | integer               |           |          |         | plain    |              |
+ first_name  | character varying(50) |           |          |         | extended |              |
+ last_name   | character varying(50) |           |          |         | extended |              |
+ accolade    | character varying(20) |           |          |         | extended |              |
+ college     | character varying(50) |           |          |         | extended |              |
+
+
+teddickj=> \d+ documents
+                                                             Table "public.documents"
+   Column    |            Type             | Collation | Nullable |                Default                | Storage  | Stats target | Description
+-------------+-----------------------------+-----------+----------+---------------------------------------+----------+--------------+-------------
+ id          | integer                     |           | not null | nextval('documents_id_seq'::regclass) | plain    |              |
+ description | character varying(255)      |           |          |                                       | extended |              |
+ document    | character varying(50)       |           |          |                                       | extended |              |
+ uploaded_at | timestamp without time zone |           |          |                                       | plain    |              |
+Indexes:
+    "documents_pkey" PRIMARY KEY, btree (id)
+Triggers:
+    update_db AFTER INSERT ON documents FOR EACH ROW EXECUTE PROCEDURE update_db_func()
+
+
+teddickj=> \d+ grouped_data
+                                                                   Table "public.grouped_data"
+            Column            |          Type          | Collation | Nullable |                 Default                  | Storage  | Stats target | Description
+------------------------------+------------------------+-----------+----------+------------------------------------------+----------+--------------+-------------
+ first_name                   | character varying(50)  |           |          |                                          | extended |              |
+ last_name                    | character varying(50)  |           |          |                                          | extended |              |
+ home_town                    | character varying(30)  |           |          |                                          | extended |              |
+ state_or_country             | character varying(20)  |           |          |                                          | extended |              |
+ high_school                  | character varying(100) |           |          |                                          | extended |              |
+ alternative_school           | character varying(50)  |           |          |                                          | extended |              |
+ college                      | character varying(50)  |           |          |                                          | extended |              |
+ college_league               | character varying(50)  |           |          |                                          | extended |              |
+ Public/Private/International | text                   |           |          |                                          | extended |              |
+ starter_count                | bigint                 |           |          |                                          | plain    |              |
+ accolade_count               | bigint                 |           |          |                                          | plain    |              |
+ latitude                     | double precision       |           |          |                                          | plain    |              |
+ longitude                    | double precision       |           |          |                                          | plain    |              |
+ roster_year                  | integer[]              |           |          |                                          | extended |              |
+ year                         | character varying[]    |           |          |                                          | extended |              |
+ position                     | character varying[]    |           |          |                                          | extended |              |
+ height                       | character varying[]    |           |          |                                          | extended |              |
+ weight                       | integer[]              |           |          |                                          | extended |              |
+ bio_link                     | character varying[]    |           |          |                                          | extended |              |
+ id                           | integer                |           | not null | nextval('grouped_data_id_seq'::regclass) | plain    |              |
+Indexes:
+    "grouped_data_pkey" PRIMARY KEY, btree (id)
+
+
+teddickj=> \d+ high_school_data
+                                                                   Table "public.high_school_data"
+            Column            |          Type          | Collation | Nullable |                   Default                    | Storage  | Stats target | Description
+------------------------------+------------------------+-----------+----------+----------------------------------------------+----------+--------------+-------------
+ city                         | character varying(30)  |           |          |                                              | extended |              |
+ institution                  | character varying(100) |           |          |                                              | extended |              |
+ State/Province               | character varying(20)  |           |          |                                              | extended |              |
+ country                      | character varying(50)  |           |          |                                              | extended |              |
+ latitude                     | double precision       |           |          |                                              | plain    |              |
+ longitude                    | double precision       |           |          |                                              | plain    |              |
+ Public/Private/International | character varying(20)  |           |          |                                              | extended |              |
+ id                           | integer                |           | not null | nextval('high_school_data_id_seq'::regclass) | plain    |              |
+Indexes:
+    "high_school_data_pkey" PRIMARY KEY, btree (id)
+
+
+teddickj=> \d+ highschool_match_master
+                                                                   Table "public.highschool_match_master"
+            Column            |          Type          | Collation | Nullable |                       Default                       | Storage  | Stats target | Description
+------------------------------+------------------------+-----------+----------+-----------------------------------------------------+----------+--------------+-------------
+ roster_year                  | integer                |           |          |                                                     | plain    |              |
+ player_number                | character varying(10)  |           |          |                                                     | extended |              |
+ first_name                   | character varying(50)  |           |          |                                                     | extended |              |
+ last_name                    | character varying(50)  |           |          |                                                     | extended |              |
+ year                         | character varying(10)  |           |          |                                                     | extended |              |
+ position1                    | character varying(20)  |           |          |                                                     | extended |              |
+ height                       | character varying(10)  |           |          |                                                     | extended |              |
+ weight                       | integer                |           |          |                                                     | plain    |              |
+ home_town                    | character varying(30)  |           |          |                                                     | extended |              |
+ state_or_country             | character varying(20)  |           |          |                                                     | extended |              |
+ high_school                  | character varying(100) |           |          |                                                     | extended |              |
+ alternative_school           | character varying(50)  |           |          |                                                     | extended |              |
+ college                      | character varying(50)  |           |          |                                                     | extended |              |
+ college_league               | character varying(50)  |           |          |                                                     | extended |              |
+ bio_link                     | character varying(100) |           |          |                                                     | extended |              |
+ is_starter                   | character varying(1)   |           |          |                                                     | extended |              |
+ accolade                     | character varying(20)  |           |          |                                                     | extended |              |
+ city                         | character varying(30)  |           |          |                                                     | extended |              |
+ institution                  | character varying(100) |           |          |                                                     | extended |              |
+ State/Province               | character varying(20)  |           |          |                                                     | extended |              |
+ country                      | character varying(50)  |           |          |                                                     | extended |              |
+ latitude                     | double precision       |           |          |                                                     | plain    |              |
+ longitude                    | double precision       |           |          |                                                     | plain    |              |
+ Public/Private/International | character varying(20)  |           |          |                                                     | extended |              |
+ id                           | integer                |           | not null | nextval('highschool_match_master_id_seq'::regclass) | plain    |              |
+Indexes:
+    "highschool_match_master_pkey" PRIMARY KEY, btree (id)
+
+
+teddickj=> \d+ roster_data
+                                              Table "public.roster_data"
+       Column       |          Type          | Collation | Nullable | Default | Storage  | Stats target | Description
+--------------------+------------------------+-----------+----------+---------+----------+--------------+-------------
+ roster_year        | integer                |           |          |         | plain    |              |
+ player_number      | character varying(10)  |           |          |         | extended |              |
+ first_name         | character varying(50)  |           |          |         | extended |              |
+ last_name          | character varying(50)  |           |          |         | extended |              |
+ year               | character varying(10)  |           |          |         | extended |              |
+ position1          | character varying(20)  |           |          |         | extended |              |
+ position2          | character varying(20)  |           |          |         | extended |              |
+ position3          | character varying(10)  |           |          |         | extended |              |
+ height             | character varying(10)  |           |          |         | extended |              |
+ weight             | integer                |           |          |         | plain    |              |
+ home_town          | character varying(30)  |           |          |         | extended |              |
+ state_or_country   | character varying(20)  |           |          |         | extended |              |
+ high_school        | character varying(100) |           |          |         | extended |              |
+ alternative_school | character varying(50)  |           |          |         | extended |              |
+ college            | character varying(50)  |           |          |         | extended |              |
+ college_league     | character varying(50)  |           |          |         | extended |              |
+ bio_link           | character varying(100) |           |          |         | extended |              |
+
+
+teddickj=> \d+ starter_data
+                                            Table "public.starter_data"
+      Column      |         Type          | Collation | Nullable | Default | Storage  | Stats target | Description
+------------------+-----------------------+-----------+----------+---------+----------+--------------+-------------
+ roster_year      | integer               |           |          |         | plain    |              |
+ number           | integer               |           |          |         | plain    |              |
+ first_name       | character varying(50) |           |          |         | extended |              |
+ last_name        | character varying(50) |           |          |         | extended |              |
+ potential_starts | integer               |           |          |         | plain    |              |
+ gp               | integer               |           |          |         | plain    |              |
+ gs               | integer               |           |          |         | plain    |              |
+ is_starter       | character varying(1)  |           |          |         | extended |              |
+ college          | character varying(50) |           |          |         | extended |              |
