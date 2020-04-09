@@ -3,6 +3,7 @@
 DROP TABLE documents;
 DROP TABLE grouped_data;
 DROP TABLE high_school_data;
-DROP TABLE highschool_match_master;
 DROP TABLE roster_master_data;
-DROP TABLE new_roster_master_data;
+DROP TABLE roster_data;
+DROP TABLE starter_data;
+DROP TABLE accolade_data;

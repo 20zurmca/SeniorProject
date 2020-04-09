@@ -3,15 +3,15 @@
 
 --Create tables for roster data aggregation and copy in data
 
-CREATE TABLE roster_data ("roster_data.Roster_Year" INT, "roster_data.Player_Number" VARCHAR(10), "roster_data.First_Name" VARCHAR(50), "roster_data.Last_Name" VARCHAR(50),  "roster_data.Year" VARCHAR(10), "roster_data.Position1" VARCHAR(20), "roster_data.Position2" VARCHAR(20), "roster_data.Position3" VARCHAR(10), "roster_data.Height" VARCHAR(10), "roster_data.Weight" INT, "roster_data.Home_Town" VARCHAR(30), "roster_data.State_or_Country" VARCHAR(20), "roster_data.High_School" VARCHAR(100), "roster_data.Alternative_School" VARCHAR(50), "roster_data.College" VARCHAR(50), "roster_data.College_League" VARCHAR(50), "roster_data.Bio_Link" VARCHAR(100));
+CREATE TABLE roster_data (Roster_Year INT, Player_Number VARCHAR(10), First_Name VARCHAR(50), Last_Name VARCHAR(50),  Year VARCHAR(10), Position1 VARCHAR(20), Position2 VARCHAR(20), Position3 VARCHAR(10), Height VARCHAR(10), Weight INT, Home_Town VARCHAR(30), State_or_Country VARCHAR(20), High_School VARCHAR(100), Alternative_School VARCHAR(50), College VARCHAR(50), College_League VARCHAR(50), Bio_Link VARCHAR(100));
 
 \COPY roster_data FROM 'roster_data.csv' DELIMITER ',' CSV HEADER;
 
-CREATE TABLE starter_data("starter_data.Roster_Year" INT, "starter_data.Number" INT, "starter_data.First_Name" VARCHAR(50), "starter_data.Last_Name" VARCHAR(50), "starter_data.Potential_Starts" INT, "starter_data.GP" INT, "starter_data.GS" INT, "starter_data.Is_Starter" VARCHAR(1), "starter_data.College" VARCHAR(50));
+CREATE TABLE starter_data(Roster_Year INT, Number INT, First_Name VARCHAR(50), Last_Name VARCHAR(50), Potential_Starts INT, GP INT, GS INT, Is_Starter VARCHAR(1), College VARCHAR(50));
 
 \COPY starter_data FROM 'starter_data.csv' DELIMITER ',' CSV HEADER;
 
-CREATE TABLE accolade_data("accolade_data.Roster_Year" INT, "accolade_data.First_Name" VARCHAR(50), "accolade_data.Last_Name" VARCHAR(50), "accolade_data.Accolade" VARCHAR(20), "accolade_data.College" VARCHAR(50));
+CREATE TABLE accolade_data(Roster_Year INT, First_Name VARCHAR(50), Last_Name VARCHAR(50), Accolade VARCHAR(20), College VARCHAR(50));
 
 \COPY accolade_data FROM 'accolades.csv' DELIMITER ',' CSV HEADER;
 
@@ -21,7 +21,7 @@ CREATE TABLE accolade_data("accolade_data.Roster_Year" INT, "accolade_data.First
 
 CREATE TABLE high_school_data (City VARCHAR(30), Institution VARCHAR(100), "State/Province" VARCHAR(20), Country VARCHAR(50), Latitude DOUBLE PRECISION, Longitude DOUBLE PRECISION, "Public/Private/International" VARCHAR(20));
 
-\COPY high_school_data FROM 'CombinedHighSchools.csv' DELIMITER ',' CSV HEADER;
+\COPY high_school_data FROM 'high_school_data.csv' DELIMITER ',' CSV HEADER;
 
 UPDATE high_school_data SET Institution = LOWER(Institution);
 
@@ -29,59 +29,31 @@ UPDATE high_school_data SET Institution = LOWER(Institution);
 --Join with starter data
 
 CREATE TABLE roster_starter_data AS (
-	SELECT "roster_data.Roster_Year", "roster_data.Player_Number", "roster_data.First_Name", "roster_data.Last_Name", "roster_data.Year", "roster_data.Position1", "roster_data.Position2", "roster_data.Position3", "roster_data.Height", "roster_data.Weight", "roster_data.Home_Town", "roster_data.State_or_Country", "roster_data.High_School", "roster_data.Alternative_School", "roster_data.College", "roster_data.College_League", "roster_data.Bio_Link", "starter_data.Potential_Starts", "starter_data.GP", "starter_data.GS", "starter_data.Is_Starter"
+	SELECT roster_data.Roster_Year, roster_data.Player_Number, roster_data.First_Name, roster_data.Last_Name, roster_data.Year, roster_data.Position1, roster_data.Position2, roster_data.Position3, roster_data.Height, roster_data.Weight, roster_data.Home_Town, roster_data.State_or_Country, roster_data.High_School, roster_data.Alternative_School, roster_data.College, roster_data.College_League, roster_data.Bio_Link, starter_data.Potential_Starts, starter_data.GP, starter_data.GS, starter_data.Is_Starter
 	FROM roster_data
 	LEFT JOIN starter_data
-	ON "roster_data.First_Name"="starter_data.First_Name" AND "roster_data.Last_Name"="starter_data.Last_Name" AND "roster_data.Roster_Year"="starter_data.Roster_Year" AND "roster_data.College"="starter_data.College"
+	ON roster_data.First_Name=starter_data.First_Name AND roster_data.Last_Name=starter_data.Last_Name AND roster_data.Roster_Year=starter_data.Roster_Year AND roster_data.College=starter_data.College
 );
 
 
 --Join with accolade data
 
 CREATE TABLE roster_master_data AS (
-	SELECT "roster_data.Roster_Year", "roster_data.Player_Number", "roster_data.First_Name", "roster_data.Last_Name", "roster_data.Year", "roster_data.Position1", "roster_data.Position2", "roster_data.Position3", "roster_data.Height", "roster_data.Weight", "roster_data.Home_Town", "roster_data.State_or_Country", "roster_data.High_School", "roster_data.Alternative_School", "roster_data.College", "roster_data.College_League", "roster_data.Bio_Link", "starter_data.Potential_Starts", "starter_data.GP", "starter_data.GS", "starter_data.Is_Starter", "accolade_data.Accolade"
+	SELECT roster_starter_data.Roster_Year, roster_starter_data.Player_Number, roster_starter_data.First_Name, roster_starter_data.Last_Name, roster_starter_data.Year, roster_starter_data.Position1, roster_starter_data.Position2, roster_starter_data.Position3, roster_starter_data.Height, roster_starter_data.Weight, roster_starter_data.Home_Town, roster_starter_data.State_or_Country, roster_starter_data.High_School, roster_starter_data.Alternative_School, roster_starter_data.College, roster_starter_data.College_League, roster_starter_data.Bio_Link, roster_starter_data.Potential_Starts, roster_starter_data.GP, roster_starter_data.GS, roster_starter_data.Is_Starter, accolade_data.Accolade
 	FROM roster_starter_data
 	LEFT JOIN accolade_data
-	ON "roster_data.First_Name"="accolade_data.First_Name" AND "roster_data.Last_Name"="accolade_data.Last_Name" AND "roster_data.Roster_Year"="accolade_data.Roster_Year" AND "roster_data.College"="accolade_data.College"
+	ON roster_starter_data.First_Name=accolade_data.First_Name AND roster_starter_data.Last_Name=accolade_data.Last_Name AND roster_starter_data.Roster_Year=accolade_data.Roster_Year AND roster_starter_data.College=accolade_data.College
 );
 
 
---Drop extra tables
-
-DROP TABLE roster_data;
-DROP TABLE starter_data;
-DROP TABLE accolade_data;
+--Delete rows from original tables and the extra table
+DELETE FROM roster_data;
+DELETE FROM starter_data;
+DELETE FROM accolade_data;
 DROP TABLE roster_starter_data;
 
 
---Rename attributes without the table name
-
-ALTER TABLE roster_master_data RENAME COLUMN "roster_data.Roster_Year" TO Roster_Year;
-ALTER TABLE roster_master_data RENAME COLUMN "roster_data.Player_Number" TO Player_Number;
-ALTER TABLE roster_master_data RENAME COLUMN "roster_data.First_Name" TO First_Name;
-ALTER TABLE roster_master_data RENAME COLUMN "roster_data.Last_Name" TO Last_Name;
-ALTER TABLE roster_master_data RENAME COLUMN "roster_data.Year" TO Year;
-ALTER TABLE roster_master_data RENAME COLUMN "roster_data.Position1" TO Position1;
-ALTER TABLE roster_master_data RENAME COLUMN "roster_data.Position2" TO Position2;
-ALTER TABLE roster_master_data RENAME COLUMN "roster_data.Position3" TO Position3;
-ALTER TABLE roster_master_data RENAME COLUMN "roster_data.Height" TO Height;
-ALTER TABLE roster_master_data RENAME COLUMN "roster_data.Weight" TO Weight;
-ALTER TABLE roster_master_data RENAME COLUMN "roster_data.Home_Town" TO Home_Town;
-ALTER TABLE roster_master_data RENAME COLUMN "roster_data.State_or_Country" TO State_or_Country;
-ALTER TABLE roster_master_data RENAME COLUMN "roster_data.High_School" TO High_School;
-ALTER TABLE roster_master_data RENAME COLUMN "roster_data.Alternative_School" TO Alternative_School;
-ALTER TABLE roster_master_data RENAME COLUMN "roster_data.College" TO College;
-ALTER TABLE roster_master_data RENAME COLUMN "roster_data.College_League" TO College_League;
-ALTER TABLE roster_master_data RENAME COLUMN "roster_data.Bio_Link" TO Bio_Link;
-ALTER TABLE roster_master_data RENAME COLUMN "starter_data.Potential_Starts" TO Potential_Starts;
-ALTER TABLE roster_master_data RENAME COLUMN "starter_data.GP" TO GP;
-ALTER TABLE roster_master_data RENAME COLUMN "starter_data.GS" TO GS;
-ALTER TABLE roster_master_data RENAME COLUMN "starter_data.Is_Starter" TO Is_Starter;
-ALTER TABLE roster_master_data RENAME COLUMN "accolade_data.Accolade" TO Accolade;
-
-
 --Drop unneeded columns
-
 ALTER TABLE roster_master_data DROP COLUMN Position2;
 ALTER TABLE roster_master_data DROP COLUMN Position3;
 ALTER TABLE roster_master_data DROP COLUMN Potential_Starts;
@@ -235,6 +207,7 @@ CREATE TABLE highschool_match_master AS (
 	) AS temp1
 );
 
+-- Drop all extra tables
 DROP TABLE roster_public_final;
 DROP TABLE roster_international_final;
 DROP TABLE roster_unique_final;
@@ -248,10 +221,14 @@ CREATE TABLE grouped_data AS (
 	GROUP BY first_name, last_name, home_town, state_or_country, high_school, alternative_school, college, college_league
 );
 
+-- Drop extra table
+DROP TABLE highschool_match_master;
 
--- Table for future data upload
 
-CREATE TABLE new_roster_master_data (roster_year INT, player_number VARCHAR(10), first_name VARCHAR(50), last_name VARCHAR(50),  year VARCHAR(10), position1 VARCHAR(20), height VARCHAR(10), weight INT, home_town VARCHAR(30), state_or_country VARCHAR(20), high_school VARCHAR(100), alternative_school VARCHAR(50), college VARCHAR(50), college_League VARCHAR(50), bio_link VARCHAR(100), is_starter VARCHAR(1), accolade VARCHAR(20));
+-- Add all ids to tables
+ALTER TABLE high_school_data ADD COLUMN id SERIAL PRIMARY KEY;
+ALTER TABLE grouped_data ADD COLUMN id SERIAL PRIMARY KEY;
+ALTER TABLE roster_master_data ADD COLUMN id SERIAL PRIMARY KEY;
 
 
 -- Table and trigger for document tracking
@@ -260,11 +237,55 @@ CREATE TABLE documents (id SERIAL PRIMARY KEY, description VARCHAR(255), documen
 
 CREATE OR REPLACE FUNCTION update_db_func() RETURNS TRIGGER AS $$
 	BEGIN
-		-- Union the new and old roster master data
 
 		-- Drop ids to avoid conflict when joining tables
 		ALTER TABLE roster_master_data DROP COLUMN id;
 		ALTER TABLE high_school_data DROP COLUMN id;
+
+
+		--Join with starter data
+
+		CREATE TABLE roster_starter_data AS (
+			SELECT roster_data.Roster_Year, roster_data.Player_Number, roster_data.First_Name, roster_data.Last_Name, roster_data.Year, roster_data.Position1, roster_data.Position2, roster_data.Position3, roster_data.Height, roster_data.Weight, roster_data.Home_Town, roster_data.State_or_Country, roster_data.High_School, roster_data.Alternative_School, roster_data.College, roster_data.College_League, roster_data.Bio_Link, starter_data.Potential_Starts, starter_data.GP, starter_data.GS, starter_data.Is_Starter
+			FROM roster_data
+			LEFT JOIN starter_data
+			ON roster_data.First_Name=starter_data.First_Name AND roster_data.Last_Name=starter_data.Last_Name AND roster_data.Roster_Year=starter_data.Roster_Year AND roster_data.College=starter_data.College
+		);
+
+
+		--Join with accolade data
+
+		CREATE TABLE new_roster_master_data AS (
+			SELECT roster_starter_data.Roster_Year, roster_starter_data.Player_Number, roster_starter_data.First_Name, roster_starter_data.Last_Name, roster_starter_data.Year, roster_starter_data.Position1, roster_starter_data.Position2, roster_starter_data.Position3, roster_starter_data.Height, roster_starter_data.Weight, roster_starter_data.Home_Town, roster_starter_data.State_or_Country, roster_starter_data.High_School, roster_starter_data.Alternative_School, roster_starter_data.College, roster_starter_data.College_League, roster_starter_data.Bio_Link, roster_starter_data.Potential_Starts, roster_starter_data.GP, roster_starter_data.GS, roster_starter_data.Is_Starter, accolade_data.Accolade
+			FROM roster_starter_data
+			LEFT JOIN accolade_data
+			ON roster_starter_data.First_Name=accolade_data.First_Name AND roster_starter_data.Last_Name=accolade_data.Last_Name AND roster_starter_data.Roster_Year=accolade_data.Roster_Year AND roster_starter_data.College=accolade_data.College
+		);
+
+
+		--Delete rows from original tables and the extra table
+		DELETE FROM roster_data;
+		DELETE FROM starter_data;
+		DELETE FROM accolade_data;
+		DROP TABLE roster_starter_data;
+
+
+		--Drop unneeded columns
+		ALTER TABLE new_roster_master_data DROP COLUMN Position2;
+		ALTER TABLE new_roster_master_data DROP COLUMN Position3;
+		ALTER TABLE new_roster_master_data DROP COLUMN Potential_Starts;
+		ALTER TABLE new_roster_master_data DROP COLUMN GP;
+		ALTER TABLE new_roster_master_data DROP COLUMN GS;
+
+
+		-- Drop those entires with a null high school and alternative school
+
+		DELETE FROM new_roster_master_data
+		WHERE High_School IS NULL AND Alternative_School IS NULL;
+
+
+
+		-- Union the new and old roster master data
 
 		CREATE TABLE roster_master_data3 AS (
 			SELECT *
@@ -274,11 +295,9 @@ CREATE OR REPLACE FUNCTION update_db_func() RETURNS TRIGGER AS $$
 			FROM new_roster_master_data
 		);
 
-		-- Drop old table
+		-- Drop old and new table but not the combined one (3)
 		DROP TABLE roster_master_data;
-
-		--drop rows from 2
-		DELETE FROM new_roster_master_data;
+		DROP TABLE new_roster_master_data;
 
 		ALTER TABLE roster_master_data3 RENAME TO roster_master_data;
 
@@ -404,10 +423,6 @@ CREATE OR REPLACE FUNCTION update_db_func() RETURNS TRIGGER AS $$
 		;
 
 
-		-- Drop old table
-		DROP TABLE highschool_match_master;
-
-
 		-- Union all tables
 		CREATE TABLE highschool_match_master AS (
 			SELECT *
@@ -440,12 +455,14 @@ CREATE OR REPLACE FUNCTION update_db_func() RETURNS TRIGGER AS $$
 			GROUP BY first_name, last_name, home_town, state_or_country, high_school, alternative_school, college, college_league
 		);
 
+		-- Drop extra table
+		DROP TABLE highschool_match_master;
+
 
 		-- Add all ids to tables
-		ALTER TABLE roster_master_data ADD COLUMN id SERIAL PRIMARY KEY;
 		ALTER TABLE high_school_data ADD COLUMN id SERIAL PRIMARY KEY;
-		ALTER TABLE highschool_match_master ADD COLUMN id SERIAL PRIMARY KEY;
 		ALTER TABLE grouped_data ADD COLUMN id SERIAL PRIMARY KEY;
+		ALTER TABLE roster_master_data ADD COLUMN id SERIAL PRIMARY KEY;
 
 		RETURN NEW;
 	END;
@@ -454,13 +471,10 @@ $$ LANGUAGE plpgsql;
 CREATE TRIGGER update_db AFTER INSERT ON documents FOR EACH ROW EXECUTE PROCEDURE update_db_func();
 
 
--- Add all ids to tables
-ALTER TABLE roster_master_data ADD COLUMN id SERIAL PRIMARY KEY;
-ALTER TABLE high_school_data ADD COLUMN id SERIAL PRIMARY KEY;
-ALTER TABLE highschool_match_master ADD COLUMN id SERIAL PRIMARY KEY;
-ALTER TABLE grouped_data ADD COLUMN id SERIAL PRIMARY KEY;
 
 
--- \COPY new_roster_master_data FROM 'new_roster_master_data.csv' DELIMITER ',' CSV HEADER;
+-- \COPY starter_data FROM 'new_starter_data.csv' DELIMITER ',' CSV HEADER;
+-- \COPY roster_data FROM 'new_roster_data.csv' DELIMITER ',' CSV HEADER;
+-- \COPY accolade_data FROM 'new_accolades.csv' DELIMITER ',' CSV HEADER;
 -- \Copy grouped_data to 'grouped_data.csv' DELIMITER ',' CSV HEADER;
 -- INSERT INTO documents (description, document) VALUES ('hi', 'doc 1');
