@@ -12,9 +12,13 @@ var infowindow;
 var clickCounts = [0, 0]; //count clicks for heatmap and marker cluster
 
 function loadData(map, playerData){
-  let infowindow = new google.maps.InfoWindow({
-    content: "temp"
-  });
+  if (firstLoad) {
+    infowindow = new google.maps.InfoWindow({
+      content: "temp"
+    });
+  } else {
+    infowindow.close();
+  }
 
   if(clickCounts[0] % 2){ //turn heatmap off if on
     document.getElementById('heatMapControl').click();
