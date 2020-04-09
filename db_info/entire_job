@@ -69,7 +69,6 @@ WHERE High_School IS NULL AND Alternative_School IS NULL;
 
 -- Matching Operations
 
-
 --Guaranteed matched Public School data
 
 CREATE TABLE roster_public_school1 AS (
@@ -211,6 +210,7 @@ CREATE TABLE highschool_match_master AS (
 DROP TABLE roster_public_final;
 DROP TABLE roster_international_final;
 DROP TABLE roster_unique_final;
+DROP TABLE roster_master_data;
 
 
 -- Group entries
@@ -221,14 +221,11 @@ CREATE TABLE grouped_data AS (
 	GROUP BY first_name, last_name, home_town, state_or_country, high_school, alternative_school, college, college_league
 );
 
--- Drop extra table
-DROP TABLE highschool_match_master;
-
 
 -- Add all ids to tables
 ALTER TABLE high_school_data ADD COLUMN id SERIAL PRIMARY KEY;
 ALTER TABLE grouped_data ADD COLUMN id SERIAL PRIMARY KEY;
-ALTER TABLE roster_master_data ADD COLUMN id SERIAL PRIMARY KEY;
+ALTER TABLE highschool_match_master ADD COLUMN id SERIAL PRIMARY KEY;
 
 
 -- Table and trigger for document tracking
@@ -239,7 +236,7 @@ CREATE OR REPLACE FUNCTION update_db_func() RETURNS TRIGGER AS $$
 	BEGIN
 
 		-- Drop ids to avoid conflict when joining tables
-		ALTER TABLE roster_master_data DROP COLUMN id;
+		ALTER TABLE highschool_match_master DROP COLUMN id;
 		ALTER TABLE high_school_data DROP COLUMN id;
 
 
@@ -255,7 +252,7 @@ CREATE OR REPLACE FUNCTION update_db_func() RETURNS TRIGGER AS $$
 
 		--Join with accolade data
 
-		CREATE TABLE new_roster_master_data AS (
+		CREATE TABLE roster_master_data AS (
 			SELECT roster_starter_data.Roster_Year, roster_starter_data.Player_Number, roster_starter_data.First_Name, roster_starter_data.Last_Name, roster_starter_data.Year, roster_starter_data.Position1, roster_starter_data.Position2, roster_starter_data.Position3, roster_starter_data.Height, roster_starter_data.Weight, roster_starter_data.Home_Town, roster_starter_data.State_or_Country, roster_starter_data.High_School, roster_starter_data.Alternative_School, roster_starter_data.College, roster_starter_data.College_League, roster_starter_data.Bio_Link, roster_starter_data.Potential_Starts, roster_starter_data.GP, roster_starter_data.GS, roster_starter_data.Is_Starter, accolade_data.Accolade
 			FROM roster_starter_data
 			LEFT JOIN accolade_data
@@ -271,35 +268,17 @@ CREATE OR REPLACE FUNCTION update_db_func() RETURNS TRIGGER AS $$
 
 
 		--Drop unneeded columns
-		ALTER TABLE new_roster_master_data DROP COLUMN Position2;
-		ALTER TABLE new_roster_master_data DROP COLUMN Position3;
-		ALTER TABLE new_roster_master_data DROP COLUMN Potential_Starts;
-		ALTER TABLE new_roster_master_data DROP COLUMN GP;
-		ALTER TABLE new_roster_master_data DROP COLUMN GS;
+		ALTER TABLE roster_master_data DROP COLUMN Position2;
+		ALTER TABLE roster_master_data DROP COLUMN Position3;
+		ALTER TABLE roster_master_data DROP COLUMN Potential_Starts;
+		ALTER TABLE roster_master_data DROP COLUMN GP;
+		ALTER TABLE roster_master_data DROP COLUMN GS;
 
 
 		-- Drop those entires with a null high school and alternative school
 
-		DELETE FROM new_roster_master_data
+		DELETE FROM roster_master_data
 		WHERE High_School IS NULL AND Alternative_School IS NULL;
-
-
-
-		-- Union the new and old roster master data
-
-		CREATE TABLE roster_master_data3 AS (
-			SELECT *
-			FROM roster_master_data
-			UNION
-			SELECT *
-			FROM new_roster_master_data
-		);
-
-		-- Drop old and new table but not the combined one (3)
-		DROP TABLE roster_master_data;
-		DROP TABLE new_roster_master_data;
-
-		ALTER TABLE roster_master_data3 RENAME TO roster_master_data;
 
 
 		-- Matching Operations
@@ -424,7 +403,7 @@ CREATE OR REPLACE FUNCTION update_db_func() RETURNS TRIGGER AS $$
 
 
 		-- Union all tables
-		CREATE TABLE highschool_match_master AS (
+		CREATE TABLE new_highschool_match_master AS (
 			SELECT *
 			FROM roster_unique_final
 			UNION
@@ -442,6 +421,24 @@ CREATE OR REPLACE FUNCTION update_db_func() RETURNS TRIGGER AS $$
 		DROP TABLE roster_public_final;
 		DROP TABLE roster_international_final;
 		DROP TABLE roster_unique_final;
+		DROP TABLE roster_master_data;
+
+
+		-- Union the new and old high school match master data
+
+		CREATE TABLE highschool_match_master3 AS (
+			SELECT *
+			FROM highschool_match_master
+			UNION
+			SELECT *
+			FROM new_highschool_match_master
+		);
+
+		-- Drop old and new table but not the combined one (3)
+		DROP TABLE highschool_match_master;
+		DROP TABLE new_highschool_match_master;
+
+		ALTER TABLE highschool_match_master3 RENAME TO highschool_match_master;
 
 
 		-- Group entries
@@ -455,14 +452,11 @@ CREATE OR REPLACE FUNCTION update_db_func() RETURNS TRIGGER AS $$
 			GROUP BY first_name, last_name, home_town, state_or_country, high_school, alternative_school, college, college_league
 		);
 
-		-- Drop extra table
-		DROP TABLE highschool_match_master;
-
 
 		-- Add all ids to tables
 		ALTER TABLE high_school_data ADD COLUMN id SERIAL PRIMARY KEY;
 		ALTER TABLE grouped_data ADD COLUMN id SERIAL PRIMARY KEY;
-		ALTER TABLE roster_master_data ADD COLUMN id SERIAL PRIMARY KEY;
+		ALTER TABLE highschool_match_master ADD COLUMN id SERIAL PRIMARY KEY;
 
 		RETURN NEW;
 	END;
