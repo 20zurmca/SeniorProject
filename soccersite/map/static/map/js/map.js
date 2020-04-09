@@ -323,6 +323,7 @@ function loadData(map, playerData){
         changeTableOnZoom = false;
       }
     }
+    infowindow.close();
   });
 }
 
