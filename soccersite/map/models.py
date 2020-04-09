@@ -1,5 +1,6 @@
 from django.db import models
 from django.conf import settings
+from django.contrib.postgres.fields import ArrayField
 # Create your models here.
 
 class RosterMasterData(models.Model):
@@ -56,6 +57,30 @@ class MatchedHighSchool(models.Model):
     latitude = models.FloatField()
     longitude = models.FloatField()
     schoolType = models.CharField(max_length = 13, null = True)
+
+class GroupedData(models.Model):
+    firstName                 = models.CharField(max_length=50)
+    lastName                  = models.CharField(max_length=50)
+    homeTown                  = models.CharField(max_length=30)
+    stateOrCountry            = models.CharField(max_length=20)
+    highSchool                = models.CharField(max_length=100)
+    alternativeSchool         = models.CharField(max_length=100)
+    college                   = models.CharField(max_length=50)
+    collegeLeague             = models.CharField(max_length=50)
+    schoolType                = models.CharField(max_length=13, null=True)
+    yearsStarter              = models.IntegerField()
+    yearsAllConference        = models.IntegerField()
+    latitude                  = models.FloatField()
+    longitude                 = models.FloatField()
+    highSchoolCity            = models.CharField(max_length=30, null=True)
+    highSchoolSateOrProvince  = models.CharField(max_length=20, null=True)
+    highSchoolSateOrCountry   = models.CharField(max_length=20, null=True)
+    yearsOnRoster             = ArrayField(models.IntegerField())
+    yearsPlayed               = ArrayField(models.CharField(max_length=50))
+    positions                 = ArrayField(models.CharField(max_length=50))
+    heights                   = ArrayField(models.CharField(max_length=5))
+    weights                   = ArrayField(models.IntegerField())
+    bioLinks                  = ArrayField(models.CharField(max_length=100))
 
 #try for uploading csv
 class Document(models.Model):
