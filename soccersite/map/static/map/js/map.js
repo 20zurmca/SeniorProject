@@ -8,7 +8,6 @@ var firstLoad = true;
 var groupedLatLngData = {};
 var changeTableOnZoom = false;
 var dataTable;
-var currentInfoWindow;
 var infowindow;
 var clickCounts = [0, 0]; //count clicks for heatmap and marker cluster
 
@@ -109,8 +108,8 @@ function loadData(map, playerData){
 
 
       marker.addListener('click', function() {
-        if (currentInfoWindow) {
-          currentInfoWindow.close();
+        if (infowindow) {
+          infowindow.close();
         }
 
         infowindow.setContent(contentString);// = contentString;
