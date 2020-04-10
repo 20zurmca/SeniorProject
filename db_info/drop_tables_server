@@ -1,0 +1,10 @@
+-- Drop all tables in db for easy cleanup
+
+DROP TABLE high_school_data;
+DROP TABLE highschool_match_master;
+DELETE FROM map_documents;
+DELETE FROM map_groupeddata;
+DELETE FROM map_rosterdata;
+DELETE FROM map_starterdata;
+DELETE FROM map_accoladedata;
+DROP TRIGGER IF EXISTS update_db ON map_documents;

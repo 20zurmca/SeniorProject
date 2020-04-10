@@ -22,7 +22,7 @@ teddickj=> \d+ high_school_data
  country                      | character varying(50)  |           |          |         | extended |              |
  latitude                     | double precision       |           |          |         | plain    |              |
  longitude                    | double precision       |           |          |         | plain    |              |
- Public/Private/International | character varying(20)  |           |          |         | extended |              |
+ school_type		      | character varying(20)  |           |          |         | extended |              |
 
 
 teddickj=> \d+ highschool_match_master
@@ -52,7 +52,7 @@ teddickj=> \d+ highschool_match_master
  country                      | character varying(50)  |           |          |         | extended |              |
  latitude                     | double precision       |           |          |         | plain    |              |
  longitude                    | double precision       |           |          |         | plain    |              |
- Public/Private/International | character varying(20)  |           |          |         | extended |              |
+ school_type                  | character varying(20)  |           |          |         | extended |              |
 
 
 teddickj=> \d+ map_accoladedata
@@ -97,7 +97,7 @@ teddickj=> \d+ map_groupeddata
  highschoolcity               | text                  |           |          |         | extended |              |
  highschoolstateorprovince    | text                  |           |          |         | extended |              |
  highschoolcountry            | text                  |           |          |         | extended |              |
- Public/Private/International | text                  |           |          |         | extended |              |
+ school_type                  | text                  |           |          |         | extended |              |
  starter_count                | integer               |           |          |         | plain    |              |
  accolade_count               | integer               |           |          |         | plain    |              |
  latitude                     | double precision      |           |          |         | plain    |              |
