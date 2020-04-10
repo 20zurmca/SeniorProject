@@ -65,6 +65,7 @@ function loadData(map, playerData){
     player['bioLink'] = playerData[i]['bioLink'];
     player['isStarter'] = playerData[i]['isStarter'];
     player['accolade'] = playerData[i]['accolade'];
+    player['matchedCity'] = playerData[i]['matchedCity'];
 
     if(!groupedLatLngData[key]){ //new key found (new lat lng pair)
       groupedLatLngData[key] = {};
@@ -73,6 +74,8 @@ function loadData(map, playerData){
       groupedLatLngData[key]['lng'] = playerData[i]['longitude'];
       groupedLatLngData[key]['hs']  = playerData[i]['highSchool']
       groupedLatLngData[key]['players'] = [];
+      groupedLatLngData[key]['matchedCity'] = playerData[i]['matchedCity'];
+      groupedLatLngData[key]['matchedStateProvince'] = playerData[i]['matchedStateProvince'];
       players = groupedLatLngData[key]['players'];
       players.push(player)
     } else {
@@ -106,7 +109,9 @@ function loadData(map, playerData){
            '</div>'+
            '<h1 id="firstHeading" class="firstHeading">'+ groupedLatLngData[highSchool]['hs'] +'</h1>'+
            '<div id="bodyContent">'+
-           '<p>'+'</p>'+
+           '<p style="text-transform:capitalize">'+groupedLatLngData[highSchool]['matchedCity'] + ', ' +
+           groupedLatLngData[highSchool]['matchedStateProvince'] + '</p>'+
+           '<p style="text-transform:capitalize">'+ "Student Count: " + groupedLatLngData[highSchool]['playerCount'] +
            '</div>'+
            '</div>';
 
