@@ -20,7 +20,7 @@ function submit() {
 
 
 function admin(){
-  window.open('http://127.0.0.1:8000/admin/');
+  window.open('/admin/');
 }
 
 function parseCell(tableCell){
@@ -72,7 +72,7 @@ function csv(){
 }
 
 function about(){
-  window.location.href = 'http://127.0.0.1:8000/about'
+  window.location.href = '/about'
 }
 
 

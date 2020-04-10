@@ -26,37 +26,22 @@
 </head>
 <body>
   <div class="container-bgimage">
-    <div role="banner">
+    <div id="banner">
       <div>
-        <a href='http://127.0.0.1:8000/'>
+        <a href='/'>
           <img class = "block" src = "{% static 'map/img/logo.png' %}" width = 195 height = 66>
         </a>
         <p class="block">Talent is in the Data</p>
         <div id='index_toolbar'>
 
-            <a href='http://127.0.0.1:8000/upload' class="badge badge-dark">Upload Data</a>
+            <a href='/upload' class="badge badge-dark">Upload Data</a>
 
-            <a href='http://127.0.0.1:8000/about' class="badge badge-dark">About</a>
+            <a href='/about' class="badge badge-dark">About</a>
 
-            <a href='http://127.0.0.1:8000/admin' class="badge badge-dark">Admin Login</a>
+            <a href='/admin' class="badge badge-dark">Admin Login</a>
 
         </div>
       </div>
-    </div>
-
-
-
-
-
-
-
-
-
-    <div class="header">
-      <p id="instruction">
-        Select filters to find players of interest. Then, click the submit button
-        to view their high schools.
-      </p>
     </div>
 
     <div class="fouc">
@@ -146,7 +131,7 @@
           </tr>
         </thead>
         <tbody id="resultTableBody"> <!-- will set inner html with ajax -->
-          <tr id="noQuerySelected" onclick="location.href='#instruction';">
+          <tr id="noQuerySelected" onclick="location.href='#banner';">
             <td colspan="12">Select Filters to Query</td>
           </tr>
         </tbody>

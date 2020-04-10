@@ -8,14 +8,17 @@ var firstLoad = true;
 var groupedLatLngData = {};
 var changeTableOnZoom = false;
 var dataTable;
-var currentInfoWindow;
 var infowindow;
 var clickCounts = [0, 0]; //count clicks for heatmap and marker cluster
 
 function loadData(map, playerData){
-  let infowindow = new google.maps.InfoWindow({
-    content: "temp"
-  });
+  if (firstLoad) {
+    infowindow = new google.maps.InfoWindow({
+      content: "temp"
+    });
+  } else {
+    infowindow.close();
+  }
 
   if(clickCounts[0] % 2){ //turn heatmap off if on
     document.getElementById('heatMapControl').click();
@@ -109,16 +112,17 @@ function loadData(map, playerData){
 
 
       marker.addListener('click', function() {
-        if (currentInfoWindow) {
-          currentInfoWindow.close();
+        if (infowindow) {
+          infowindow.close();
         }
 
         infowindow.setContent(contentString);// = contentString;
 
+        infowindow.setPosition(new google.maps.LatLng(latitude, longitude));
         currentInfoWindow = infowindow;
 
         dt.destroy();
-        infowindow.open(map, marker);
+        infowindow.open(map);
         let table = document.getElementById('resultTableBody');
         let player_data = '';
         //table changes to marker-specific data on click
@@ -234,6 +238,9 @@ function loadData(map, playerData){
          controlText.style.fontWeight = "bold";
          heatMap.setMap(map);
          document.querySelector("#map > div > div > div:nth-child(14) > div:nth-child(2) > div:nth-child(1)").click(); //go to satellite mode
+         if(!(clickCounts[1] % 2)){ //turn off markers
+           document.getElementById('markerControl').click();
+         }
        } else {
          controlText.style.fontWeight = "normal";
          heatMap.setMap(null);
@@ -316,6 +323,7 @@ function loadData(map, playerData){
         changeTableOnZoom = false;
       }
     }
+    infowindow.close();
   });
 }
 
