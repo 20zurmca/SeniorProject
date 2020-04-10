@@ -90,10 +90,9 @@ def upload_file(request):
     if request.method == 'POST':
         form = DocumentForm(request.POST, request.FILES)
         if form.is_valid():
-            #print("form.document: ", form.cleaned_data['document'])
+            save_data(form.cleaned_data['document'])
             form.save()
-            save_data( form.cleaned_data['document'])
-            return render(request, 'map/myadmin.html', {'form':form})
+            return render(request, 'map/upload.html', {'form':form})
     else:
         form = DocumentForm()
     return render(request, 'map/upload.html', {'form':form})
