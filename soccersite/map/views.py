@@ -14,8 +14,8 @@ def index(request):
     colleges  = GroupedData.objects.values_list('college', flat=True).distinct().order_by('college')
     leagues   = GroupedData.objects.values_list('collegeLeague', flat=True).distinct().order_by('collegeLeague')
     positions = GroupedData.objects.values_list('positions', flat=True).distinct().order_by('positions')
-    heights   = GroupedData.objects.values_list('positions', flat=True).distinct().order_by('heights')
-    heights   = GroupedData.objects.values_list('positions', flat=True).distinct().order_by('weights')
+    heights   = GroupedData.objects.values_list('heights', flat=True).distinct().order_by('heights')
+    heights   = GroupedData.objects.values_list('weights', flat=True).distinct().order_by('weights')
     context = {'API_KEY': settings.GOOGLE_MAPS_API_KEY,
                'colleges': colleges,
                'leagues': leagues,
