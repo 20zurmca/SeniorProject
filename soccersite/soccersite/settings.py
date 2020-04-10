@@ -1,3 +1,4 @@
+
 """
 Django settings for soccersite project.
 
@@ -29,8 +30,7 @@ GOOGLE_MAPS_API_KEY = os.environ['GOOGLE_MAPS_API_KEY']
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['139.147.210.9', '127.0.0.1']
-
+ALLOWED_HOSTS = ['139.147.9.235','127.0.0.1', 'localhost','soccer.cs.lafayette.edu']
 # Application definition
 
 INSTALLED_APPS = [
@@ -80,8 +80,12 @@ WSGI_APPLICATION = 'soccersite.wsgi.application'
 #TODO: set up the database
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': 'soccer',
+        'USER': 'socceruser',
+        'PASSWORD': 'seniorproject',
+        'HOST': 'localhost',
+        'PORT': '3333',
     }
 }
 
@@ -123,8 +127,7 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/3.0/howto/static-files/
 
 STATIC_URL = '/static/'
+STATIC_ROOT = os.path.join(BASE_DIR, 'static/')
 STATICFILES_DIRS = [
-    '../map/static/map/css',
-    '../map/static/map/img',
-    '../map/static/map/js'
+    'map/static'
 ]

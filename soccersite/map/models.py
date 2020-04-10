@@ -3,60 +3,42 @@ from django.conf import settings
 from django.contrib.postgres.fields import ArrayField
 # Create your models here.
 
-class RosterMasterData(models.Model):
+class RosterData(models.Model):
+    rosterYear         = models.IntegerField()
+    playerNumber       = models.CharField(max_length=10)
+    firstName          = models.CharField(max_length=50)
+    lastName           = models.CharField(max_length=50)
+    year               = models.CharField(max_length=10)
+    position1          = models.CharField(max_length=20)
+    position2          = models.CharField(max_length=20)
+    position3          = models.CharField(max_length=10)
+    height             = models.CharField(max_length=10)
+    weight             = models.IntegerField()
+    homeTown           = models.CharField(max_length=30)
+    stateOrCountry     = models.CharField(max_length=20)
+    highSchool         = models.CharField(max_length=100)
+    alternativeSchool  = models.CharField(max_length=50)
+    college            = models.CharField(max_length=50)
+    collegeLeague      = models.CharField(max_length=50)
+    bioLink            = models.CharField(max_length=100)
+
+class StarterData(models.Model):
+    rosterYear      = models.IntegerField();
+    number          = models.IntegerField();
+    firstName       = models.CharField(max_length=50)
+    lastName        = models.CharField(max_length=50)
+    potentialStarts = models.IntegerField()
+    GP              = models.IntegerField()
+    GS              = models.IntegerField()
+    isStarter       = models.CharField(max_length=1)
+    college         = models.CharField(max_length=50)
+
+class AccoladeData(models.Model):
     rosterYear = models.IntegerField()
-    playerNumber = models.IntegerField(null = True)
-    firstName = models.CharField(max_length = 50)
-    lastName = models.CharField(max_length = 50)
-    year = models.CharField(max_length = 10)
-    position1 = models.CharField(max_length = 20)
-    height = models.CharField(max_length = 10, null = True)
-    weight = models.IntegerField(null = True)
-    homeTown = models.CharField(max_length = 30, null = True)
-    stateOrCountry = models.CharField(max_length = 20, null = True)
-    highSchool = models.CharField(max_length = 100, null = True)
-    alternativeSchool = models.CharField(max_length = 50, null = True)
-    college = models.CharField(max_length = 50)
-    collegeLeague = models.CharField(max_length = 50)
-    bioLink = models.CharField(max_length = 100)
-    isStarter = models.CharField(max_length = 1, null = True)
-    accolade = models.CharField(max_length = 20, null = True)
-
-
-class HighSchool(models.Model):
-    city            = models.CharField(max_length = 30)
-    institution     = models.CharField(max_length = 100)
-    stateOrProvince = models.CharField(max_length = 20, null = True)
-    country         = models.CharField(max_length = 50)
-    latitude        = models.FloatField()
-    longitude       = models.FloatField()
-    schoolType      = models.CharField(max_length = 20)
-
-class MatchedHighSchool(models.Model):
-    rosterYear = models.IntegerField()
-    playerNumber = models.IntegerField(null = True)
-    firstName = models.CharField(max_length = 50)
-    lastName = models.CharField(max_length = 50)
-    year = models.CharField(max_length = 10)
-    position1 = models.CharField(max_length = 20)
-    height = models.CharField(max_length = 10, null = True)
-    weight = models.IntegerField(null = True)
-    homeTown = models.CharField(max_length = 30, null = True)
-    stateOrCountry = models.CharField(max_length = 20, null = True)
-    highSchool = models.CharField(max_length = 100, null = True)
-    alternativeSchool = models.CharField(max_length = 50, null = True)
-    college = models.CharField(max_length = 50)
-    collegeLeague = models.CharField(max_length = 50)
-    bioLink = models.CharField(max_length = 100)
-    isStarter = models.CharField(max_length = 1, null = True)
-    accolade = models.CharField(max_length = 20, null = True)
-    matchedCity = models.CharField(max_length = 30, null=True)
-    matchedInstitution = models.CharField(max_length = 30, null = True)
-    matchedStateProvince = models.CharField(max_length = 20, null = True)
-    matchedCountry = models.CharField(max_length = 20, null = True)
-    latitude = models.FloatField()
-    longitude = models.FloatField()
-    schoolType = models.CharField(max_length = 13, null = True)
+    firstName  = models.CharField(max_length=50)
+    lastName   = models.CharField(max_length=50)
+    accolade   = models.CharField(max_length=20)
+    college    = models.CharField(max_length=50)
 
 class GroupedData(models.Model):
     firstName                 = models.CharField(max_length=50)
@@ -64,7 +46,7 @@ class GroupedData(models.Model):
     homeTown                  = models.CharField(max_length=30)
     stateOrCountry            = models.CharField(max_length=20)
     highSchool                = models.CharField(max_length=100)
-    alternativeSchool         = models.CharField(max_length=100)
+    alternativeSchool         = models.CharField(max_length=50)
     college                   = models.CharField(max_length=50)
     collegeLeague             = models.CharField(max_length=50)
     schoolType                = models.CharField(max_length=13, null=True)
@@ -72,9 +54,9 @@ class GroupedData(models.Model):
     yearsAllConference        = models.IntegerField()
     latitude                  = models.FloatField()
     longitude                 = models.FloatField()
-    highSchoolCity            = models.CharField(max_length=30, null=True)
-    highSchoolSateOrProvince  = models.CharField(max_length=20, null=True)
-    highSchoolSateOrCountry   = models.CharField(max_length=20, null=True)
+    highSchoolCity            = models.TextField(null=True)
+    highSchoolSateOrProvince  = models.TextField(null=True)
+    highSchoolCountry         = models.TextField(null=True)
     yearsOnRoster             = ArrayField(models.IntegerField())
     yearsPlayed               = ArrayField(models.CharField(max_length=50))
     positions                 = ArrayField(models.CharField(max_length=50))
@@ -83,7 +65,7 @@ class GroupedData(models.Model):
     bioLinks                  = ArrayField(models.CharField(max_length=100))
 
 #try for uploading csv
-class Document(models.Model):
+class Documents(models.Model):
     description = models.CharField(max_length=255, blank=True)
     document = models.FileField(upload_to='documents/')
     uploaded_at = models.DateTimeField(auto_now_add=True)

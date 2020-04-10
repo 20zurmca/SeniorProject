@@ -49,25 +49,29 @@ $(document).on('submit', '#filterForm', function(e){
         if(dt){
           dt.destroy();
         }
+        
         $.each(response['players'], function(key, value){
           player_data += '<tr>';
-          player_data += '<td>' + value.rosterYear     + '</td>';
-          player_data += '<td>' + value.firstName      + '</td>';
-          player_data += '<td>' + value.lastName       + '</td>';
-          player_data += '<td>' + value.year           + '</td>';
-          player_data += '<td>' + value.position1      + '</td>';
-          player_data += '<td>' + "will implement"     + '</td>';
-          player_data += '<td>' + "will implement"     + '</td>';
-          player_data += '<td>' + value.collegeLeague  + '</td>';
-          player_data += '<td>' + value.college        + '</td>';
-          player_data += '<td>' + value.homeTown       + '</td>';
-          player_data += '<td>' + value.stateOrCountry + '</td>';
-          player_data += '<td>' + value.highSchool     + '</td>';
+          player_data += '<td>' + value.yearsOnRoster          + '</td>';
+          player_data += '<td>' + value.firstName              + '</td>';
+          player_data += '<td>' + value.lastName               + '</td>';
+          player_data += '<td>' + value.yearsPlayed            + '</td>';
+          player_data += '<td>' + value.positions              + '</td>';
+          player_data += '<td>' + value.heights                + '</td>';
+          player_data += '<td>' + value.weights                + '</td>';
+          player_data += '<td>' + value.yearsStarter           + '</td>';
+          player_data += '<td>' + value.yearsAllConference     + '</td>';
+          player_data += '<td>' + value.collegeLeague          + '</td>';
+          player_data += '<td>' + value.college                + '</td>';
+          player_data += '<td>' + value.homeTown               + '</td>';
+          player_data += '<td>' + value.stateOrCountry         + '</td>';
+          player_data += '<td>' + value.highSchool             + '</td>';
           player_data += '</tr>';
         });
         document.getElementById('resultTableBody').innerHTML = player_data;
         dt = $('#resultTable').DataTable({
           "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]],
+          "scrollX": true
         });
       },
       error:function(){
