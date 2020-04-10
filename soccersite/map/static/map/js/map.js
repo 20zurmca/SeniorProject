@@ -1,33 +1,53 @@
-var center_ = {lat: 32.560742, lng: -3.9314364} //somewhere near the Mediterranean Sea
+var center_ = {lat: 32.560742, lng: -3.9314364}; //somewhere near the Mediterranean Sea
 var map;
-var markers = []
-var heatMapData = []
+var markers = [];
+var heatMapData = [];
 var heatMap;
 var markerCluster;
 var firstLoad = true;
 var groupedLatLngData = {};
 var changeTableOnZoom = false;
+var dataTable;
+var infowindow;
+var clickCounts = [0, 0]; //count clicks for heatmap and marker cluster
 
 function loadData(map, playerData){
+  if (firstLoad) {
+    infowindow = new google.maps.InfoWindow({
+      content: "temp"
+    });
+  } else {
+    infowindow.close();
+  }
+
+  if(clickCounts[0] % 2){ //turn heatmap off if on
+    document.getElementById('heatMapControl').click();
+    document.getElementById('heatMapControl').style.fontWeight = "normal";
+  }
+
+  if(clickCounts[1] % 2){
+    document.getElementById('markerControl').click();
+  }
+
+  clickCounts = [0, 0];
   for (var i = 0; i < markers.length; i++) {
-    console.log("setting marker reference to null");
     markers[i].setMap(null);
   }
-  markers = []; //to be filled based on query
-  heatMapData = []; //data for heatmap
+  markers.length = 0;; //to be filled based on query
+  heatMapData.length = 0;; //data for heatmap
   if(!firstLoad){
     markerCluster.setMap(null);
     markerCluster.clearMarkers();
   }
 
 
-   groupedLatLngData = {};
+  groupedLatLngData = {};
   //grouping response data by lat and lng
   for(var i = 0; i < playerData.length; i++){
     lat = playerData[i]['latitude'];
     lng = playerData[i]['longitude'];
-    key = String(lat) + lng
-    player = {}
+    key = String(lat) + lng;
+    player = {};
     player['rosterYear'] = playerData[i]['rosterYear'];
     player['playerNumber'] = playerData[i]['playerNumber'];
     player['firstName'] = playerData[i]['firstName'];
@@ -63,9 +83,9 @@ function loadData(map, playerData){
   }
   //building heatmap and marker data
     for(var highSchool in groupedLatLngData){
-      latitude = groupedLatLngData[highSchool]['lat'];
-      longitude = groupedLatLngData[highSchool]['lng']
-      var pos = {lat: latitude, lng: longitude};
+      let latitude = groupedLatLngData[highSchool]['lat'];
+      let longitude = groupedLatLngData[highSchool]['lng']
+      let pos = {lat: latitude, lng: longitude};
       let marker = new google.maps.Marker({
         position: pos,
         map: map,
@@ -80,24 +100,29 @@ function loadData(map, playerData){
 
       heatMapData.push({location: new google.maps.LatLng(latitude, longitude), weight: groupedLatLngData[highSchool]['playerCount']});
 
-      //builiding info window
-      var contentString = '<div id="content">'+
+      //building info window
+      let contentString = '<div id="content">'+
            '<div id="siteNotice">'+
            '</div>'+
            '<h1 id="firstHeading" class="firstHeading">'+ groupedLatLngData[highSchool]['hs'] +'</h1>'+
            '<div id="bodyContent">'+
-           '<p>'+
-
-           "Roster Year: " +'</p>'+
+           '<p>'+'</p>'+
            '</div>'+
            '</div>';
 
-       var infowindow = new google.maps.InfoWindow({
-         content: contentString
-       });
 
       marker.addListener('click', function() {
-        infowindow.open(map, marker);
+        if (infowindow) {
+          infowindow.close();
+        }
+
+        infowindow.setContent(contentString);// = contentString;
+
+        infowindow.setPosition(new google.maps.LatLng(latitude, longitude));
+        currentInfoWindow = infowindow;
+
+        dt.destroy();
+        infowindow.open(map);
         let table = document.getElementById('resultTableBody');
         let player_data = '';
         //table changes to marker-specific data on click
@@ -119,22 +144,22 @@ function loadData(map, playerData){
         }
         table.innerHTML = player_data;
         changeTableOnZoom = true;
-        $("#searchBar").val('');
+        dt = $('#resultTable').DataTable({
+          "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]]
+        });
+        document.getElementById('resultTable').style.width = '98%';
       });
 
       markers.push(marker);
     }
 
 
-    var mcOptions = {
-      //styles: clusterStyles, 
+    let mcOptions = {
+      //styles: clusterStyles,
       gridSize: 45,
       minimumClusterSize: 2,
       imagePath: 'https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/m'
     };
-    
-    //  markerCluster = new MarkerClusterer(map, markers,
-    //   {imagePath: 'https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/m'});
 
     markerCluster = new MarkerClusterer(map, markers, mcOptions);
 
@@ -154,7 +179,7 @@ function loadData(map, playerData){
         dv = parseInt(dv / 10, 10);
         index++;
       }
-  
+
       index = Math.min(index, numStyles);
       return {
         text: count,
@@ -166,6 +191,8 @@ function loadData(map, playerData){
        data: heatMapData
      });
      firstLoad = false;
+     $('.loader').hide();
+     document.location.href = "#map";
      document.getElementById('zoomControl').click();
 }
 
@@ -204,14 +231,16 @@ function loadData(map, playerData){
    controlText.style.paddingRight = '5px';
    controlText.innerHTML          = 'Toggle Heat Map';
    controlUI.appendChild(controlText);
-
-   var clickCount = 0; //counter for toggling bold text
    controlUI.addEventListener('click', function() {
      if(!controlUI.disabled){
-       clickCount++;
-       if(clickCount % 2) {
+       clickCounts[0] = clickCounts[0] + 1;
+       if(clickCounts[0] % 2) {
          controlText.style.fontWeight = "bold";
          heatMap.setMap(map);
+         document.querySelector("#map > div > div > div:nth-child(14) > div:nth-child(2) > div:nth-child(1)").click(); //go to satellite mode
+         if(!(clickCounts[1] % 2)){ //turn off markers
+           document.getElementById('markerControl').click();
+         }
        } else {
          controlText.style.fontWeight = "normal";
          heatMap.setMap(null);
@@ -268,6 +297,7 @@ function loadData(map, playerData){
       let player_data = '';
       //table changes to marker-specific data on click
       if(changeTableOnZoom){
+        dt.destroy();
         for(var hs in groupedLatLngData){
           for(let i = 0; i < groupedLatLngData[hs]['players'].length; i++){
             player_data += '<tr>';
@@ -286,14 +316,14 @@ function loadData(map, playerData){
             player_data += '</tr>';
           }
         }
-        //reseting search bar
         table.innerHTML = player_data;
+        dt = $('#resultTable').DataTable({
+          "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]]
+        });
         changeTableOnZoom = false;
       }
-      $("#searchBar").val('');
-      let value = $("#searchBar").val().toLowerCase();
-      $("#resultTableBody tr").css({"display": ""})
     }
+    infowindow.close();
   });
 }
 
@@ -335,14 +365,12 @@ function MarkerControl(controlDiv, map) {
   controlText.id                 = 'markerControlText';
   controlUI.appendChild(controlText);
 
-  var clickCount = 0; //counter for toggling bold text
   controlUI.addEventListener('click', function() {
     if(!controlUI.disabled){
-      clickCount++;
+      clickCounts[1] = clickCounts[1] + 1;
 
-    if(clickCount % 2 ) {
+    if(clickCounts[1] % 2 ) {
       controlText.style.fontWeight = "normal";
-      firstTime=false;
 
       for (var i = 0; i < markers.length; i++) {
        markers[i].setMap(null);
@@ -355,8 +383,37 @@ function MarkerControl(controlDiv, map) {
           for (var i = 0; i < markers.length; i++) {
            markers[i].setMap(map);
           }
-          markerCluster = new MarkerClusterer(map, markers,
-            {imagePath: 'https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/m'});
+          var mcOptions = {
+            gridSize: 45,
+            minimumClusterSize: 2,
+            imagePath: 'https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/m'
+          };
+
+
+          markerCluster = new MarkerClusterer(map, markers, mcOptions);
+
+          markerCluster.setCalculator(function(markers, numStyles){
+            var index = 0;
+            var count = 0;
+            for (var i = 0; i < markers.length; i++) {
+              if (markers[i].number) {
+                count += markers[i].number;
+              } else {
+                count++;
+              }
+            }
+            var dv = markers.length;
+            while (dv !== 0) {
+              dv = parseInt(dv / 10, 10);
+              index++;
+            }
+
+            index = Math.min(index, numStyles);
+            return {
+              text: count,
+              index: index
+            };
+          });
       }
     }
    });

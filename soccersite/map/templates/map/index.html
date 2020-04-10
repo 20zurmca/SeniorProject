@@ -2,177 +2,180 @@
 
 {% load static %}
 <html lang="en" dir="ltr">
-  <head>
-    <meta charset="utf-8">
-    <!-- bootstrap stuff -->
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-    <link rel="stylesheet" href = https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css>
-    <!-- google font -->
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Cabin&display=swap">
+<head>
+  <meta charset="utf-8">
+  <!-- bootstrap stuff -->
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+  integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+  <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
 
-    <!-- tail select -->
-    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/tail.select@latest/css/bootstrap4/tail.select-default.css">
-    <!-- map applicaton static files -->
-    <link rel="shortcut icon" href="{% static 'map/img/favicon.ico' %}" />
-    <link rel="stylesheet" type="text/css" href="{% static 'map/css/stylesheet.css' %}">
+  <!-- datatable css -->
+  <link href="https://cdn.datatables.net/1.10.20/css/dataTables.bootstrap4.min.css" rel="stylesheet">
+  <!-- google font -->
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Cabin&display=swap">
+  <link href="https://fonts.googleapis.com/css2?family=Lato:wght@700&display=swap" rel="stylesheet">
 
-    <title>Lafayette Soccer Project</title>
-  </head>
-  <body>
-    <div class="container-bgimage">
-      <div role="banner">
-        <div class="toolbar">
-          <a href='http://127.0.0.1:8000/'>
+
+  <!-- tail select -->
+  <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/tail.select@latest/css/bootstrap4/tail.select-default.css">
+  <!-- map applicaton static files -->
+  <link rel="shortcut icon" href="{% static 'map/img/favicon.ico' %}" />
+  <link rel="stylesheet" type="text/css" href="{% static 'map/css/stylesheet.css' %}">
+
+  <title>Lafayette Soccer Project</title>
+</head>
+<body>
+  <div class="container-bgimage">
+    <div id="banner">
+      <div>
+        <a href='/'>
           <img class = "block" src = "{% static 'map/img/logo.png' %}" width = 195 height = 66>
-          </a>
-          <p class="block" id="memo">Talent is in the Data</p>
-          <div class="header-button">
-            <a class="toolbarlink" href='http://127.0.0.1:8000/admin/myadmin'>Upload Data</a>
-            <a class="toolbarlink" href='http://127.0.0.1:8000/about'>About</a>
-            <a class="toolbarlink" href='http://127.0.0.1:8000/admin'>Admin Login</a>
-          </div>
+        </a>
+        <p class="block">Talent is in the Data</p>
+        <div id='index_toolbar'>
+
+            <a href='/upload' class="badge badge-dark">Upload Data</a>
+
+            <a href='/about' class="badge badge-dark">About</a>
+
+            <a href='/admin' class="badge badge-dark">Admin Login</a>
+
         </div>
       </div>
+    </div>
 
+    <div class="fouc">
+      <div class="selectors">
+        <form method="POST" id="filterForm">
+          {% csrf_token %}
+          <select class="select-search" multiple name="collegeLeagues" id="collegeLeagueSelector">
+            <optgroup label="College League">
+              {% for league in leagues %}
+              <option value="{{league}}" id="{{league}}">{{league}}</option>
+              {% endfor %}
+            </optgroup>
+          </select>
 
-      <div class="header">
-        <p id="instruction">
-          Select filters to find players of interest. Then, click the submit button
-          to view their high schools.
-        </p>
-      </div>
+          <select class="select-search" multiple name="colleges" id="collegeSelector">
+            <optgroup label="College">
+              {% for college in colleges %}
+              <option value="{{college}}" id="{{college}}">{{college}}</option>
+              {% endfor %}
+            </optgroup>
+          </select>
 
-      <div class="fouc">
-        <div class="selectors">
-          <form method="POST" id="filterForm">
-            {% csrf_token %}
-            <select class="select-search" multiple name="collegeLeagues" id="collegeLeagueSelector">
-                <optgroup label="College League">
-                  {% for league in leagues %}
-                    <option value="{{league}}" id="{{league}}">{{league}}</option>
-                  {% endfor %}
-                </optgroup>
-            </select>
+          <select class="select-search" multiple name="positions" id="positionSelector">
+            <optgroup label="Position">
+              {% for position in positions %}
+              {% if position and position.strip %} <!-- do not include empty positions -->
+              <option>{{position}}</option>
+              {% endif %}
+              {% endfor %}
+            </optgroup>
+          </select>
 
-            <select class="select-search" multiple name="colleges" id="collegeSelector">
-                <optgroup label="College">
-                   {% for college in colleges %}
-                      <option value="{{college}}" id="{{college}}">{{college}}</option>
-                   {% endfor %}
-                </optgroup>
-            </select>
+          <select class="select" multiple name="starterYears" id="starterSelector">
+            <option>0</option>
+            <option>1</option>
+            <option>2</option>
+            <option>3</option>
+            <option>4+</option>
+          </select>
 
-            <select class="select-search" multiple name="positions" id="positionSelector">
-                <optgroup label="Position">
-                    {% for position in positions %}
-                      {% if position and position.strip %} <!-- do not include empty positions -->
-                      <option>{{position}}</option>
-                      {% endif %}
-                    {% endfor %}
-                </optgroup>
-            </select>
+          <select class="select" multiple name="allConferenceYears" id="allConferenceSelector">
+            <option>0</option>
+            <option>1</option>
+            <option>2</option>
+            <option>3</option>
+            <option>4+</option>
+          </select>
 
-            <select class="select" multiple name="starterYears" id="starterSelector">
-                <option>0</option>
-                <option>1</option>
-                <option>2</option>
-                <option>3</option>
-                <option>4+</option>
-            </select>
-
-            <select class="select" multiple name="allConferenceYears" id="allConferenceSelector">
-                <option>0</option>
-                <option>1</option>
-                <option>2</option>
-                <option>3</option>
-                <option>4+</option>
-            </select>
-
-            <div class = "submit-button">
-              <input type="submit" class="btn btn-primary btn-lg" value="Submit" id="button1"></input>
+          <div class = "submit-button">
+            <div class="loader-wrapper">
+              <div class="loader"></div>
             </div>
-          </form>
-        </div>
+
+            <input type="submit" class="btn btn-primary btn-lg" value="Submit" id="button1"></input>
+          </div>
+        </form>
       </div>
-
-      <div id = "map"></div>
-
     </div>
 
+    <div id = "map"></div>
+  </div>
 
-    <div class = "table-tools">
-      <button type="button" class="btn btn-primary btn-small" aria-pressed="true" id="button2">
-        CSV
-      </button>
+  <div class = "table-tools">
+    <button type="button" class="btn btn-primary btn-small" aria-pressed="true" id="button2">
+      Export Table (CSV)
+    </button>
+  </div>
 
-      <input type="text" class="form-control mb-2" placeholder="Search..." aria-label="Search Table" aria-describedby="basic-addon1" id="searchBar">
-    </div>
-
-    <script src="{% static 'map/js/sortTable.js' %}"></script>
-
+  <script>var submitted = false </script>
+  <div class = "datatable-container">
     <div class = "table">
-      <!--TODO: work on the table -->
       <table class="table table-striped table-hover table-dark" id="resultTable">
         <thead id="resultTableHeader">
           <tr>
-            <th scope="col" onclick="sortTable(0)">Roster Year</th>
-            <th scope="col" onclick="sortTable(1)">First Name</th>
-            <th scope="col" onclick="sortTable(2)">Last Name</th>
-            <th scope="col" onclick="sortTable(3)">Class Year</th>
-            <th scope="col" onclick="sortTable(4)">Position</th>
-            <th scope="col" onclick="sortTable(5)" disabled = true >Years Starter</th>
-            <th scope="col" onclick="sortTable(6)" disabled = true>Years All-Conference</th>
+            <th scope="col">Roster Year</th>
+            <th scope="col">First Name</div></th>
+            <th scope="col">Last Name</div></th>
+            <th scope="col">Class Year</th>
+            <th scope="col">Position</th>
+            <th scope="col"  disabled = "true" >Years Starter</th>
+            <th scope="col"  disabled = "true">Years All-Conference</th>
             <th scope="col">League</th>
             <th scope="col">College</th>
-            <th scope="col" onclick="sortTable(9)">Hometown</th>
-            <th scope="col" onclick="sortTable(10)">State or Country</th>
-            <th scope="col" onclick="sortTable(11)">High School</th>
+            <th scope="col">Hometown</th>
+            <th scope="col">State or Country</th>
+            <th scope="col">High School</th>
           </tr>
         </thead>
         <tbody id="resultTableBody"> <!-- will set inner html with ajax -->
+          <tr id="noQuerySelected" onclick="location.href='#banner';">
+            <td colspan="12">Select Filters to Query</td>
+          </tr>
         </tbody>
       </table>
     </div>
+  </div>
 
-    <div class="footer_image">
-      <!-- image details in css -->
-      <h5 id="footer_name">© Copyright 2020</h5>
-      <img id="footer_img" src="{% static 'map/img/logo.png' %}" width = 195 height = 66>
-    </div>
+  <div class="footer_image">
+    <!-- image details in css -->
+    <h5 id="footer_name">© Copyright 2020</h5>
+    <img id="footer_img" src="{% static 'map/img/logo.png' %}" width = 195 height = 66>
+  </div>
 
-    <!-- jQuery library -->
-    <script src="https://code.jquery.com/jquery-3.4.1.js" integrity="sha256-WpOohJOqMqqyKL9FccASB9O0KwACQJpFTUBLTYOVvVU="
-    crossorigin="anonymous"></script>
+  <!-- jQuery library -->
+  <script src="https://code.jquery.com/jquery-3.4.1.js" integrity="sha256-WpOohJOqMqqyKL9FccASB9O0KwACQJpFTUBLTYOVvVU="
+  crossorigin="anonymous"></script>
 
-    <!-- Maps -->
-    <script src="https://unpkg.com/@google/markerclustererplus@4.0.1/dist/markerclustererplus.min.js"></script>
-    <script src="{% static 'map/js/map.js' %}"></script>
-    <script async defer
-    src="https://maps.googleapis.com/maps/api/js?key={{GOOGLE_MAPS_API_KEY}}&libraries=visualization&callback=initMap"></script>
+  <!-- Maps -->
+  <script src="https://unpkg.com/@google/markerclustererplus@4.0.1/dist/markerclustererplus.min.js"></script>
+  <script src="{% static 'map/js/form.js' %}"></script>
+  <script src="{% static 'map/js/map.js' %}"></script>
+  <script async defer
+  src="https://maps.googleapis.com/maps/api/js?key={{API_KEY}}&libraries=visualization&callback=initMap"></script>
 
-   <!--Bootstrap.js -->
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
-    integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
-    crossorigin="anonymous"></script>
+  <!--Bootstrap.js -->
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+  integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+  crossorigin="anonymous"></script>
 
-    <!--Tail select -->
-    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/tail.select@0.5.15/js/tail.select.min.js"></script>
-    <!-- Other js -->
-    <script src="{% static 'map/js/selectors.js' %}"></script>
-    <script src="{% static 'map/js/form.js' %}"></script>
-    <script src="{% static 'map/js/homePageButtons.js' %}"></script>
-    <!-- eliminating flash of unstyled content (FOUC) -->
-    <script>
-      $(document).ready(function(){
-        $('.fouc').css({"visibility": "visible"});
-      });
+  <!--Tail select -->
+  <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/tail.select@0.5.15/js/tail.select.min.js"></script>
+  <!-- Other js -->
+  <script src="{% static 'map/js/selectors.js' %}"></script>
+  <script src="{% static 'map/js/homePageButtons.js' %}"></script>
+  <!-- eliminating flash of unstyled content (FOUC) -->
 
-      $("#searchBar").on("keyup", function() {
-        var value = $(this).val().toLowerCase();
-        $("#resultTableBody tr").filter(function() {
-          $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
-        });
-      });
-    </script>
-  </body>
+  <!-- datatable -->
+  <script src = "https://cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js"></script>
+  <script src = "https://cdn.datatables.net/1.10.20/js/dataTables.bootstrap4.min.js"></script>
+  <script>
+  $(document).ready(function(){
+    $('.fouc').css({"visibility": "visible"});
+    $('.loader').hide();
+  });
+  </script>
+</body>
 </html>

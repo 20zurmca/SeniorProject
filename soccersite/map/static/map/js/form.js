@@ -1,6 +1,8 @@
 /**
  * getCookie() is used to get the csrftoken for ajax call
 */
+var dt;
+
 function getCookie(c_name)
 {
     if (document.cookie.length > 0)
@@ -19,9 +21,14 @@ function getCookie(c_name)
 
 $(document).on('submit', '#filterForm', function(e){
   e.preventDefault(); //prevent refresh
-  selectedColleges = collegeSelector.options.find("selected", "any"); //from selectors.js
-  if(selectedColleges.length == 0){
-    alert("Select at least one college to query.");
+  selectedColleges           = collegeSelector.options.find("selected", "any"); //from selectors.js
+  selectedPositions          = positionSelector.options.find("selected", "any");
+  selectedStarterYears       = starterSelector.options.find("selected", "any");
+  selectedAllConferenceYears =  allConferenceSelector.options.find("selected", "any");
+  let selectedSomething = (selectedColleges.length > 0 || selectedPositions.length > 0 ||
+                          selectedStarterYears.length > 0 || selectedAllConferenceYears.length > 0);
+  if(!selectedSomething){
+    alert("Select at least one drop down to query.");
   } else {
     $.ajaxSetup({
            headers: { "X-CSRFToken": getCookie("csrftoken") }
@@ -39,6 +46,9 @@ $(document).on('submit', '#filterForm', function(e){
       success:function(response){
         loadData(map, response['players']); //loading data in map.js
         var player_data = '';
+        if(dt){
+          dt.destroy();
+        }
         $.each(response['players'], function(key, value){
           player_data += '<tr>';
           player_data += '<td>' + value.rosterYear     + '</td>';
@@ -56,6 +66,9 @@ $(document).on('submit', '#filterForm', function(e){
           player_data += '</tr>';
         });
         document.getElementById('resultTableBody').innerHTML = player_data;
+        dt = $('#resultTable').DataTable({
+          "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]],
+        });
       },
       error:function(){
         console.log("Error with form submission");

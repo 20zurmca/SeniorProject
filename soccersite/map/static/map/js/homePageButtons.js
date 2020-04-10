@@ -1,17 +1,26 @@
 function submit() {
-  selectedColleges = collegeSelector.options.find("selected", "any"); //from selectors.js
-  if(selectedColleges.length > 0){
-      location.href = "#map";
+  selectedColleges           = collegeSelector.options.find("selected", "any"); //from selectors.js
+  selectedPositions          = positionSelector.options.find("selected", "any");
+  selectedStarterYears       = starterSelector.options.find("selected", "any");
+  selectedAllConferenceYears =  allConferenceSelector.options.find("selected", "any");
+  let selectedSomething      = (selectedColleges.length > 0 || selectedPositions.length > 0 ||
+                                selectedStarterYears.length > 0 || selectedAllConferenceYears.length > 0);
+  if(selectedSomething){
       document.getElementById('markerControl').style.fontWeight = "bold";
       document.getElementById('markerControl').disabled = false;
       document.getElementById('zoomControl').disabled = false;
       document.getElementById('heatMapControl').disabled = false;
+      if(document.getElementById('noQuerySelected')){
+        document.getElementById('noQuerySelected').style.display = "none";
+      }
+      submitted=true;
+      $('.loader').show();
     }
 }
 
 
 function admin(){
-  window.open('http://127.0.0.1:8000/admin/');
+  window.open('/admin/');
 }
 
 function parseCell(tableCell){
@@ -25,6 +34,10 @@ function parseCell(tableCell){
 }
 
 function csv(){
+  if(!submitted){
+    alert("Select data before exporting CSV.");
+    return;
+  }
   var table = document.getElementById('resultTable');
   var rows  = Array.from(table.querySelectorAll('tr'));
 
@@ -43,9 +56,9 @@ function csv(){
     }
     lines.push(line);
   }
-  var csvOutput    = lines.join("\n");
-  var csvBlob      = new Blob([csvOutput], {type: "text/csv"});
-  var blobUrl      = URL.createObjectURL(csvBlob);
+  var csvOutput     = lines.join("\n");
+  var csvBlob       = new Blob([csvOutput], {type: "text/csv"});
+  var blobUrl       = URL.createObjectURL(csvBlob);
   var anchorElement = document.createElement("a");
 
   anchorElement.href     = blobUrl;
@@ -59,12 +72,12 @@ function csv(){
 }
 
 function about(){
-  window.location.href = 'http://127.0.0.1:8000/about'
+  window.location.href = '/about'
 }
 
 
 //add event listeners
 document.getElementById("button1").addEventListener("click", submit, false);
 document.getElementById("button2").addEventListener("click", csv, false);
-document.getElementById("button3").addEventListener("click", admin, false);
-document.getElementById("button4").addEventListener("click", about, false);
+// document.getElementById("button3").addEventListener("click", admin, false);
+// document.getElementById("button4").addEventListener("click", about, false);

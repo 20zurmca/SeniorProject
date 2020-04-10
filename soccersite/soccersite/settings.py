@@ -31,7 +31,6 @@ GOOGLE_MAPS_API_KEY = os.environ['GOOGLE_MAPS_API_KEY']
 DEBUG = True
 
 ALLOWED_HOSTS = ['139.147.9.235','127.0.0.1', 'localhost','soccer.cs.lafayette.edu']
-
 # Application definition
 
 INSTALLED_APPS = [

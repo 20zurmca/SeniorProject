@@ -1,3 +1,0 @@
--- add table creation
-
-\COPY roster_master_data2 FROM 'roster_master_data2.csv' DELIMITER ',' CSV HEADER;

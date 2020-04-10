@@ -1,0 +1,45 @@
+<!DOCTYPE>
+{% load static %}
+<html>
+    <head>
+      <!-- bootstrap stuff -->
+      <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+      integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+      <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
+      <!-- google font -->
+      <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Cabin&display=swap">
+      <link href="https://fonts.googleapis.com/css2?family=Lato:wght@700&display=swap" rel="stylesheet">
+        <meta charset="utf-8">
+        <title>Upload File</title>
+        <link rel="shortcut icon" href="{% static 'map/img/favicon.ico' %}" />
+        <link rel="stylesheet" type="text/css" href="{% static 'map/css/upload.css' %}">
+    </head>
+    <body>
+      <div class="container-bgimage">
+        <div role="banner">
+          <div>
+            <a href='/'>
+              <img class = "block" src = "{% static 'map/img/logo.png' %}" width = 195 height = 66>
+            </a>
+            <p class="block">Talent is in the Data</p>
+            <div id='upload_toolbar'>
+
+                <a href='/' class="badge badge-dark">Main</a>
+
+                <a href='/about' class="badge badge-dark">About</a>
+
+                <a href='/admin' class="badge badge-dark">Admin Login</a>
+
+            </div>
+          </div>
+        </div>
+        
+        <form method="post" enctype="multipart/form-data" id='upload_form'>
+          {% csrf_token %}
+          {{form.as_p}}
+          <button type="submit" class="btn btn-primary">Upload</button>
+        </form>
+      </div>
+    </body>
+
+</html>

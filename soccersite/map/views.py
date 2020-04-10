@@ -16,8 +16,6 @@ def index(request):
     colleges  = RosterMasterData.objects.values_list('college', flat=True).distinct().order_by('college')
     leagues   = RosterMasterData.objects.values_list('collegeLeague', flat=True).distinct().order_by('collegeLeague')
     positions = RosterMasterData.objects.values_list('position1', flat=True).distinct().order_by('position1')
-
-    print(colleges)
     context = {'API_KEY': settings.GOOGLE_MAPS_API_KEY,
                'colleges': colleges,
                'leagues': leagues,
@@ -28,14 +26,56 @@ def index(request):
         payload = json.loads(request.POST.get('json_data'))
         c = payload['colleges'] #list of colleges user specified from drop down
         pos = payload['positions'] #list of positions user specified from positions drop down
-        sy = payload['starterYears'] # TODO: implement queries for this
-        acy = payload['allConferenceYears'] # TODO: implement queries for this
-        players =  MatchedHighSchool.objects.filter(college__in=c) \
-                                                 .annotate(num_colleges=Count('college')) \
-                                                 .filter(num_colleges=len(c)).values()
+        sy = payload['starterYears'] #list of starterYears specified from positions drop down
+        acy = payload['allConferenceYears'] #list of allConferenceYears positioned in drop down
 
+        starterYearFourOrMore = '4+' in sy
+        allConferenceYearsFourOrMore = '4+' in acy
 
-        data  =  {'players': list(players)}
+        players = []
+
+        if(len(c) > 0):
+            players =  MatchedHighSchool.objects.filter(college__in=c)
+
+        if(len(pos) > 0):
+            if(len(players) > 0):
+                players = players.filter(position1__in=pos)
+            else:
+                players = MatchedHighSchool.objects.filter(position1__in=pos)
+
+        if(len(sy) > 0):
+            if(len(players) > 0): #filter the players
+                if(starterYearFourOrmore):
+                    #use Q to build an or logic clause to account for gt equal to four. Filter players variable
+                    pass
+                else:
+                    #just use an in clause on the selections
+                    pass
+            else: #filter all the data
+                if(starterYearFourOrmore):
+                #use Q to build an or logic clause to account for gt equal to four. Filter players variable
+                    pass
+                else:
+                #just use an in clause on the selections
+                    pass
+
+        if(len(acy) > 0):
+            if(len(players) > 0): #filter the players
+                if(allConferenceYearsFourOrMore):
+                    #use Q to build an or logic clause to account for gt equal to four. Filter players variable
+                    pass
+                else:
+                    #just use an in clause on the selections
+                    pass
+            else: #filter all the data
+                if(allConferenceYearsFourOrMore):
+                #use Q to build an or logic clause to account for gt equal to four. Filter players variable
+                    pass
+                else:
+                #just use an in clause on the selections
+                    pass
+
+        data  =  {'players': list(players.values())}
         return JsonResponse(data)
 
     return render(request, 'map/index.html', context)
@@ -50,13 +90,12 @@ def upload_file(request):
     if request.method == 'POST':
         form = DocumentForm(request.POST, request.FILES)
         if form.is_valid():
-            #print("form.document: ", form.cleaned_data['document'])
+            save_data(form.cleaned_data['document'])
             form.save()
-            save_data( form.cleaned_data['document'])
-            return render(request, 'map/myadmin.html', {'form':form})
+            return render(request, 'map/upload.html', {'form':form})
     else:
         form = DocumentForm()
-    return render(request, 'map/myadmin.html', {'form':form})
+    return render(request, 'map/upload.html', {'form':form})
 
 
 
