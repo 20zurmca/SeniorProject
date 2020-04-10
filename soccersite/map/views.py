@@ -1,8 +1,8 @@
 from django.shortcuts import render
 from django.http import HttpResponse, JsonResponse
 from django.conf import settings
-from django.db.models import Count
-from .models import RosterMasterData, MatchedHighSchool
+from django.db.models import Count, Q
+from .models import GroupedData
 from django.core import serializers
 import json
 from .forms import MHSForm, DocumentForm
@@ -10,12 +10,12 @@ from django.contrib.admin.views.decorators import staff_member_required
 import csv
 import codecs
 
-# Create your views here.
-
 def index(request):
-    colleges  = RosterMasterData.objects.values_list('college', flat=True).distinct().order_by('college')
-    leagues   = RosterMasterData.objects.values_list('collegeLeague', flat=True).distinct().order_by('collegeLeague')
-    positions = RosterMasterData.objects.values_list('position1', flat=True).distinct().order_by('position1')
+    colleges  = GroupedData.objects.values_list('college', flat=True).distinct().order_by('college')
+    leagues   = GroupedData.objects.values_list('collegeLeague', flat=True).distinct().order_by('collegeLeague')
+    positions = GroupedData.objects.values_list('positions', flat=True).distinct().order_by('positions')
+    heights   = GroupedData.objects.values_list('positions', flat=True).distinct().order_by('heights')
+    heights   = GroupedData.objects.values_list('positions', flat=True).distinct().order_by('weights')
     context = {'API_KEY': settings.GOOGLE_MAPS_API_KEY,
                'colleges': colleges,
                'leagues': leagues,
@@ -35,13 +35,13 @@ def index(request):
         players = []
 
         if(len(c) > 0):
-            players =  MatchedHighSchool.objects.filter(college__in=c)
+            players = GroupedData.objects.filter(college__in=c)
 
         if(len(pos) > 0):
             if(len(players) > 0):
                 players = players.filter(position1__in=pos)
             else:
-                players = MatchedHighSchool.objects.filter(position1__in=pos)
+                players = GroupedDAta.objects.filter(position1__in=pos)
 
         if(len(sy) > 0):
             if(len(players) > 0): #filter the players
