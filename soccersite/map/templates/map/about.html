@@ -6,6 +6,7 @@
     <title>Lafayette Soccer Project - About</title>
     <!-- bootstrap stuff -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link href="https://fonts.googleapis.com/css2?family=Lato:wght@700&display=swap" rel="stylesheet">
     <!-- google font -->
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Cabin&display=swap">
     <!-- map applicaton static files -->
@@ -13,15 +14,15 @@
     <link rel="stylesheet" type="text/css" href="{% static 'map/css/about.css' %}">
   </head>
   <body>
-    <div role="banner">
+    <div id="banner">
       <div class="toolbar">
-        <a href='http://127.0.0.1:8000/'>
+        <a href='/'>
           <img class = "block" src = "{% static 'map/img/logo.png' %}" width = 195 height = 66>
         </a>
         <p class="block">Talent is in the Data</p>
         <div id='about_toolbar'>
 
-            <a href='upload' class="badge badge-dark">Upload Data</a>
+            <a href='/upload' class="badge badge-dark">Upload Data</a>
 
             <a href='/' class="badge badge-dark">Main</a>
 
