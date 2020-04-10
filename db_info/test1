@@ -1,0 +1,9 @@
+CREATE TABLE map_rosterdata (id INT, Roster_Year INT, Player_Number VARCHAR(10), First_Name VARCHAR(50), Last_Name VARCHAR(50),  Year VARCHAR(10), Position1 VARCHAR(20), Position2 VARCHAR(20), Position3 VARCHAR(10), Height VARCHAR(10), Weight INT, Home_Town VARCHAR(30), State_or_Country VARCHAR(20), High_School VARCHAR(100), Alternative_School VARCHAR(50), College VARCHAR(50), College_League VARCHAR(50), Bio_Link VARCHAR(100));
+
+CREATE TABLE map_starterdata(id INT, Roster_Year INT, Number INT, First_Name VARCHAR(50), Last_Name VARCHAR(50), Potential_Starts INT, GP INT, GS INT, Is_Starter VARCHAR(1), College VARCHAR(50));
+
+CREATE TABLE map_accoladedata(id INT, Roster_Year INT, First_Name VARCHAR(50), Last_Name VARCHAR(50), Accolade VARCHAR(20), College VARCHAR(50));
+
+CREATE TABLE map_documents (id SERIAL PRIMARY KEY, description VARCHAR(255), document VARCHAR(50), uploaded_at TIMESTAMP);
+
+CREATE TABLE map_groupeddata (id INT, first_name varchar NOT NULL, last_name VARCHAR(50), home_town VARCHAR(50), state_or_country VARCHAR(50), high_school VARCHAR(50), alternative_school VARCHAR(50), college VARCHAR(50), college_league VARCHAR(50), highschoolcity TEXT, highschoolstateorprovince TEXT, highschoolcountry TEXT, "Public/Private/International" TEXT, starter_count INT, accolade_count INT, latitude DOUBLE PRECISION, longitude DOUBLE PRECISION, roster_year INT[], year VARCHAR[], postion VARCHAR[], height VARCHAR[], weight INT[], bio_link VARCHAR[]);
