@@ -16,7 +16,7 @@
     </head>
     <body>
       <div class="container-bgimage">
-        <div role="banner">
+        <div id="banner">
           <div>
             <a href='/'>
               <img class = "block" src = "{% static 'map/img/logo.png' %}" width = 195 height = 66>
@@ -33,7 +33,7 @@
             </div>
           </div>
         </div>
-        
+
         <form method="post" enctype="multipart/form-data" id='upload_form'>
           {% csrf_token %}
           {{form.as_p}}
