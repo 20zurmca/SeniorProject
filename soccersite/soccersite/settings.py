@@ -81,9 +81,9 @@ WSGI_APPLICATION = 'soccersite.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'myproject',
-        'USER': 'myprojectuser',
-        'PASSWORD': 'password',
+        'NAME': 'soccer',
+        'USER': 'socceruser',
+        'PASSWORD': 'seniorproject',
         'HOST': 'localhost',
         'PORT': '',
     }
