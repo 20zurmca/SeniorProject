@@ -49,6 +49,7 @@ $(document).on('submit', '#filterForm', function(e){
         if(dt){
           dt.destroy();
         }
+        
         $.each(response['players'], function(key, value){
           player_data += '<tr>';
           player_data += '<td>' + value.yearsOnRoster          + '</td>';
