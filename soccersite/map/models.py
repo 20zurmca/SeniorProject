@@ -1,5 +1,6 @@
 from django.db import models
 from django.conf import settings
+from django.contrib.postgres.fields import ArrayField
 # Create your models here.
 
 class RosterMasterData(models.Model):
@@ -40,7 +41,7 @@ class MatchedHighSchool(models.Model):
     position1 = models.CharField(max_length = 20)
     height = models.CharField(max_length = 10, null = True)
     weight = models.IntegerField(null = True)
-    homeTown = models.CharField(max_length = 30, null = True)
+    homeTown = models.CharField(max_length = 60, null = True)
     stateOrCountry = models.CharField(max_length = 20, null = True)
     highSchool = models.CharField(max_length = 100, null = True)
     alternativeSchool = models.CharField(max_length = 50, null = True)
@@ -49,16 +50,46 @@ class MatchedHighSchool(models.Model):
     bioLink = models.CharField(max_length = 100)
     isStarter = models.CharField(max_length = 1, null = True)
     accolade = models.CharField(max_length = 20, null = True)
-    matchedCity = models.CharField(max_length = 30, null=True)
-    matchedInstitution = models.CharField(max_length = 30, null = True)
+    matchedCity = models.CharField(max_length = 60, null=True)
+    matchedInstitution = models.CharField(max_length = 60, null = True)
     matchedStateProvince = models.CharField(max_length = 20, null = True)
     matchedCountry = models.CharField(max_length = 20, null = True)
     latitude = models.FloatField()
     longitude = models.FloatField()
     schoolType = models.CharField(max_length = 13, null = True)
 
+class GroupedData(models.Model):
+    firstName                 = models.CharField(max_length=50)
+    lastName                  = models.CharField(max_length=50)
+    homeTown                  = models.CharField(max_length=30)
+    stateOrCountry            = models.CharField(max_length=20)
+    highSchool                = models.CharField(max_length=100)
+    alternativeSchool         = models.CharField(max_length=100)
+    college                   = models.CharField(max_length=50)
+    collegeLeague             = models.CharField(max_length=50)
+    schoolType                = models.CharField(max_length=13, null=True)
+    yearsStarter              = models.IntegerField()
+    yearsAllConference        = models.IntegerField()
+    latitude                  = models.FloatField()
+    longitude                 = models.FloatField()
+    highSchoolCity            = models.CharField(max_length=30, null=True)
+    highSchoolSateOrProvince  = models.CharField(max_length=20, null=True)
+    highSchoolCountry         = models.CharField(max_length=20, null=True)
+    yearsOnRoster             = ArrayField(models.IntegerField())
+    yearsPlayed               = ArrayField(models.CharField(max_length=50))
+    positions                 = ArrayField(models.CharField(max_length=50))
+    heights                   = ArrayField(models.CharField(max_length=5))
+    weights                   = ArrayField(models.IntegerField())
+    bioLinks                  = ArrayField(models.CharField(max_length=100))
+
 #try for uploading csv
 class Document(models.Model):
     description = models.CharField(max_length=255, blank=True)
     document = models.FileField(upload_to='documents/')
     uploaded_at = models.DateTimeField(auto_now_add=True)
+
+class BoardingSchools(models.Model):
+    name = models.CharField(max_length=100)
+    state = models.CharField(max_length=3, null=True)
+    latitude = models.FloatField(default=0)
+    longitude = models.FloatField(default=0)

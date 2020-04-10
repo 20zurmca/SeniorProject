@@ -25,7 +25,7 @@ function loadData(map, playerData){
     document.getElementById('heatMapControl').style.fontWeight = "normal";
   }
 
-  if(clickCounts[1] % 2){
+  if(clickCounts[1] % 2){ //set markers off
     document.getElementById('markerControl').click();
   }
 
@@ -40,7 +40,6 @@ function loadData(map, playerData){
     markerCluster.clearMarkers();
   }
 
-
   groupedLatLngData = {};
   //grouping response data by lat and lng
   for(var i = 0; i < playerData.length; i++){
@@ -48,14 +47,13 @@ function loadData(map, playerData){
     lng = playerData[i]['longitude'];
     key = String(lat) + lng;
     player = {};
-    player['rosterYear'] = playerData[i]['rosterYear'];
-    player['playerNumber'] = playerData[i]['playerNumber'];
+    player['yearsOnRoster'] = playerData[i]['yearsOnRoster'];
     player['firstName'] = playerData[i]['firstName'];
     player['lastName'] = playerData[i]['lastName'];
-    player['year'] = playerData[i]['year'];
-    player['position1'] = playerData[i]['position1'];
-    player['height'] = playerData[i]['height'];
-    player['weight'] = playerData[i]['weight'];
+    player['yearsPlayed'] = playerData[i]['yearsPlayed'];
+    player['positions'] = playerData[i]['positions'];
+    player['heights'] = playerData[i]['heights'];
+    player['weights'] = playerData[i]['weights'];
     player['homeTown'] = playerData[i]['homeTown'];
     player['stateOrCountry'] = playerData[i]['stateOrCountry'];
     player['highSchool'] = playerData[i]['highSchool'];
@@ -63,16 +61,19 @@ function loadData(map, playerData){
     player['college'] = playerData[i]['college'];
     player['collegeLeague'] = playerData[i]['collegeLeague'];
     player['bioLink'] = playerData[i]['bioLink'];
-    player['isStarter'] = playerData[i]['isStarter'];
-    player['accolade'] = playerData[i]['accolade'];
-    player['matchedCity'] = playerData[i]['matchedCity'];
+    player['yearsStarter'] = playerData[i]['yearsStarter'];
+    player['yearsAllConference'] = playerData[i]['yearsAllConference'];
 
     if(!groupedLatLngData[key]){ //new key found (new lat lng pair)
       groupedLatLngData[key] = {};
       groupedLatLngData[key]['playerCount'] = 1;
-      groupedLatLngData[key]['lat'] = playerData[i]['latitude'];
-      groupedLatLngData[key]['lng'] = playerData[i]['longitude'];
-      groupedLatLngData[key]['hs']  = playerData[i]['highSchool']
+      groupedLatLngData[key]['lat']                = playerData[i]['latitude'];
+      groupedLatLngData[key]['lng']                = playerData[i]['longitude'];
+      groupedLatLngData[key]['hs']                 = playerData[i]['highSchool'];
+      groupedLatLngData[key]['hsCity']             = playerData[i]['highSchoolCity'];
+      groupedLatLngData[key]['hsStateOrProvince']  = playerData[i]['highSchoolSateOrProvince'];
+      groupedLatLngData[key]['hsStateOrProvince']  = playerData[i]['highSchoolSateOrProvince'];
+      groupedLatLngData[key]['hsCountry']          = playerData[i]['highSchoolCountry'];
       groupedLatLngData[key]['players'] = [];
       groupedLatLngData[key]['matchedCity'] = playerData[i]['matchedCity'];
       groupedLatLngData[key]['matchedStateProvince'] = playerData[i]['matchedStateProvince'];
@@ -133,24 +134,25 @@ function loadData(map, playerData){
         //table changes to marker-specific data on click
         for(let i = 0; i < groupedLatLngData[String(latitude) + longitude]['players'].length; i++){
           player_data += '<tr>'
-          player_data += '<td>' + groupedLatLngData[String(latitude) + longitude]['players'][i]['rosterYear']    + '</td>';
-          player_data += '<td>' + groupedLatLngData[String(latitude) + longitude]['players'][i]['firstName']     + '</td>';
-          player_data += '<td>' + groupedLatLngData[String(latitude) + longitude]['players'][i]['lastName']      + '</td>';
-          player_data += '<td>' + groupedLatLngData[String(latitude) + longitude]['players'][i]['year']          + '</td>';
-          player_data += '<td>' + groupedLatLngData[String(latitude) + longitude]['players'][i]['position1']          + '</td>';
-          player_data += '<td>' + "will implement"     + '</td>';
-          player_data += '<td>' + "will implement"     + '</td>';
-          player_data += '<td>' + groupedLatLngData[String(latitude) + longitude]['players'][i]['collegeLeague']  + '</td>';
-          player_data += '<td>' + groupedLatLngData[String(latitude) + longitude]['players'][i]['college']        + '</td>';
-          player_data += '<td>' + groupedLatLngData[String(latitude) + longitude]['players'][i]['homeTown']       + '</td>';
-          player_data += '<td>' + groupedLatLngData[String(latitude) + longitude]['players'][i]['stateOrCountry'] + '</td>';
-          player_data += '<td>' + groupedLatLngData[String(latitude) + longitude]['players'][i]['highSchool']     + '</td>';
+          player_data += '<td>' + groupedLatLngData[String(latitude) + longitude]['players'][i]['yearsOnRoster']    + '</td>';
+          player_data += '<td>' + groupedLatLngData[String(latitude) + longitude]['players'][i]['firstName']        + '</td>';
+          player_data += '<td>' + groupedLatLngData[String(latitude) + longitude]['players'][i]['lastName']         + '</td>';
+          player_data += '<td>' + groupedLatLngData[String(latitude) + longitude]['players'][i]['yearsPlayed']      + '</td>';
+          player_data += '<td>' + groupedLatLngData[String(latitude) + longitude]['players'][i]['positions']        + '</td>';
+          player_data += '<td>' +  groupedLatLngData[String(latitude) + longitude]['players'][i]['heights']       + '</td>';
+          player_data += '<td>' +  groupedLatLngData[String(latitude) + longitude]['players'][i]['weights']       + '</td>';
+          player_data += '<td>' + groupedLatLngData[String(latitude) + longitude]['players'][i]['collegeLeague']    + '</td>';
+          player_data += '<td>' + groupedLatLngData[String(latitude) + longitude]['players'][i]['college']          + '</td>';
+          player_data += '<td>' + groupedLatLngData[String(latitude) + longitude]['players'][i]['homeTown']         + '</td>';
+          player_data += '<td>' + groupedLatLngData[String(latitude) + longitude]['players'][i]['stateOrCountry']   + '</td>';
+          player_data += '<td>' + groupedLatLngData[String(latitude) + longitude]['players'][i]['highSchool']       + '</td>';
           player_data += '</tr>';
         }
         table.innerHTML = player_data;
         changeTableOnZoom = true;
         dt = $('#resultTable').DataTable({
-          "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]]
+          "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]],
+          "scrollX": true
         });
         document.getElementById('resultTable').style.width = '98%';
       });
@@ -305,25 +307,26 @@ function loadData(map, playerData){
         dt.destroy();
         for(var hs in groupedLatLngData){
           for(let i = 0; i < groupedLatLngData[hs]['players'].length; i++){
-            player_data += '<tr>';
-            player_data += '<td>' + groupedLatLngData[hs]['players'][i]['rosterYear']    + '</td>';
-            player_data += '<td>' + groupedLatLngData[hs]['players'][i]['firstName']     + '</td>';
-            player_data += '<td>' + groupedLatLngData[hs]['players'][i]['lastName']      + '</td>';
-            player_data += '<td>' + groupedLatLngData[hs]['players'][i]['year']          + '</td>';
-            player_data += '<td>' + groupedLatLngData[hs]['players'][i]['position1']          + '</td>';
-            player_data += '<td>' + "will implement"     + '</td>';
-            player_data += '<td>' + "will implement"     + '</td>';
-            player_data += '<td>' + groupedLatLngData[hs]['players'][i]['collegeLeague']  + '</td>';
-            player_data += '<td>' + groupedLatLngData[hs]['players'][i]['college']        + '</td>';
-            player_data += '<td>' + groupedLatLngData[hs]['players'][i]['homeTown']       + '</td>';
-            player_data += '<td>' + groupedLatLngData[hs]['players'][i]['stateOrCountry'] + '</td>';
-            player_data += '<td>' + groupedLatLngData[hs]['players'][i]['highSchool']     + '</td>';
+            player_data += '<tr>'
+            player_data += '<td>' + groupedLatLngData[hs]['players'][i]['yearsOnRoster']    + '</td>';
+            player_data += '<td>' + groupedLatLngData[hs]['players'][i]['firstName']        + '</td>';
+            player_data += '<td>' + groupedLatLngData[hs]['players'][i]['lastName']         + '</td>';
+            player_data += '<td>' + groupedLatLngData[hs]['players'][i]['yearsPlayed']      + '</td>';
+            player_data += '<td>' + groupedLatLngData[hs]['players'][i]['positions']        + '</td>';
+            player_data += '<td>' +  groupedLatLngData[hs]['players'][i]['heights']         + '</td>';
+            player_data += '<td>' +  groupedLatLngData[hs]['players'][i]['weights']         + '</td>';
+            player_data += '<td>' + groupedLatLngData[hs]['players'][i]['collegeLeague']    + '</td>';
+            player_data += '<td>' + groupedLatLngData[hs]['players'][i]['college']          + '</td>';
+            player_data += '<td>' + groupedLatLngData[hs]['players'][i]['homeTown']         + '</td>';
+            player_data += '<td>' + groupedLatLngData[hs]['players'][i]['stateOrCountry']   + '</td>';
+            player_data += '<td>' + groupedLatLngData[hs]['players'][i]['highSchool']       + '</td>';
             player_data += '</tr>';
           }
         }
         table.innerHTML = player_data;
         dt = $('#resultTable').DataTable({
-          "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]]
+          "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]],
+          "scrollX": true
         });
         changeTableOnZoom = false;
       }
