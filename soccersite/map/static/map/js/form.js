@@ -99,7 +99,6 @@ $(document).on('submit', '#filterForm', function(e){
 
         $.each(response['players'], function(key, value){
           let association = _findAssociativeIndices(value.roster_year);
-          console.log("association " + association + "roster_year " + value.roster_year);
           player_data += '<tr>';
           player_data += '<td>' + _sortAggregateData(value.roster_year)                + '</td>';
           player_data += '<td>' + value.first_name                                     + '</td>';
@@ -119,7 +118,7 @@ $(document).on('submit', '#filterForm', function(e){
         document.getElementById('resultTableBody').innerHTML = player_data;
         dt = $('#resultTable').DataTable({
           "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]],
-          //"scrollX": true
+          "scrollX": true
         });
       },
       error:function(){
