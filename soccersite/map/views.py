@@ -2,7 +2,7 @@ from django.shortcuts import render
 from django.http import HttpResponse, JsonResponse
 from django.conf import settings
 from django.db.models import Count, Q
-from .models import GroupedData
+from .models import GroupedData, RosterData
 from django.core import serializers
 import json
 from .forms import MHSForm, DocumentForm
@@ -12,10 +12,8 @@ import codecs
 
 def index(request):
     colleges  = GroupedData.objects.values_list('college', flat=True).distinct().order_by('college')
-    leagues   = GroupedData.objects.values_list('collegeLeague', flat=True).distinct().order_by('collegeLeague')
-    positions = GroupedData.objects.values_list('positions', flat=True).distinct().order_by('positions')
-    heights   = GroupedData.objects.values_list('heights', flat=True).distinct().order_by('heights')
-    heights   = GroupedData.objects.values_list('weights', flat=True).distinct().order_by('weights')
+    leagues   = GroupedData.objects.values_list('college_league', flat=True).distinct().order_by('college_league')
+    positions = RosterData.objects.values_list('position1', flat=True).distinct().order_by('position1')
     context = {'API_KEY': settings.GOOGLE_MAPS_API_KEY,
                'colleges': colleges,
                'leagues': leagues,
