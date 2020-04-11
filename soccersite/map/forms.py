@@ -1,9 +1,9 @@
 from django import forms
-from .models import MatchedHighSchool, Document
+from .models import Documents
 #import csv
 class DocumentForm(forms.ModelForm):
     class Meta:
-        model = Document
+        model = Documents
         fields = ('description', 'document', )
 
 
