@@ -18,11 +18,6 @@ function submit() {
     }
 }
 
-
-function admin(){
-  window.open('/admin/');
-}
-
 function parseCell(tableCell){
   var parsedValue = tableCell.textContent;
   parsedValue = parsedValue.replace(/"/g, '""'); //replace all single quote with double quote
@@ -71,13 +66,6 @@ function csv(){
 
 }
 
-function about(){
-  window.location.href = '/about'
-}
-
-
 //add event listeners
 document.getElementById("button1").addEventListener("click", submit, false);
 document.getElementById("button2").addEventListener("click", csv, false);
-// document.getElementById("button3").addEventListener("click", admin, false);
-// document.getElementById("button4").addEventListener("click", about, false);
