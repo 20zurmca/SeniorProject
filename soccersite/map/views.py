@@ -14,7 +14,6 @@ def index(request):
     colleges  = GroupedData.objects.values_list('college', flat=True).distinct().order_by('college')
     leagues   = GroupedData.objects.values_list('college_league', flat=True).distinct().order_by('college_league')
     positions = GroupedData.objects.annotate(arr_els=Func(F('position'), function='unnest')).values_list('arr_els', flat=True).distinct()
-    print(positions)
     context = {'API_KEY': settings.GOOGLE_MAPS_API_KEY,
                'colleges': colleges,
                'leagues': leagues,
@@ -31,48 +30,54 @@ def index(request):
         starterYearFourOrMore = '4+' in sy
         allConferenceYearsFourOrMore = '4+' in acy
 
-        players = []
+        players = None
 
         if(len(c) > 0):
             players = GroupedData.objects.filter(college__in=c)
 
         if(len(pos) > 0):
-            if(len(players) > 0):
-                players = players.filter(position1__in=pos)
+            if(players):
+                players = players.filter(position__overlap=pos)
             else:
-                players = GroupedData.objects.filter(position1__in=pos)
+                players = GroupedData.objects.filter(position_overlap=pos)
 
         if(len(sy) > 0):
-            if(len(players) > 0): #filter the players
+            if(players):
                 if(starterYearFourOrmore):
-                    #use Q to build an or logic clause to account for gt equal to four. Filter players variable
-                    pass
+                    if(len(sy) == 1):
+                        players = players.filter(starter_count__gte=4)
+                    else:
+                        players = players.filter(Q(starter_count__gte=4) | Q(starter_count__in=sy))
                 else:
-                    #just use an in clause on the selections
-                    pass
-            else: #filter all the data
+                    players = players.filter(starter_count__in=sy)
+
+            else:
                 if(starterYearFourOrmore):
-                #use Q to build an or logic clause to account for gt equal to four. Filter players variable
-                    pass
+                    if(len(sy) == 1):
+                        players = GroupedData.filter(starter_count__gte=4)
+                    else:
+                        players = GroupedData.filter(Q(starter_count__gte=4) | Q(starter_count__in=sy))
                 else:
-                #just use an in clause on the selections
-                    pass
+                    players = GroupedData.filter(starter_count__in=sy)
 
         if(len(acy) > 0):
-            if(len(players) > 0): #filter the players
+            if(players):
                 if(allConferenceYearsFourOrMore):
-                    #use Q to build an or logic clause to account for gt equal to four. Filter players variable
-                    pass
+                    if(len(acy) == 1):
+                        players = players.filter(accolade_count__gte=4)
+                    else:
+                        players = players.filter(Q(accolade_count__gte=4) | Q(accolade_count__in=acy))
                 else:
-                    #just use an in clause on the selections
-                    pass
-            else: #filter all the data
+                    players = players.filter(accolade_count__in=acy)
+
+            else:
                 if(allConferenceYearsFourOrMore):
-                #use Q to build an or logic clause to account for gt equal to four. Filter players variable
-                    pass
+                    if(len(acy) == 1):
+                        players = GroupedData.filter(accolade_count__gte=4)
+                    else:
+                        players = GroupedData.filter(Q(accolade_count__gte=4) | Q(accolade_count__in=acy))
                 else:
-                #just use an in clause on the selections
-                    pass
+                    players = GroupedData.filter(accolade_count__in=acy)
 
         data  =  {'players': list(players.values())}
         return JsonResponse(data)
