@@ -68,7 +68,7 @@ function loadData(map, playerData){
       groupedLatLngData[key]['playerCount'] = 1;
       groupedLatLngData[key]['lat']                = playerData[i]['latitude'];
       groupedLatLngData[key]['lng']                = playerData[i]['longitude'];
-      groupedLatLngData[key]['hs']                 = playerData[i]['highSchool'];
+      groupedLatLngData[key]['hs']                 = playerData[i]['high_school'];
       groupedLatLngData[key]['hsCity']             = playerData[i]['highschoolcity'];
       groupedLatLngData[key]['hsStateOrProvince']  = playerData[i]['highschoolstateorcountry'];
       groupedLatLngData[key]['hsStateOrProvince']  = playerData[i]['highschoolstateorprovince'];
@@ -93,12 +93,14 @@ function loadData(map, playerData){
         title: groupedLatLngData[highSchool]['hs'], //high school name
         label: {
           text: String(groupedLatLngData[highSchool]['playerCount']),
-          fontWeight: "bold"
+          fontWeight: "bold",
+          color: "blue"
         },
         number: groupedLatLngData[highSchool]['playerCount'],
         icon: {
-          url: "http://maps.google.com/mapfiles/kml/pal2/icon10.png",
-          // size: new google.maps.Size(80, 132),
+          url: "http://maps.google.com/mapfiles/kml/pal2/icon49.png",
+          // scaledSize: new google.maps.Size(40,40)
+          // strokeColor: "red",
         },
         animation: google.maps.Animation.DROP
       });
