@@ -1,8 +1,8 @@
 from django.shortcuts import render
 from django.http import HttpResponse, JsonResponse
 from django.conf import settings
-from django.db.models import Count, Q
-from .models import GroupedData, RosterData
+from django.db.models import Count, Q, F, Func
+from .models import GroupedData
 from django.core import serializers
 import json
 from .forms import MHSForm, DocumentForm
@@ -13,7 +13,8 @@ import codecs
 def index(request):
     colleges  = GroupedData.objects.values_list('college', flat=True).distinct().order_by('college')
     leagues   = GroupedData.objects.values_list('college_league', flat=True).distinct().order_by('college_league')
-    positions = RosterData.objects.values_list('position1', flat=True).distinct().order_by('position1')
+    positions = GroupedData.objects.annotate(arr_els=Func(F('position'), function='unnest')).values_list('arr_els', flat=True).distinct()
+    print(positions)
     context = {'API_KEY': settings.GOOGLE_MAPS_API_KEY,
                'colleges': colleges,
                'leagues': leagues,
@@ -39,7 +40,7 @@ def index(request):
             if(len(players) > 0):
                 players = players.filter(position1__in=pos)
             else:
-                players = GroupedDAta.objects.filter(position1__in=pos)
+                players = GroupedData.objects.filter(position1__in=pos)
 
         if(len(sy) > 0):
             if(len(players) > 0): #filter the players
