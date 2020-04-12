@@ -69,7 +69,7 @@ function loadData(map, playerData){
       groupedLatLngData[key]['lat']                = playerData[i]['latitude'];
       groupedLatLngData[key]['lng']                = playerData[i]['longitude'];
       groupedLatLngData[key]['hs']                 = playerData[i]['high_school'];
-      groupedLatLngData[key]['hsCity']             = playerData[i]['highschoolcity'];
+      groupedLatLngData[key]['hsCity']             = playerData[i]['highschoolcity'].toLowerCase();
       groupedLatLngData[key]['hsStateOrProvince']  = playerData[i]['highschoolstateorcountry'];
       groupedLatLngData[key]['hsStateOrProvince']  = playerData[i]['highschoolstateorprovince'];
       groupedLatLngData[key]['hsCountry']          = playerData[i]['highschoolcountry'];
@@ -94,27 +94,31 @@ function loadData(map, playerData){
         label: {
           text: String(groupedLatLngData[highSchool]['playerCount']),
           fontWeight: "bold",
-          color: "blue"
+          color: "black"
         },
         number: groupedLatLngData[highSchool]['playerCount'],
         icon: {
-          url: "http://maps.google.com/mapfiles/kml/pal2/icon49.png",
-          // scaledSize: new google.maps.Size(40,40)
-          // strokeColor: "red",
+          url: "http://maps.google.com/mapfiles/kml/pal2/icon18.png",
         },
         animation: google.maps.Animation.DROP
       });
 
       heatMapData.push({location: new google.maps.LatLng(latitude, longitude), weight: groupedLatLngData[highSchool]['playerCount']});
 
+      var stateOrCountry = groupedLatLngData[highSchool]['hsStateOrProvince'];
+
+      if (stateOrCountry == null) {
+        stateOrCountry = "";
+      }
+      
       //building info window
       let contentString = '<div id="content">'+
            '<div id="siteNotice">'+
            '</div>'+
            '<h1 id="firstHeading" class="firstHeading">'+ groupedLatLngData[highSchool]['hs'] +'</h1>'+
            '<div id="bodyContent">'+
-           '<p style="text-transform:capitalize">'+groupedLatLngData[highSchool]['hsCity'] + ', ' +
-           groupedLatLngData[highSchool]['hsStateOrProvince'] + '</p>'+
+           '<p style="text-transform:capitalize">'+groupedLatLngData[highSchool]['hsCity'] + ' ' +
+           stateOrCountry + '</p>'+
            '<p style="text-transform:capitalize">'+ "Student Count: " + groupedLatLngData[highSchool]['playerCount'] +
            '</div>'+
            '</div>';
