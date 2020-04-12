@@ -43,20 +43,20 @@ def index(request):
 
         if(len(sy) > 0):
             if(players):
-                if(starterYearFourOrmore):
+                if(starterYearFourOrMore):
                     if(len(sy) == 1):
                         players = players.filter(starter_count__gte=4)
                     else:
-                        players = players.filter(Q(starter_count__gte=4) | Q(starter_count__in=sy))
+                        players = players.filter(Q(starter_count__gte=4) | Q(starter_count__in=sy[:-1]))
                 else:
                     players = players.filter(starter_count__in=sy)
 
             else:
-                if(starterYearFourOrmore):
+                if(starterYearFourOrMore):
                     if(len(sy) == 1):
                         players = GroupedData.filter(starter_count__gte=4)
                     else:
-                        players = GroupedData.filter(Q(starter_count__gte=4) | Q(starter_count__in=sy))
+                        players = GroupedData.filter(Q(starter_count__gte=4) | Q(starter_count__in=sy[:-1]))
                 else:
                     players = GroupedData.filter(starter_count__in=sy)
 
@@ -66,7 +66,7 @@ def index(request):
                     if(len(acy) == 1):
                         players = players.filter(accolade_count__gte=4)
                     else:
-                        players = players.filter(Q(accolade_count__gte=4) | Q(accolade_count__in=acy))
+                        players = players.filter(Q(accolade_count__gte=4) | Q(accolade_count__in=acy[:-1]))
                 else:
                     players = players.filter(accolade_count__in=acy)
 
@@ -75,7 +75,7 @@ def index(request):
                     if(len(acy) == 1):
                         players = GroupedData.filter(accolade_count__gte=4)
                     else:
-                        players = GroupedData.filter(Q(accolade_count__gte=4) | Q(accolade_count__in=acy))
+                        players = GroupedData.filter(Q(accolade_count__gte=4) | Q(accolade_count__in=acy[:-1]))
                 else:
                     players = GroupedData.filter(accolade_count__in=acy)
 
