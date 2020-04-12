@@ -126,24 +126,26 @@ function loadData(map, playerData){
         infowindow.open(map);
         let table = document.getElementById('resultTableBody');
         let player_data = '';
+        let key = String(latitude) + longitude;
         //table changes to marker-specific data on click
-        for(let i = 0; i < groupedLatLngData[String(latitude) + longitude]['players'].length; i++){
-          let association = _findAssociativeIndices(groupedLatLngData[String(latitude) + longitude]['players'][i]['roster_year']);
-          let currentBioLink = _getCurrentDataElement(groupedLatLngData[String(latitude) + longitude]['players'][i]['bio_link'], association);
+        for(let i = 0; i < groupedLatLngData[key]['players'].length; i++){
+          let association = _findAssociativeIndices(groupedLatLngData[key]['players'][i]['roster_year']);
+          let currentBioLink = _getCurrentDataElement(groupedLatLngData[key]['players'][i]['bio_link'], association);
           player_data += '<tr onclick = goToRosterPage("'.concat(currentBioLink).concat('")>');
-          player_data += '<td>' + _sortAggregateData(groupedLatLngData[String(latitude) + longitude]['players'][i]['roster_year'])                + '</td>';
-          player_data += '<td>' + groupedLatLngData[String(latitude) + longitude]['players'][i]['first_name']                                     + '</td>';
-          player_data += '<td>' + groupedLatLngData[String(latitude) + longitude]['players'][i]['last_name']                                      + '</td>';
-          player_data += '<td>' + _getCurrentDataElement(groupedLatLngData[String(latitude) + longitude]['players'][i]['position'], association)  + '</td>';
-          player_data += '<td>' + _getCurrentDataElement(groupedLatLngData[String(latitude) + longitude]['players'][i]['heights'], association)   + '</td>';
-          player_data += '<td>' + _getCurrentDataElement(groupedLatLngData[String(latitude) + longitude]['players'][i]['weights'], association)   + '</td>';
-          player_data += '<td>' + groupedLatLngData[String(latitude) + longitude]['players'][i]['starter_count']                                  + '</td>';
-          player_data += '<td>' + groupedLatLngData[String(latitude) + longitude]['players'][i]['accolade_count']                                 + '</td>';
-          player_data += '<td>' + groupedLatLngData[String(latitude) + longitude]['players'][i]['college_league']                                 + '</td>';
-          player_data += '<td>' + groupedLatLngData[String(latitude) + longitude]['players'][i]['college']                                        + '</td>';
-          player_data += '<td>' + groupedLatLngData[String(latitude) + longitude]['players'][i]['home_town']                                      + '</td>';
-          player_data += '<td>' + groupedLatLngData[String(latitude) + longitude]['players'][i]['state_or_country']                               + '</td>';
-          player_data += '<td>' + groupedLatLngData[String(latitude) + longitude]['players'][i]['high_school']                                    + '</td>';
+          console.log(player_data);
+          player_data += '<td>' + _sortAggregateData(groupedLatLngData[key]['players'][i]['roster_year'])                + '</td>';
+          player_data += '<td>' + groupedLatLngData[key]['players'][i]['first_name']                                     + '</td>';
+          player_data += '<td>' + groupedLatLngData[key]['players'][i]['last_name']                                      + '</td>';
+          player_data += '<td>' + _getCurrentDataElement(groupedLatLngData[key]['players'][i]['position'], association)  + '</td>';
+          player_data += '<td>' + _getCurrentDataElement(groupedLatLngData[key]['players'][i]['heights'], association)   + '</td>';
+          player_data += '<td>' + _getCurrentDataElement(groupedLatLngData[key]['players'][i]['weights'], association)   + '</td>';
+          player_data += '<td>' + groupedLatLngData[key]['players'][i]['starter_count']                                  + '</td>';
+          player_data += '<td>' + groupedLatLngData[key]['players'][i]['accolade_count']                                 + '</td>';
+          player_data += '<td>' + groupedLatLngData[key]['players'][i]['college_league']                                 + '</td>';
+          player_data += '<td>' + groupedLatLngData[key]['players'][i]['college']                                        + '</td>';
+          player_data += '<td>' + groupedLatLngData[key]['players'][i]['home_town']                                      + '</td>';
+          player_data += '<td>' + groupedLatLngData[key]['players'][i]['state_or_country']                               + '</td>';
+          player_data += '<td>' + groupedLatLngData[key]['players'][i]['high_school']                                    + '</td>';
           player_data += '</tr>';
         }
         table.innerHTML = player_data;
