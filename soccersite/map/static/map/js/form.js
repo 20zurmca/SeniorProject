@@ -66,6 +66,10 @@ function getCookie(c_name)
    return ''; //all null in the data
  }
 
+ function goToRosterPage(page){
+   window.open(page, "_blank");
+ }
+
 $(document).on('submit', '#filterForm', function(e){
   e.preventDefault(); //prevent refresh
   selectedColleges           = collegeSelector.options.find("selected", "any"); //from selectors.js
@@ -99,7 +103,8 @@ $(document).on('submit', '#filterForm', function(e){
 
         $.each(response['players'], function(key, value){
           let association = _findAssociativeIndices(value.roster_year);
-          player_data += '<tr>';
+          let currentBioLink = _getCurrentDataElement(value.bio_link, association);
+          player_data += '<tr onclick = goToRosterPage("'.concat(currentBioLink).concat('")>');
           player_data += '<td>' + _sortAggregateData(value.roster_year)                + '</td>';
           player_data += '<td>' + value.first_name                                     + '</td>';
           player_data += '<td>' + value.last_name                                      + '</td>';

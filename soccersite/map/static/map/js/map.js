@@ -129,7 +129,8 @@ function loadData(map, playerData){
         //table changes to marker-specific data on click
         for(let i = 0; i < groupedLatLngData[String(latitude) + longitude]['players'].length; i++){
           let association = _findAssociativeIndices(groupedLatLngData[String(latitude) + longitude]['players'][i]['roster_year']);
-          player_data += '<tr>'
+          let currentBioLink = _getCurrentDataElement(groupedLatLngData[String(latitude) + longitude]['players'][i]['bio_link'], association);
+          player_data += '<tr onclick = goToRosterPage("'.concat(currentBioLink).concat('")>');
           player_data += '<td>' + _sortAggregateData(groupedLatLngData[String(latitude) + longitude]['players'][i]['roster_year'])                + '</td>';
           player_data += '<td>' + groupedLatLngData[String(latitude) + longitude]['players'][i]['first_name']                                     + '</td>';
           player_data += '<td>' + groupedLatLngData[String(latitude) + longitude]['players'][i]['last_name']                                      + '</td>';
@@ -305,7 +306,8 @@ function loadData(map, playerData){
         for(var hs in groupedLatLngData){
           for(let i = 0; i < groupedLatLngData[hs]['players'].length; i++){
             let association = _findAssociativeIndices(groupedLatLngData[hs]['players'][i]['roster_year']);
-            player_data += '<tr>'
+            let currentBioLink = _getCurrentDataElement(groupedLatLngData[hs]['players'][i]['bio_link'], association);
+            player_data += '<tr onclick = goToRosterPage("'.concat(currentBioLink).concat('")>');
             player_data += '<td>' + _sortAggregateData(groupedLatLngData[hs]['players'][i]['roster_year'])                + '</td>';
             player_data += '<td>' + groupedLatLngData[hs]['players'][i]['first_name']                                     + '</td>';
             player_data += '<td>' + groupedLatLngData[hs]['players'][i]['last_name']                                      + '</td>';
