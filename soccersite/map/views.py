@@ -94,7 +94,9 @@ def upload_file(request):
     if request.method == 'POST':
         form = DocumentForm(request.POST, request.FILES)
         if form.is_valid():
-            save_data(form.cleaned_data['document'])
+            save_rosterData(form.cleaned_data['rosterData'])
+            save_starterData(form.cleaned_data['starterData'])
+            save_accolateData(form.cleaned_data['accolateData'])
             form.save()
             return render(request, 'map/upload.html', {'form':form})
     else:
@@ -103,39 +105,60 @@ def upload_file(request):
 
 
 
-def save_data(filename):
+def save_rosterData(filename):
     records = csv.reader(codecs.iterdecode(filename,'utf-8'))
     next(records)
     for record in records:
-        input_data = MatchedHighSchool()
-        input_data.rosterYear = record[1]
+        input_data = RosterData()
+        input_data.roster_year = record[1]
         if record[2] == '':
-            input_data.playerNumber = 0
+            input_data.player_number = 0
         else:
-            input_data.playerNumber = record[2]
-        input_data.firstName = record[3]
-        input_data.lastName = record[4]
+            input_data.player_number = record[2]
+        input_data.first_name = record[3]
+        input_data.last_name = record[4]
         input_data.year = record[5]
         input_data.position1 = record[6]
-        input_data.height = record[7]
-        if record[8] == '':
+        input_data.position2 = record[7]
+        input_data.position3 = record[8]
+        input_data.height = record[9]
+        if record[10] == '':
             input_data.weight = 0
         else:
-            input_data.weight = record[8]
-        input_data.homeTown = record[9]
-        input_data.stateOrCountry = record[10]
-        input_data.highSchool = record[11]
-        input_data.alternativeSchool = record[12]
-        input_data.college = record[13]
-        input_data.collegeLeague = record[14]
-        input_data.bioLink = record[15]
-        input_data.isStarter = record[16]
-        input_data.accolade = record[17]
-        input_data.matchedCity = record[18]
-        input_data.matchedInstitution = record[19]
-        input_data.matchedStateProvince = record[20]
-        input_data.matchedCountry = record[21]
-        input_data.latitude = record[22]
-        input_data.longitude = record[23]
-        input_data.schoolType = record[24]
+            input_data.weight = record[10]
+        input_data.home_town = record[11]
+        input_data.state_or_country = record[12]
+        input_data.high_school = record[13]
+        input_data.alternative_school = record[14]
+        input_data.college = record[15]
+        input_data.college_league = record[16]
+        input_data.bio_link = record[17]
+        input_data.save()
+
+def save_starterData(filename):
+    records = csv.reader(codecs.iterdecode(filename,'utf-8'))
+    next(records)
+    for record in records:
+        input_data = StarterData()
+        input_data.roster_year = record[1]
+        input_data.number = record[2]
+        input_data.first_name = record[3]
+        input_data.last_name = record[4]
+        input_data.potential_starts = record[5]
+        input_data.gp = record[6]
+        input_data.gs = record[7]
+        input_data.is_starter = record[8]
+        input_data.college = record[9]
+        input_data.save()
+
+def save_accolateData(filename):
+    records = csv.reader(codecs.iterdecode(filename,'utf-8'))
+    next(records)
+    for record in records:
+        input_data = AccoladeData()
+        input_data.roster_year = record[1]
+        input_data.first_name = record[2]
+        input_data.last_name = record[3]
+        input_data.accolade = record[4]
+        input_data.college = record[5]
         input_data.save()
