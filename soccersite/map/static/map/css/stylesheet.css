@@ -70,10 +70,12 @@ th{
   text-align: center;
   cursor: pointer;
   background-color: #007bff;
+  width: auto;
 }
 
 td {
   text-align: center;
+  width: auto;
 }
 
 tr{
