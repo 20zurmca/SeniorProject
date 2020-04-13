@@ -110,7 +110,7 @@ function loadData(map, playerData){
       if (stateOrCountry == null) {
         stateOrCountry = "";
       }
-      
+
       //building info window
       let contentString = '<div id="content">'+
            '<div id="siteNotice">'+
@@ -144,7 +144,6 @@ function loadData(map, playerData){
           let association = _findAssociativeIndices(groupedLatLngData[key]['players'][i]['roster_year']);
           let currentBioLink = _getCurrentDataElement(groupedLatLngData[key]['players'][i]['bio_link'], association);
           player_data += '<tr onclick = goToRosterPage("'.concat(currentBioLink).concat('")>');
-          console.log(player_data);
           player_data += '<td>' + _sortAggregateData(groupedLatLngData[key]['players'][i]['roster_year'])                + '</td>';
           player_data += '<td>' + groupedLatLngData[key]['players'][i]['first_name']                                     + '</td>';
           player_data += '<td>' + groupedLatLngData[key]['players'][i]['last_name']                                      + '</td>';
