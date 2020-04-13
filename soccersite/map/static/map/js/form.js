@@ -66,6 +66,14 @@ function getCookie(c_name)
    return ''; //all null in the data
  }
 
+ function convertToInches(height){
+   if(height){
+     data = height.split("'");
+     return 12 * parseInt(data[0]) + parseInt(data[1]);
+   }
+   return '';
+ }
+
  function goToRosterPage(page){
    window.open(page, "_blank");
  }
@@ -105,19 +113,19 @@ $(document).on('submit', '#filterForm', function(e){
           let association = _findAssociativeIndices(value.roster_year);
           let currentBioLink = _getCurrentDataElement(value.bio_link, association);
           player_data += '<tr onclick = goToRosterPage("'.concat(currentBioLink).concat('")>');
-          player_data += '<td>' + _sortAggregateData(value.roster_year)                + '</td>';
-          player_data += '<td>' + value.first_name                                     + '</td>';
-          player_data += '<td>' + value.last_name                                      + '</td>';
-          player_data += '<td>' + _getCurrentDataElement(value.position, association)  + '</td>';
-          player_data += '<td>' + _getCurrentDataElement(value.heights, association)   + '</td>';
-          player_data += '<td>' + _getCurrentDataElement(value.weights, association)   + '</td>';
-          player_data += '<td>' + value.starter_count                                  + '</td>';
-          player_data += '<td>' + value.accolade_count                                 + '</td>';
-          player_data += '<td>' + value.college_league                                 + '</td>';
-          player_data += '<td>' + value.college                                        + '</td>';
-          player_data += '<td>' + value.home_town                                      + '</td>';
-          player_data += '<td>' + value.state_or_country                               + '</td>';
-          player_data += '<td>' + value.high_school                                    + '</td>';
+          player_data += '<td>' + _sortAggregateData(value.roster_year)                                + '</td>';
+          player_data += '<td>' + value.first_name                                                     + '</td>';
+          player_data += '<td>' + value.last_name                                                      + '</td>';
+          player_data += '<td>' + _getCurrentDataElement(value.position, association)                  + '</td>';
+          player_data += '<td>' + convertToInches(_getCurrentDataElement(value.heights, association))  + '</td>';
+          player_data += '<td>' + _getCurrentDataElement(value.weights, association)                   + '</td>';
+          player_data += '<td>' + value.starter_count                                                  + '</td>';
+          player_data += '<td>' + value.accolade_count                                                 + '</td>';
+          player_data += '<td>' + value.college_league                                                 + '</td>';
+          player_data += '<td>' + value.college                                                        + '</td>';
+          player_data += '<td>' + value.home_town                                                      + '</td>';
+          player_data += '<td>' + value.state_or_country                                               + '</td>';
+          player_data += '<td>' + value.high_school                                                    + '</td>';
           player_data += '</tr>';
         });
         document.getElementById('resultTableBody').innerHTML = player_data;
