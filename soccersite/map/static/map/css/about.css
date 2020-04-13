@@ -26,6 +26,10 @@ hr.line_sep {
   margin-bottom: 50px;
 }
 
+#footer_name {
+  color: white;
+}
+
 .button_default {
   height: 86px;
   line-height: 76px;
