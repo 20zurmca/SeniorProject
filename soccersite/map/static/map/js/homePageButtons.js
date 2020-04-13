@@ -23,7 +23,7 @@ function parseCell(tableCell){
   parsedValue = parsedValue.replace(/"/g, '""'); //replace all single quote with double quote
 
   //if value contains comma, new-line or double-quote, enclose in double quotes
-  parsedValue = /[",\n]/.test(parsedValue) ? '"${parsedValue}"' : parsedValue;
+  parsedValue = /[",\n]/.test(parsedValue) ? parsedValue.split(',').join(' ') : parsedValue;
 
   return parsedValue;
 }
