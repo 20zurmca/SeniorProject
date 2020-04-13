@@ -39,7 +39,7 @@ def index(request):
             if(players):
                 players = players.filter(position__overlap=pos)
             else:
-                players = GroupedData.objects.filter(position_overlap=pos)
+                players = GroupedData.objects.filter(position__overlap=pos)
 
         if(len(sy) > 0):
             if(players):
