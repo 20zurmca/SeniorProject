@@ -72,7 +72,7 @@ function loadData(map, playerData){
       groupedLatLngData[key]['hsCity']             = playerData[i]['highschoolcity'].toLowerCase();
       groupedLatLngData[key]['hsStateOrProvince']  = playerData[i]['highschoolstateorcountry'];
       groupedLatLngData[key]['hsStateOrProvince']  = playerData[i]['highschoolstateorprovince'];
-      groupedLatLngData[key]['hsCountry']          = playerData[i]['highschoolcountry'];
+      groupedLatLngData[key]['hsCountry']          = playerData[i]['highschoolcountry'].toLowerCase();
       groupedLatLngData[key]['players'] = [];
       players = groupedLatLngData[key]['players'];
       players.push(player)
@@ -105,10 +105,12 @@ function loadData(map, playerData){
 
       heatMapData.push({location: new google.maps.LatLng(latitude, longitude), weight: groupedLatLngData[highSchool]['playerCount']});
 
-      var stateOrCountry = groupedLatLngData[highSchool]['hsStateOrProvince'];
+      var stateOrProvince = groupedLatLngData[highSchool]['hsStateOrProvince'];
+      var country = "";
 
-      if (stateOrCountry == null) {
-        stateOrCountry = "";
+      if (stateOrProvince == null) {
+        stateOrProvince = "";
+        country = groupedLatLngData[highSchool]['hsCountry'];
       }
 
       //building info window
@@ -118,7 +120,7 @@ function loadData(map, playerData){
            '<h1 id="firstHeading" class="firstHeading">'+ groupedLatLngData[highSchool]['hs'] +'</h1>'+
            '<div id="bodyContent">'+
            '<p style="text-transform:capitalize">'+groupedLatLngData[highSchool]['hsCity'] + ' ' +
-           stateOrCountry + '</p>'+
+           stateOrProvince + country + '</p>' + 
            '<p style="text-transform:capitalize">'+ "Student Count: " + groupedLatLngData[highSchool]['playerCount'] +
            '</div>'+
            '</div>';
