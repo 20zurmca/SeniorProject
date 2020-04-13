@@ -19,6 +19,13 @@ hr.line_sep {
   top: 0px;
 }
 
+.footer_image {
+  background-repeat: no-repeat;
+  margin-top: 50px;
+  text-align: center;
+  margin-bottom: 50px;
+}
+
 .button_default {
   height: 86px;
   line-height: 76px;
