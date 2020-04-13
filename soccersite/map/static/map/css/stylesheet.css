@@ -70,10 +70,12 @@ th{
   text-align: center;
   cursor: pointer;
   background-color: #007bff;
+  width: auto;
 }
 
 td {
   text-align: center;
+  width: auto;
 }
 
 tr{
@@ -193,16 +195,6 @@ h6 {
   width: auto;
   background: #1d6f42;
   border-color: #1d6f42;
-}
-
-#button3{
-  border: none;
-  margin-right: 2px;
-}
-
-#button4{
-  border:none;
-  margin-right: 20px;
 }
 
 #noQuerySelected{
