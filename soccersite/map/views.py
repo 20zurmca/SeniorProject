@@ -54,11 +54,11 @@ def index(request):
             else:
                 if(starterYearFourOrMore):
                     if(len(sy) == 1):
-                        players = GroupedData.filter(starter_count__gte=4)
+                        players = GroupedData.objects.filter(starter_count__gte=4)
                     else:
-                        players = GroupedData.filter(Q(starter_count__gte=4) | Q(starter_count__in=sy[:-1]))
+                        players = GroupedData.objects.filter(Q(starter_count__gte=4) | Q(starter_count__in=sy[:-1]))
                 else:
-                    players = GroupedData.filter(starter_count__in=sy)
+                    players = GroupedData.objects.filter(starter_count__in=sy)
 
         if(len(acy) > 0):
             if(players):
@@ -73,11 +73,11 @@ def index(request):
             else:
                 if(allConferenceYearsFourOrMore):
                     if(len(acy) == 1):
-                        players = GroupedData.filter(accolade_count__gte=4)
+                        players = GroupedData.objects.filter(accolade_count__gte=4)
                     else:
-                        players = GroupedData.filter(Q(accolade_count__gte=4) | Q(accolade_count__in=acy[:-1]))
+                        players = GroupedData.objects.filter(Q(accolade_count__gte=4) | Q(accolade_count__in=acy[:-1]))
                 else:
-                    players = GroupedData.filter(accolade_count__in=acy)
+                    players = GroupedData.objects.filter(accolade_count__in=acy)
 
         data  =  {'players': list(players.values())}
         return JsonResponse(data)
