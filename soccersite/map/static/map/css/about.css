@@ -1,4 +1,4 @@
-body {
+ body {
   background-color: #21252b;
 }
 
@@ -6,13 +6,24 @@ a {
   color: 	#00BFFF
 }
 
+hr.line_sep {
+  border: 1px solid white;
+  margin-top: 0px;
+}
+
 
 #about_toolbar{
-  display: inline;
   position: absolute;
   font-size: 20px;
-  right:15px;
-  top: 20px;
+  right:10px;
+  top: 0px;
+}
+
+.button_default {
+  height: 86px;
+  line-height: 76px;
+  vertical-align: top;
+  text-align: center;
 }
 
 .block{
