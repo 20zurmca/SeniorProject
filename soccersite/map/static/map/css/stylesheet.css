@@ -138,6 +138,7 @@ h6 {
   display: inline-block;
   bottom: 40px;
   left: 300px;
+  padding-right: 25px;
 }
 
 .form-check-input{

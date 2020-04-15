@@ -89,9 +89,15 @@ $(document).on('submit', '#filterForm', function(e){
   if(!selectedSomething){
     alert("Select at least one drop down to query.");
   } else {
+    let multipleChecked = true;
+    if (!$("#moreThanOneSchool").is(":checked")) {
+      multipleChecked = false;
+    }
+
     $.ajaxSetup({
            headers: { "X-CSRFToken": getCookie("csrftoken") }
        });
+
     $.ajax({
       type: 'POST',
       url: window.location,
@@ -101,7 +107,7 @@ $(document).on('submit', '#filterForm', function(e){
         positions:$('#positionSelector').val(),
         starterYears:$('#starterSelector').val(),
         allConferenceYears:$('#allConferenceSelector').val(),
-        multipleHS:$('#form-check-input').val()
+        multipleHS:multipleChecked
       })},
       success:function(response){
         loadData(map, response['players']); //loading data in map.js
