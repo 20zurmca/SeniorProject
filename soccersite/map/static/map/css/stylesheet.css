@@ -69,12 +69,12 @@ th{
   text-align: center;
   cursor: pointer;
   background-color: #007bff;
-  width: auto;
+  white-space: normal;
 }
 
 td {
   text-align: center;
-  width: auto;
+  white-space: normal;
 }
 
 tr{
@@ -203,7 +203,7 @@ h6 {
 #resultTable{
   margin-bottom: 300px;
   margin-top: 10px;
-  table-layout: fixed;
+  word-wrap:break-word;
   width: 100% !important;
   margin-left: auto;
   margin-right: auto;
