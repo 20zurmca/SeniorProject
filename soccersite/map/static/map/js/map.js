@@ -72,7 +72,7 @@ function loadData(map, playerData){
       groupedLatLngData[key]['hsCity']             = playerData[i]['highschoolcity'].toLowerCase();
       groupedLatLngData[key]['hsStateOrProvince']  = playerData[i]['highschoolstateorcountry'];
       groupedLatLngData[key]['hsStateOrProvince']  = playerData[i]['highschoolstateorprovince'];
-      groupedLatLngData[key]['hsCountry']          = playerData[i]['highschoolcountry'];
+      groupedLatLngData[key]['hsCountry']          = playerData[i]['highschoolcountry'].toLowerCase();
       groupedLatLngData[key]['players'] = [];
       players = groupedLatLngData[key]['players'];
       players.push(player)
@@ -105,12 +105,14 @@ function loadData(map, playerData){
 
       heatMapData.push({location: new google.maps.LatLng(latitude, longitude), weight: groupedLatLngData[highSchool]['playerCount']});
 
-      var stateOrCountry = groupedLatLngData[highSchool]['hsStateOrProvince'];
+      var stateOrProvince = groupedLatLngData[highSchool]['hsStateOrProvince'];
+      var country = "";
 
-      if (stateOrCountry == null) {
-        stateOrCountry = "";
+      if (stateOrProvince == null) {
+        stateOrProvince = "";
+        country = groupedLatLngData[highSchool]['hsCountry'];
       }
-      
+
       //building info window
       let contentString = '<div id="content">'+
            '<div id="siteNotice">'+
@@ -118,7 +120,7 @@ function loadData(map, playerData){
            '<h1 id="firstHeading" class="firstHeading">'+ groupedLatLngData[highSchool]['hs'] +'</h1>'+
            '<div id="bodyContent">'+
            '<p style="text-transform:capitalize">'+groupedLatLngData[highSchool]['hsCity'] + ' ' +
-           stateOrCountry + '</p>'+
+           stateOrProvince + country + '</p>' + 
            '<p style="text-transform:capitalize">'+ "Student Count: " + groupedLatLngData[highSchool]['playerCount'] +
            '</div>'+
            '</div>';
@@ -144,20 +146,19 @@ function loadData(map, playerData){
           let association = _findAssociativeIndices(groupedLatLngData[key]['players'][i]['roster_year']);
           let currentBioLink = _getCurrentDataElement(groupedLatLngData[key]['players'][i]['bio_link'], association);
           player_data += '<tr onclick = goToRosterPage("'.concat(currentBioLink).concat('")>');
-          console.log(player_data);
-          player_data += '<td>' + _sortAggregateData(groupedLatLngData[key]['players'][i]['roster_year'])                + '</td>';
-          player_data += '<td>' + groupedLatLngData[key]['players'][i]['first_name']                                     + '</td>';
-          player_data += '<td>' + groupedLatLngData[key]['players'][i]['last_name']                                      + '</td>';
-          player_data += '<td>' + _getCurrentDataElement(groupedLatLngData[key]['players'][i]['position'], association)  + '</td>';
-          player_data += '<td>' + _getCurrentDataElement(groupedLatLngData[key]['players'][i]['heights'], association)   + '</td>';
-          player_data += '<td>' + _getCurrentDataElement(groupedLatLngData[key]['players'][i]['weights'], association)   + '</td>';
-          player_data += '<td>' + groupedLatLngData[key]['players'][i]['starter_count']                                  + '</td>';
-          player_data += '<td>' + groupedLatLngData[key]['players'][i]['accolade_count']                                 + '</td>';
-          player_data += '<td>' + groupedLatLngData[key]['players'][i]['college_league']                                 + '</td>';
-          player_data += '<td>' + groupedLatLngData[key]['players'][i]['college']                                        + '</td>';
-          player_data += '<td>' + groupedLatLngData[key]['players'][i]['home_town']                                      + '</td>';
-          player_data += '<td>' + groupedLatLngData[key]['players'][i]['state_or_country']                               + '</td>';
-          player_data += '<td>' + groupedLatLngData[key]['players'][i]['high_school']                                    + '</td>';
+          player_data += '<td>' + _sortAggregateData(groupedLatLngData[key]['players'][i]['roster_year'])                                 + '</td>';
+          player_data += '<td>' + groupedLatLngData[key]['players'][i]['first_name']                                                      + '</td>';
+          player_data += '<td>' + groupedLatLngData[key]['players'][i]['last_name']                                                       + '</td>';
+          player_data += '<td>' + _getCurrentDataElement(groupedLatLngData[key]['players'][i]['position'], association)                   + '</td>';
+          player_data += '<td>' + convertToInches(_getCurrentDataElement(groupedLatLngData[key]['players'][i]['heights'], association))   + '</td>';
+          player_data += '<td>' + _getCurrentDataElement(groupedLatLngData[key]['players'][i]['weights'], association)                    + '</td>';
+          player_data += '<td>' + groupedLatLngData[key]['players'][i]['starter_count']                                                   + '</td>';
+          player_data += '<td>' + groupedLatLngData[key]['players'][i]['accolade_count']                                                  + '</td>';
+          player_data += '<td>' + groupedLatLngData[key]['players'][i]['college_league']                                                  + '</td>';
+          player_data += '<td>' + groupedLatLngData[key]['players'][i]['college']                                                         + '</td>';
+          player_data += '<td>' + groupedLatLngData[key]['players'][i]['home_town']                                                       + '</td>';
+          player_data += '<td>' + groupedLatLngData[key]['players'][i]['state_or_country']                                                + '</td>';
+          player_data += '<td>' + groupedLatLngData[key]['players'][i]['high_school']                                                     + '</td>';
           player_data += '</tr>';
         }
         table.innerHTML = player_data;
@@ -322,19 +323,19 @@ function loadData(map, playerData){
             let association = _findAssociativeIndices(groupedLatLngData[hs]['players'][i]['roster_year']);
             let currentBioLink = _getCurrentDataElement(groupedLatLngData[hs]['players'][i]['bio_link'], association);
             player_data += '<tr onclick = goToRosterPage("'.concat(currentBioLink).concat('")>');
-            player_data += '<td>' + _sortAggregateData(groupedLatLngData[hs]['players'][i]['roster_year'])                + '</td>';
-            player_data += '<td>' + groupedLatLngData[hs]['players'][i]['first_name']                                     + '</td>';
-            player_data += '<td>' + groupedLatLngData[hs]['players'][i]['last_name']                                      + '</td>';
-            player_data += '<td>' + _getCurrentDataElement(groupedLatLngData[hs]['players'][i]['position'], association)  + '</td>';
-            player_data += '<td>' +  _getCurrentDataElement(groupedLatLngData[hs]['players'][i]['heights'], association)  + '</td>';
-            player_data += '<td>' +  _getCurrentDataElement(groupedLatLngData[hs]['players'][i]['weights'], association)  + '</td>';
-            player_data += '<td>' + groupedLatLngData[hs]['players'][i]['starter_count']                                  + '</td>';
-            player_data += '<td>' + groupedLatLngData[hs]['players'][i]['accolade_count']                                 + '</td>';
-            player_data += '<td>' + groupedLatLngData[hs]['players'][i]['college_league']                                 + '</td>';
-            player_data += '<td>' + groupedLatLngData[hs]['players'][i]['college']                                        + '</td>';
-            player_data += '<td>' + groupedLatLngData[hs]['players'][i]['home_town']                                      + '</td>';
-            player_data += '<td>' + groupedLatLngData[hs]['players'][i]['state_or_country']                               + '</td>';
-            player_data += '<td>' + groupedLatLngData[hs]['players'][i]['high_school']                                    + '</td>';
+            player_data += '<td>' + _sortAggregateData(groupedLatLngData[hs]['players'][i]['roster_year'])                                + '</td>';
+            player_data += '<td>' + groupedLatLngData[hs]['players'][i]['first_name']                                                     + '</td>';
+            player_data += '<td>' + groupedLatLngData[hs]['players'][i]['last_name']                                                      + '</td>';
+            player_data += '<td>' + _getCurrentDataElement(groupedLatLngData[hs]['players'][i]['position'], association)                  + '</td>';
+            player_data += '<td>' + convertToInches(_getCurrentDataElement(groupedLatLngData[hs]['players'][i]['heights'], association))  + '</td>';
+            player_data += '<td>' +  _getCurrentDataElement(groupedLatLngData[hs]['players'][i]['weights'], association)                  + '</td>';
+            player_data += '<td>' + groupedLatLngData[hs]['players'][i]['starter_count']                                                  + '</td>';
+            player_data += '<td>' + groupedLatLngData[hs]['players'][i]['accolade_count']                                                 + '</td>';
+            player_data += '<td>' + groupedLatLngData[hs]['players'][i]['college_league']                                                 + '</td>';
+            player_data += '<td>' + groupedLatLngData[hs]['players'][i]['college']                                                        + '</td>';
+            player_data += '<td>' + groupedLatLngData[hs]['players'][i]['home_town']                                                      + '</td>';
+            player_data += '<td>' + groupedLatLngData[hs]['players'][i]['state_or_country']                                               + '</td>';
+            player_data += '<td>' + groupedLatLngData[hs]['players'][i]['high_school']                                                    + '</td>';
             player_data += '</tr>';
           }
         }

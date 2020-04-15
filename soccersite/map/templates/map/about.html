@@ -17,20 +17,22 @@
     <div id="banner">
       <div class="toolbar">
         <a style="text-decoration:none" href='/'>
-          <img class = "block" src = "{% static 'map/img/logo.png' %}" width = 195 height = 66>
+          <img class = "block" src = "{% static 'map/img/logo.png' %}" width = 254 height = 86>
         </a>
         <p class="block">Talent is in the Data</p>
         <div id='about_toolbar'>
 
-            <a href='/upload' class="badge badge-dark">Upload Data</a>
+            <a href='/upload' class="badge badge-dark button_default">Upload Data</a>
 
-            <a href='/' class="badge badge-dark">Home</a>
+            <a href='/about' class="badge badge-dark button_default">About</a>
 
-            <a href='/admin' class="badge badge-dark">Admin Login</a>
+            <a href='/admin' class="badge badge-dark button_default">Admin Login</a>
 
         </div>
       </div>
     </div>
+
+    <hr class = "line_sep">
 
     <div class="header">
       <h2 class="name">About The Project</h2>
@@ -170,6 +172,13 @@
           a B.S. in Computer Science. He does not know where he will go for his graduate study at this moment.
         </p>
       </div>
+
+      <div class="footer_image">
+        <!-- image details in css -->
+        <h5 id="footer_name">© Copyright 2020</h5>
+        <img id="footer_img" src="{% static 'map/img/logo.png' %}" width = 195 height = 66>
+      </div>
+
     </div>
     <script src="{% static 'map/js/aboutPageButtons.js' %}"></script>
     <script type="text/javascript" src="https://platform.linkedin.com/badges/js/profile.js" async defer></script>
