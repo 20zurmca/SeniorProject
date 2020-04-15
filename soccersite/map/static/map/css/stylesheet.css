@@ -32,23 +32,6 @@
   margin-right: auto;
 }
 
-.loader {
-  border: 16px solid #f3f3f3;
-  border-radius: 50%;
-  border-top: 16px solid #21252b;
-  width: 70px;
-  height: 70px;
-  -webkit-animation: spin 2s linear infinite; /* Safari */
-  animation: spin 0.8s linear infinite;
-}
-
-.loader-wrapper{
-  text-align: center;
-  margin-left: 37&;
-  position: relative;
-  bottom: 15px;
-}
-
 /* Safari */
 @-webkit-keyframes spin {
   0% { -webkit-transform: rotate(0deg); }
@@ -126,11 +109,49 @@ h6 {
   padding: 0 0 0 0;
 }
 
-.submit-button{
+.submit-button-wrapper{
   text-align: center;
   margin-top: 275px;
   margin-bottom: 230px;
-  padding-left: 295px;
+  position: relative;
+}
+
+
+.loader-wrapper{
+  text-align: center;
+  padding-bottom: 15px;
+}
+
+
+.loader {
+  border: 16px solid #f3f3f3;
+  border-radius: 50%;
+  border-top: 16px solid #21252b;
+  width: 70px;
+  height: 70px;
+  -webkit-animation: spin 2s linear infinite; /* Safari */
+  animation: spin 0.8s linear infinite;
+  display: inline-block;
+}
+
+.form-check{
+  bottom: 40px;
+  display: inline-block;
+  margin-left: 35%;
+}
+
+.form-check-input{
+  margin-left: 20px;
+  width: 20px;
+  height: 20px;
+}
+
+.form-check-label{
+  font-family: 'Lato', sans-serif;
+  font-size: 15px;
+  color: white;
+  padding-left: 50px;
+  padding-top: 2px;
 }
 
 .header-button{
@@ -156,24 +177,6 @@ h6 {
 
 .dataTables_filter{
   margin-right: 0.5%;
-}
-
-.form-check{
-  display: inline-block;
-}
-
-.form-check-input{
-  margin-left: 20px;
-  width: 20px;
-  height: 20px;
-}
-
-.form-check-label{
-  font-family: 'Lato', sans-serif;
-  font-size: 15px;
-  color: white;
-  padding-left: 50px;
-  padding-top: 2px;
 }
 
 #resultTable_info{
