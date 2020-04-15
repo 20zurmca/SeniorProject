@@ -145,8 +145,14 @@ def save_starterData(filename):
         input_data.first_name = record[3]
         input_data.last_name = record[4]
         input_data.potential_starts = record[5]
-        input_data.gp = record[6]
-        input_data.gs = record[7]
+        if record[6] == '':
+            input_data.gp = 0
+        else:
+            input_data.gp = record[6]
+        if record[7] == '':
+            input_data.gs = 0
+        else:
+            input_data.gs = record[7]
         input_data.is_starter = record[8]
         input_data.college = record[9]
         input_data.save()
