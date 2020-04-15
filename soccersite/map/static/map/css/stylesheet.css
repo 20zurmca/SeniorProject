@@ -43,7 +43,8 @@
 }
 
 .loader-wrapper{
-  margin-left: 48%;
+  text-align: center;
+  margin-left: 37&;
   position: relative;
   bottom: 15px;
 }
@@ -129,6 +130,7 @@ h6 {
   text-align: center;
   margin-top: 275px;
   margin-bottom: 230px;
+  padding-left: 295px;
 }
 
 .header-button{
@@ -154,6 +156,24 @@ h6 {
 
 .dataTables_filter{
   margin-right: 0.5%;
+}
+
+.form-check{
+  display: inline-block;
+}
+
+.form-check-input{
+  margin-left: 20px;
+  width: 20px;
+  height: 20px;
+}
+
+.form-check-label{
+  font-family: 'Lato', sans-serif;
+  font-size: 15px;
+  color: white;
+  padding-left: 50px;
+  padding-top: 2px;
 }
 
 #resultTable_info{

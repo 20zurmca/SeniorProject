@@ -100,7 +100,8 @@ $(document).on('submit', '#filterForm', function(e){
         colleges:$('#collegeSelector').val(),
         positions:$('#positionSelector').val(),
         starterYears:$('#starterSelector').val(),
-        allConferenceYears:$('#allConferenceSelector').val()
+        allConferenceYears:$('#allConferenceSelector').val(),
+        multipleHS:$('#form-check-input').val()
       })},
       success:function(response){
         loadData(map, response['players']); //loading data in map.js
