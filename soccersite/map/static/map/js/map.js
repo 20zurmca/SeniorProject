@@ -212,8 +212,12 @@ function loadData(map, playerData){
      });
      firstLoad = false;
      $('.loader').hide();
+     if(playerData.length!=0) {
      document.location.href = "#map";
      document.getElementById('zoomControl').click();
+     } else {
+       alert("Query Returned No Results");
+     }
 }
 
 
@@ -301,7 +305,7 @@ function loadData(map, playerData){
    controlText.style.lineHeight   = '39px';
    controlText.style.paddingLeft  = '5px';
    controlText.style.paddingRight = '5px';
-   controlText.innerHTML          = 'Auto Zoom';
+   controlText.innerHTML          = 'Reset Table';
    controlText.id                 = 'zoomControlText';
    controlUI.appendChild(controlText);
 
