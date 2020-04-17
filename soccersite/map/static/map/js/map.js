@@ -110,7 +110,9 @@ function loadData(map, playerData){
 
       if (stateOrProvince == null) {
         stateOrProvince = "";
-        country = groupedLatLngData[highSchool]['hsCountry'];
+        country = ", " + groupedLatLngData[highSchool]['hsCountry'];
+      } else {
+        stateOrProvince = ", " + stateOrProvince;
       }
 
       //building info window
@@ -119,7 +121,7 @@ function loadData(map, playerData){
            '</div>'+
            '<h1 id="firstHeading" class="firstHeading">'+ groupedLatLngData[highSchool]['hs'] +'</h1>'+
            '<div id="bodyContent">'+
-           '<p style="text-transform:capitalize">'+groupedLatLngData[highSchool]['hsCity'] + ' ' +
+           '<p style="text-transform:capitalize">'+groupedLatLngData[highSchool]['hsCity'] +
            stateOrProvince + country + '</p>' + 
            '<p style="text-transform:capitalize">'+ "Student Count: " + groupedLatLngData[highSchool]['playerCount'] +
            '</div>'+
