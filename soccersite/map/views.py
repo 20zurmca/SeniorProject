@@ -30,9 +30,14 @@ def index(request):
         starterYearFourOrMore = '4+' in sy
         allConferenceYearsFourOrMore = '4+' in acy
 
+        multiplePlayersPerSchool = False
+        if(payload['multipleHS'] == 'selected'):
+            multiplePlayersPerSchool = True
+
         players = None
 
         if(len(c) > 0):
+
             players = GroupedData.objects.filter(college__in=c)
 
         if(len(pos) > 0):
@@ -78,6 +83,14 @@ def index(request):
                         players = GroupedData.objects.filter(Q(accolade_count__gte=4) | Q(accolade_count__in=acy[:-1]))
                 else:
                     players = GroupedData.objects.filter(accolade_count__in=acy)
+
+        if(multiplePlayersPerSchool):
+            dupeHS = players.values('high_school') \
+                       .annotate(cnt=Count('high_school')) \
+                       .order_by() \
+                       .filter(cnt__gt=1)
+
+            players = players.filter(high_school__in=[item['high_school'] for item in dupeHS])
 
         data  =  {'players': list(players.values())}
         return JsonResponse(data)

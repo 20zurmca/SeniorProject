@@ -89,9 +89,9 @@ $(document).on('submit', '#filterForm', function(e){
   if(!selectedSomething){
     alert("Select at least one drop down to query.");
   } else {
-    let multipleChecked = true;
+    let multipleChecked = 'selected';
     if (!$("#moreThanOneSchool").is(":checked")) {
-      multipleChecked = false;
+      multipleChecked = '';
     }
 
     $.ajaxSetup({
