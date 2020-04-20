@@ -8,3 +8,4 @@ DELETE FROM map_rosterdata;
 DELETE FROM map_starterdata;
 DELETE FROM map_accoladedata;
 DROP TRIGGER IF EXISTS update_db ON map_documents;
+DROP FUNCTION IF EXISTS update_db_func();
