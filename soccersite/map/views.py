@@ -85,10 +85,10 @@ def index(request):
                     players = GroupedData.objects.filter(accolade_count__in=acy)
 
         if(multiplePlayersPerSchool):
-            dupeHS = players.values('high_school') \
-                       .annotate(cnt=Count('high_school')) \
+            dupeHS = players.values('high_school', 'highschoolcity') \
+                       .annotate(hs_cnt=Count('high_school'), city_cnt=Count('highschoolcity')) \
                        .order_by() \
-                       .filter(cnt__gt=1)
+                       .filter(Q(hs_cnt__gt=1) & Q(city_cnt__gt=1))
 
             players = players.filter(high_school__in=[item['high_school'] for item in dupeHS])
 
