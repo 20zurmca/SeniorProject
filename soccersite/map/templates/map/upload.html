@@ -2,6 +2,8 @@
 {% load static %}
 <html>
     <head>
+      <meta charset="utf-8">
+      <title>Upload File</title>
       <!-- bootstrap stuff -->
       <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
       integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
@@ -9,10 +11,11 @@
       <!-- google font -->
       <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Cabin&display=swap">
       <link href="https://fonts.googleapis.com/css2?family=Lato:wght@700&display=swap" rel="stylesheet">
-        <meta charset="utf-8">
-        <title>Upload File</title>
-        <link rel="shortcut icon" href="{% static 'map/img/favicon.ico' %}" />
-        <link rel="stylesheet" type="text/css" href="{% static 'map/css/upload.css' %}">
+      <!-- tail select -->
+      <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/tail.select@latest/css/bootstrap4/tail.select-default.css">
+
+      <link rel="shortcut icon" href="{% static 'map/img/favicon.ico' %}" />
+      <link rel="stylesheet" type="text/css" href="{% static 'map/css/upload.css' %}">
     </head>
     <body>
       <div class="container-bgimage">
@@ -23,33 +26,60 @@
             </a>
             <p class="blocktext">Talent is in the Data</p>
             <div id='upload_toolbar'>
-
               <a href='/about' class="badge button_default">About</a>
-
               <a href='/upload' class="badge button_default">Upload Data</a>
-
               <a href='/admin' class="badge button_default">Admin Login</a>
-
             </div>
           </div>
         </div>
 
+        <div class="forms">
+          <div class = "upload-data-form">
+            <form method="post" enctype="multipart/form-data" id='upload_form'>
+              {% csrf_token %}
+              {{form.as_p}}
+              <button type="submit" class="btn btn-primary">Upload</button>
+            </form>
+          </div>
 
-        <form method="post" enctype="multipart/form-data" id='upload_form'>
-          {% csrf_token %}
-          {{form.as_p}}
-          <button type="submit" class="btn btn-primary">Upload</button>
-        </form>
+          <div class = "version-form">
+            <form method="POST" id='versionControlForm'>
+              <select class="search-description" id="dbVersion">
+                <optgroup label="Versions">
+                  <option data-description="current date">Dump 1</option>
+                  <option data-description="current date">Dump 2</option>
+                </optgroup>
+              </select>
+              <button type="submit" class="btn btn-primary" id="restoreButton">Restore</button>
+            </form>
+         </div>
+        </div>
 
         <div class="footer_image">
           <!-- image details in css -->
           <h5 id="footer_name">© Copyright 2020</h5>
           <img id="footer_img" src="{% static 'map/img/logo.png' %}" width = 195 height = 66>
         </div>
-
       </div>
 
+     <!-- jQuery library -->
+     <script src="https://code.jquery.com/jquery-3.4.1.js" integrity="sha256-WpOohJOqMqqyKL9FccASB9O0KwACQJpFTUBLTYOVvVU="
+     crossorigin="anonymous"></script>
 
+      <!--Bootstrap.js -->
+      <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+      integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+      crossorigin="anonymous"></script>
+
+      <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/tail.select@0.5.15/js/tail.select.min.js"></script>
+
+      <script>
+        var versionSelector = tail.select("#dbVersion", {
+          placeholder: "Restore Data Version",
+          multiShowCount: false,
+          search: true,
+          descriptions: true
+        });
+      </script>
     </body>
-
 </html>
