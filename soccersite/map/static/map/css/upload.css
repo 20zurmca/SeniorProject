@@ -75,6 +75,10 @@ padding-left: 40%;
   color: #ffffff;
 }
 
+.version-form{
+  position: relative;
+}
+
 .upload-data-form{
   display: inline-block;
   position:absolute;
@@ -87,7 +91,6 @@ padding-left: 40%;
   position: absolute;
   left:35%;
   bottom: 48%;
-
 }
 
 #banner{
