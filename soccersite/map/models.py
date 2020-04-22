@@ -69,7 +69,7 @@ class HighSchoolMatchMaster(models.Model):
     player_number      = models.CharField(max_length=10, null=True)
     first_name         = models.CharField(max_length=50, null=True)
     last_name          = models.CharField(max_length=50, null=True)
-    roster_year        = models.CharField(max_length=10, null=True)
+    year               = models.CharField(max_length=10, null=True)
     position1          = models.CharField(max_length=20, null=True)
     height             = models.CharField(max_length=10, null=True)
     weight             = models.IntegerField()
