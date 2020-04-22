@@ -199,19 +199,30 @@ CREATE TABLE highschool_match_master AS (
 	) AS temp1
 );
 
+-- add id to new table and clear old table
+ALTER TABLE highschool_match_master ADD COLUMN id SERIAL PRIMARY KEY;
+
+DELETE FROM map_highschoolmatchmaster;
+
+INSERT INTO map_highschoolmatchmaster (
+	SELECT id, roster_year, player_number, first_name, last_name, year, position1, height, weight, home_town, state_or_country, high_school, alternative_school, college, college_league, bio_link, is_starter, accolade, city, institution, "State/Province" AS stateorprovince, country, latitude, longitude, school_type
+	FROM highschool_match_master
+);
+
 -- Drop all extra tables
 DROP TABLE roster_public_final;
 DROP TABLE roster_international_final;
 DROP TABLE roster_unique_final;
 DROP TABLE roster_master_data;
+DROP TABLE highschool_match_master;
 
 
 -- Group entries
 
 
 CREATE TABLE grouped_data_temp AS (
-	select first_name, last_name, home_town, state_or_country, high_school, alternative_school, college, college_league, MAX(city) AS highSchoolCity, MAX("State/Province") AS highSchoolStateOrProvince, MAX(country) AS highSchoolCountry, MAX(school_type) AS school_type, COUNT(is_starter = 'Y') AS starter_count, COUNT(accolade) AS accolade_count, MAX(latitude) AS latitude, MAX(longitude) AS longitude, ARRAY_AGG(roster_year) AS roster_year, ARRAY_AGG(year) AS year, ARRAY_AGG(position1) AS position, ARRAY_AGG(height) AS height, ARRAY_AGG(weight) AS weight, ARRAY_AGG(bio_link) AS bio_link
-	FROM highschool_match_master
+	select first_name, last_name, home_town, state_or_country, high_school, alternative_school, college, college_league, MAX(city) AS highSchoolCity, MAX(stateorprovince) AS highSchoolStateOrProvince, MAX(country) AS highSchoolCountry, MAX(school_type) AS school_type, COUNT(is_starter = 'Y') AS starter_count, COUNT(accolade) AS accolade_count, MAX(latitude) AS latitude, MAX(longitude) AS longitude, ARRAY_AGG(roster_year) AS roster_year, ARRAY_AGG(year) AS year, ARRAY_AGG(position1) AS position, ARRAY_AGG(height) AS height, ARRAY_AGG(weight) AS weight, ARRAY_AGG(bio_link) AS bio_link
+	FROM map_highschoolmatchmaster
 	GROUP BY first_name, last_name, home_town, state_or_country, high_school, alternative_school, college, college_league
 );
 
@@ -431,25 +442,33 @@ CREATE OR REPLACE FUNCTION update_db_func() RETURNS TRIGGER AS $$
 		-- Union the new and old high school match master data
 
 		CREATE TABLE highschool_match_master3 AS (
-			SELECT *
-			FROM highschool_match_master
+			SELECT roster_year, player_number, first_name, last_name, year, position1, height, weight, home_town, state_or_country, high_school, alternative_school, college, college_league, bio_link, is_starter, accolade, city, institution, stateorprovince, country, latitude, longitude, school_type
+			FROM map_highschoolmatchmaster
 			UNION
-			SELECT *
+			SELECT roster_year, player_number, first_name, last_name, year, position1, height, weight, home_town, state_or_country, high_school, alternative_school, college, college_league, bio_link, is_starter, accolade, city, institution, "State/Province" AS stateorprovince, country, latitude, longitude, school_type
 			FROM new_highschool_match_master
 		);
 
-		-- Drop old and new table but not the combined one (3)
-		DROP TABLE highschool_match_master;
-		DROP TABLE new_highschool_match_master;
+		-- add id to new table and clear old table
+		ALTER TABLE highschool_match_master3 ADD COLUMN id SERIAL PRIMARY KEY;
 
-		ALTER TABLE highschool_match_master3 RENAME TO highschool_match_master;
+		DELETE FROM map_highschoolmatchmaster;
+
+		INSERT INTO map_highschoolmatchmaster (
+			SELECT id, roster_year, player_number, first_name, last_name, year, position1, height, weight, home_town, state_or_country, high_school, alternative_school, college, college_league, bio_link, is_starter, accolade, city, institution, stateorprovince, country, latitude, longitude, school_type
+			FROM highschool_match_master3
+		);
+
+		-- Drop unused tables
+		DROP TABLE new_highschool_match_master;
+		DROP TABLE highschool_match_master3;
 
 
 		-- Group entries
 
 		CREATE TABLE grouped_data_temp AS (
-			select first_name, last_name, home_town, state_or_country, high_school, alternative_school, college, college_league, MAX(city) AS highSchoolCity, MAX("State/Province") AS highSchoolStateOrProvince, MAX(country) AS highSchoolCountry, MAX(school_type) AS school_type, COUNT(is_starter = 'Y') AS starter_count, COUNT(accolade) AS accolade_count, MAX(latitude) AS latitude, MAX(longitude) AS longitude, ARRAY_AGG(roster_year) AS roster_year, ARRAY_AGG(year) AS year, ARRAY_AGG(position1) AS position, ARRAY_AGG(height) AS height, ARRAY_AGG(weight) AS weight, ARRAY_AGG(bio_link) AS bio_link
-			FROM highschool_match_master
+			select first_name, last_name, home_town, state_or_country, high_school, alternative_school, college, college_league, MAX(city) AS highSchoolCity, MAX(stateorprovince) AS highSchoolStateOrProvince, MAX(country) AS highSchoolCountry, MAX(school_type) AS school_type, COUNT(is_starter = 'Y') AS starter_count, COUNT(accolade) AS accolade_count, MAX(latitude) AS latitude, MAX(longitude) AS longitude, ARRAY_AGG(roster_year) AS roster_year, ARRAY_AGG(year) AS year, ARRAY_AGG(position1) AS position, ARRAY_AGG(height) AS height, ARRAY_AGG(weight) AS weight, ARRAY_AGG(bio_link) AS bio_link
+			FROM map_highschoolmatchmaster
 			GROUP BY first_name, last_name, home_town, state_or_country, high_school, alternative_school, college, college_league
 		);
 
