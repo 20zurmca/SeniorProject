@@ -9,6 +9,7 @@ from .forms import MHSForm, DocumentForm
 from django.contrib.admin.views.decorators import staff_member_required
 import csv
 import codecs
+import subprocess
 
 def index(request):
     colleges  = GroupedData.objects.values_list('college', flat=True).distinct().order_by('college')
@@ -114,6 +115,10 @@ def upload_file(request):
             return render(request, 'map/upload.html', {'form':form})
     else:
         form = DocumentForm()
+
+    #write pgdump dump here
+    # proc = subprocess.run(["python", "manage.py", "dumpdata", "--exclude", \
+    #                         map."])
     return render(request, 'map/upload.html', {'form':form})
 
 
