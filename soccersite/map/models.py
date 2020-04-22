@@ -72,7 +72,7 @@ class HighSchoolMatchMaster(models.Model):
     year               = models.CharField(max_length=10, null=True)
     position1          = models.CharField(max_length=20, null=True)
     height             = models.CharField(max_length=10, null=True)
-    weight             = models.IntegerField()
+    weight             = models.IntegerField(null=True)
     home_town          = models.CharField(max_length=30, null=True)
     state_or_country   = models.CharField(max_length=20, null=True)
     high_school        = models.CharField(max_length=100, null=True)
@@ -86,8 +86,8 @@ class HighSchoolMatchMaster(models.Model):
     institution        = models.CharField(max_length=100, null=True)
     stateorprovince    = models.CharField(max_length=20, null=True)
     country            = models.CharField(max_length=50, null=True)
-    latitude           = models.FloatField()
-    longitude          = models.FloatField()
+    latitude           = models.FloatField(null=True)
+    longitude          = models.FloatField(null=True)
     school_type        = models.CharField(max_length=20, null=True)
 
 class Documents(models.Model):
