@@ -1,7 +1,4 @@
 SCHOOL_NAME,STATE,LATITUDE,LONGITUDE
-Arkansas School for Mathematics,AR,34.5181075,-93.058034
-Louisiana School for Math,LA,31.7527789,-93.0959125
-Saint Andrew's School,FL,26.384682,-80.1471075
 Academy at Swift River,MA,42.4831652,-72.8845052
 Academy for Global Exploration,OR,42.1945804,-122.7182955
 Academy of the Holy Family,CT,41.6156804,-72.0879238
@@ -13,6 +10,7 @@ American Hebrew Academy,NC,36.1085359,-79.8706066
 Andrews Osborne Academy,OH,41.6413384,-81.3969591
 Annie Wright School,WA,47.268669,-122.459469
 Appalachian Children's Home,KY,36.8699989,-83.8478698
+Arkansas School for Mathematics,AR,34.5181075,-93.058034
 Armand Hammer United World College of the American West,NM,35.6559717,-105.2812825
 Army and Navy Academy,CA,33.1628677,-117.3547687
 Asheville School,NC,35.5702173,-82.6199942
@@ -124,6 +122,7 @@ Lawrence Academy at Groton,MA,42.6053483,-71.566719
 Lewisville Female Seminary,TX,33.046233,-96.994174
 Linden Hall,PA,40.0744264,-79.7032785
 Linsly School,WV,40.0744793,-80.6946662
+Louisiana School for Math,LA,31.7527789,-93.0959125
 Lowell Whiteman School,CO,40.5369695,-106.82545
 Luther Preparatory School,WI,43.1876397,-88.7115184
 Lyman Ward Military Academy,AL,32.8028839,-85.6607222
@@ -197,6 +196,7 @@ Riverview School,AR,35.1608788,-91.5596117
 Robinson School,IL,39.0186774,-87.7397292
 Ross School,TX,29.457271,-98.6009497
 Rumsey Hall School,CT,41.678232,-73.295523
+Saint Andrew's School,FL,26.384682,-80.1471075
 Saint Bede Academy,IL,41.3219097,-89.1659235
 Saint John's Prep,MA,42.5826313,-70.9526942
 Saint Mary's School,OK,36.0925073,-95.9735919
@@ -214,12 +214,10 @@ South Carolina Governor's School for Science and Mathematics,SC,34.3732111,-80.0
 South Carolina Governor's School for the Arts and Humanities,SC,34.8432508,-82.4025406
 South Kent School,CT,41.6761997,-73.4797535
 Southwestern Academy,CA,34.115132,-118.13225
-Southwestern Academy,CA,34.115132,-118.13225
 Spring Creek Lodge Academy,MT,47.7717508,-115.4544492
 Spring Street International School,WA,48.5319483,-123.0202386
 St John's High School,MI,42.9913509,-84.566291
 St. Albans School,DC,38.9284611,-77.0717149
-St. Andrew's School,KS,37.2251014,-95.7017211
 St. Andrew's School,KS,37.2251014,-95.7017211
 St. Andrew's-Sewanee School,TN,35.2171016,-85.8912683
 St. Anne's-Belfield School,VA,38.0426208,-78.5155064
@@ -276,7 +274,6 @@ The Pennington School,NJ,40.3277037,-74.7941588
 The Putney School,VT,42.9875714,-72.5536261
 The Rectory School,CT,41.893041,-71.9644866
 The Salisbury School,MD,38.3627747,-75.5342654
-The SEED School,MD,39.2838727,-76.6639216
 The SEED School,MD,39.2838727,-76.6639216
 The Stony Brook School,NY,40.9225887,-73.1310805
 The Thacher School,CA,34.4639616,-119.1822906

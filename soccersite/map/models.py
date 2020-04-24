@@ -100,7 +100,7 @@ class HighSchoolMatchMaster(models.Model):
     school_type        = models.CharField(max_length=20, null=True)
 
 class Documents(models.Model):
-    description  = models.CharField(max_length=255, blank=True)
+    description  = models.CharField(max_length=255)
     rosterData   = models.FileField(upload_to='documents/')
     starterData  = models.FileField(upload_to='documents/')
     accoladeData = models.FileField(upload_to='documents/')
@@ -108,5 +108,6 @@ class Documents(models.Model):
 
 
 class BackUp(models.Model):
+    description = models.CharField(max_length=255)
     file        = models.FileField(upload_to="backups/")
     uploaded_at = models.DateTimeField(auto_now_add=True)

@@ -119,7 +119,8 @@ def upload_file(request):
                                     "auth_user", "auth_user_groups", "auth_user_user_permissions", \
                                     "django_admin_log", "django_content_type", "django_migrations", \
                                     "django_session", "map_documents", "unique_boarding_schools"]).output()
-            new_version = BackUp(file=json_dump)
+                                    
+            new_version = BackUp(description = form.cleaned_data['description'], file=json_dump)
             new_version.save()
             return render(request, 'map/upload.html', {'form':form, \
                                                         'versions': versions})
@@ -128,6 +129,8 @@ def upload_file(request):
 
     return render(request, 'map/upload.html', {'form':form, \
                                                 'versions': versions})
+
+def restore(request):
 
 
 
