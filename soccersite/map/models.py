@@ -47,7 +47,7 @@ class HighSchoolData(models.Model):
     country         = models.CharField(max_length=50, null=True)
     latitude        = models.FloatField(null=True)
     longitude       = models.FloatField(null=True)
-    school_type     = models.CharField(max_length=20)
+    school_type     = models.CharField(max_length=20, null=True)
 
 class GroupedData(models.Model):
     first_name                   = models.CharField(max_length=50, null=True)
@@ -104,5 +104,9 @@ class Documents(models.Model):
     rosterData   = models.FileField(upload_to='documents/')
     starterData  = models.FileField(upload_to='documents/')
     accoladeData = models.FileField(upload_to='documents/')
-    sqlFile      = models.FileField(upload_to='backups/')
     uploaded_at  = models.DateTimeField(auto_now_add=True)
+
+
+class BackUp(models.Model):
+    file        = models.FileField(upload_to="backups/")
+    uploaded_at = models.DateTimeField(auto_now_add=True)

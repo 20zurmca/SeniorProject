@@ -2,7 +2,7 @@ from django.shortcuts import render
 from django.http import HttpResponse, JsonResponse
 from django.conf import settings
 from django.db.models import Count, Q, F, Func
-from .models import GroupedData, RosterData, StarterData, AccoladeData
+from .models import GroupedData, RosterData, StarterData, AccoladeData, Documents, BackUp
 from django.core import serializers
 import json
 from .forms import MHSForm, DocumentForm
@@ -37,27 +37,26 @@ def index(request):
 
         players = None
 
-        if(len(c) > 0):
-
+        if(len(c) > 0): #if a college is selected
             players = GroupedData.objects.filter(college__in=c)
 
-        if(len(pos) > 0):
-            if(players):
+        if(len(pos) > 0): #if a position is selected
+            if(players): #if there was a college selected
                 players = players.filter(position__overlap=pos)
             else:
                 players = GroupedData.objects.filter(position__overlap=pos)
 
-        if(len(sy) > 0):
-            if(players):
-                if(starterYearFourOrMore):
-                    if(len(sy) == 1):
+        if(len(sy) > 0): #if a starter year was selected
+            if(players): #if there was a college selected or a position selected
+                if(starterYearFourOrMore): #if 4+ was selected
+                    if(len(sy) == 1): #if only 4+ was selected
                         players = players.filter(starter_count__gte=4)
-                    else:
+                    else: #if other things including 4+ was selected
                         players = players.filter(Q(starter_count__gte=4) | Q(starter_count__in=sy[:-1]))
                 else:
                     players = players.filter(starter_count__in=sy)
 
-            else:
+            else: #if there weren't any players filtered yet
                 if(starterYearFourOrMore):
                     if(len(sy) == 1):
                         players = GroupedData.objects.filter(starter_count__gte=4)
@@ -66,7 +65,7 @@ def index(request):
                 else:
                     players = GroupedData.objects.filter(starter_count__in=sy)
 
-        if(len(acy) > 0):
+        if(len(acy) > 0): #same logic as starter years
             if(players):
                 if(allConferenceYearsFourOrMore):
                     if(len(acy) == 1):
@@ -105,6 +104,7 @@ def about(request):
 
 @staff_member_required
 def upload_file(request):
+    versions = Documents.objects.all().values('description', 'uploaded_at').reverse()
     if request.method == 'POST':
         form = DocumentForm(request.POST, request.FILES)
         if form.is_valid():
@@ -112,14 +112,22 @@ def upload_file(request):
             save_starterData(form.cleaned_data['starterData'])
             save_accoladeData(form.cleaned_data['accoladeData'])
             form.save()
-            return render(request, 'map/upload.html', {'form':form})
+            versions = Documents.objects.all().values('description', 'uploaded_at').reverse()
+            #writing backup file
+            json_dump = subprocess.run(["python", "manage.py", "dumpdata", "--exclude", \
+                                    "auth_group", "auth_group_permissions", "auth_permission", \
+                                    "auth_user", "auth_user_groups", "auth_user_user_permissions", \
+                                    "django_admin_log", "django_content_type", "django_migrations", \
+                                    "django_session", "map_documents", "unique_boarding_schools"]).output()
+            new_version = BackUp(file=json_dump)
+            new_version.save()
+            return render(request, 'map/upload.html', {'form':form, \
+                                                        'versions': versions})
     else:
         form = DocumentForm()
 
-    #write pgdump dump here
-    # proc = subprocess.run(["python", "manage.py", "dumpdata", "--exclude", \
-    #                         map."])
-    return render(request, 'map/upload.html', {'form':form})
+    return render(request, 'map/upload.html', {'form':form, \
+                                                'versions': versions})
 
 
 

@@ -46,8 +46,9 @@
             <form method="POST" id='versionControlForm'>
               <select class="search-description" id="dbVersion">
                 <optgroup label="Versions">
-                  <option data-description="current date">Dump 1</option>
-                  <option data-description="current date">Dump 2</option>
+                  {% for version in versions %}
+                  <option data-description= "{{version.uploaded_at}}">{{version.description}}</option>
+                  {% endfor %}
                 </optgroup>
               </select>
               <button type="submit" class="btn btn-primary" id="restoreButton">Restore</button>
