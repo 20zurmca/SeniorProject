@@ -45,8 +45,8 @@ class HighSchoolData(models.Model):
     institution     = models.CharField(max_length=100, null=True)
     stateorprovince = models.CharField(max_length=20, null=True)
     country         = models.CharField(max_length=50, null=True)
-    latitude        = models.FloatField()
-    longitude       = models.FloatField()
+    latitude        = models.FloatField(null=True)
+    longitude       = models.FloatField(null=True)
     school_type     = models.CharField(max_length=20)
 
 class GroupedData(models.Model):
@@ -95,8 +95,8 @@ class HighSchoolMatchMaster(models.Model):
     institution        = models.CharField(max_length=100, null=True)
     stateorprovince    = models.CharField(max_length=20, null=True)
     country            = models.CharField(max_length=50, null=True)
-    latitude           = models.FloatField()
-    longitude          = models.FloatField()
+    latitude           = models.FloatField(null=True)
+    longitude          = models.FloatField(null=True)
     school_type        = models.CharField(max_length=20, null=True)
 
 class Documents(models.Model):
