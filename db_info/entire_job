@@ -11,12 +11,40 @@
 
 
 --Create table for high school data and copy in the data
+\COPY map_highschooldata FROM 'high_school_data.csv' DELIMITER ',' CSV HEADER;
 
-CREATE TABLE high_school_data (City VARCHAR(30), Institution VARCHAR(100), "State/Province" VARCHAR(20), Country VARCHAR(50), Latitude DOUBLE PRECISION, Longitude DOUBLE PRECISION, school_type VARCHAR(20));
+UPDATE map_highschooldata SET Institution = LOWER(Institution);
 
-\COPY high_school_data FROM 'high_school_data.csv' DELIMITER ',' CSV HEADER;
+--boarding schools create job
+CREATE TABLE boarding_schools_temp (city VARCHAR(30), institution VARCHAR(100), stateorprovince VARCHAR(20), country VARCHAR(50), Latitude DOUBLE PRECISION, Longitude DOUBLE PRECISION, school_type VARCHAR(20));
+\COPY boarding_schools_temp FROM 'boardingschools.csv' DELIMITER ',' CSV HEADER;
 
-UPDATE high_school_data SET Institution = LOWER(Institution);
+CREATE TABLE unique_hs AS (
+	SELECT institution, stateorprovince, city
+	FROM map_highschooldata
+	WHERE school_type = 'PRIVATE'
+);
+
+DELETE FROM unique_hs
+USING (
+	SELECT Institution, COUNT(Institution)
+	FROM map_highschooldata
+	GROUP BY Institution
+	HAVING map_highschooldata.count > 1
+) AS temp1
+WHERE LOWER(unique_hs.institution) = LOWER(temp1.Institution);
+
+CREATE TABLE unique_boarding_schools AS (
+	SELECT unique_hs.city, boarding_schools_temp.institution, boarding_schools_temp.stateorprovince, boarding_schools_temp.country, boarding_schools_temp.latitude, boarding_schools_temp.longitude, boarding_schools_temp.school_type
+	FROM unique_hs
+	JOIN boarding_schools_temp
+	ON LOWER(unique_hs.institution) = LOWER(boarding_schools_temp.institution) AND LOWER(unique_hs.stateorprovince) = LOWER(boarding_schools_temp.stateorprovince)
+);
+
+DROP TABLE boarding_schools_temp;
+DROP TABLE unique_hs;
+
+-- \Copy unique_boarding_schools to 'unique_boarding_schools.csv' DELIMITER ',' CSV HEADER;
 
 
 --Join with starter data
@@ -67,36 +95,40 @@ WHERE High_School IS NULL AND Alternative_School IS NULL;
 CREATE TABLE roster_public_school1 AS (
 	SELECT *
 	FROM roster_master_data
-	JOIN high_school_data
-	ON high_school_data.school_type = 'PUBLIC' AND (
-		LOWER(roster_master_data.High_School) = LOWER(high_school_data.Institution)
+	JOIN map_highschooldata
+	ON map_highschooldata.school_type = 'PUBLIC' AND (
+		LOWER(roster_master_data.High_School) = LOWER(map_highschooldata.Institution)
 	) AND (
-		LOWER(high_school_data."State/Province") = LOWER(roster_master_data.State_or_Country)
+		LOWER(map_highschooldata.stateorprovince) = LOWER(roster_master_data.State_or_Country)
 	)
 );
 
+ALTER TABLE roster_public_school1 DROP COLUMN id;
+
 DELETE FROM roster_public_school1
 USING (
-	SELECT Institution, "State/Province", COUNT(Institution)
-	FROM high_school_data
-	GROUP BY Institution, "State/Province"
-	HAVING high_school_data.count > 1
+	SELECT Institution, stateorprovince, COUNT(Institution)
+	FROM map_highschooldata
+	GROUP BY Institution, stateorprovince
+	HAVING map_highschooldata.count > 1
 ) AS temp1
-WHERE LOWER(roster_public_school1.Institution) = LOWER(temp1.Institution) AND LOWER(roster_public_school1."State/Province") = LOWER(temp1."State/Province")
+WHERE LOWER(roster_public_school1.Institution) = LOWER(temp1.Institution) AND LOWER(roster_public_school1.stateorprovince) = LOWER(temp1.stateorprovince)
 ;
 
 CREATE TABLE roster_public_school2 AS (
 	SELECT *
 	FROM roster_master_data
-	JOIN high_school_data
-	ON high_school_data.school_type = 'PUBLIC' AND (
-		LOWER(roster_master_data.High_School) = LOWER(high_school_data.Institution)
+	JOIN map_highschooldata
+	ON map_highschooldata.school_type = 'PUBLIC' AND (
+		LOWER(roster_master_data.High_School) = LOWER(map_highschooldata.Institution)
 	) AND (
-		LOWER(high_school_data."State/Province") = LOWER(roster_master_data.State_or_Country)
+		LOWER(map_highschooldata.stateorprovince) = LOWER(roster_master_data.State_or_Country)
 	) AND (
-		LOWER(roster_master_data.Home_Town) = LOWER(high_school_data.City)
+		LOWER(roster_master_data.Home_Town) = LOWER(map_highschooldata.City)
 	)
 );
+
+ALTER TABLE roster_public_school2 DROP COLUMN id;
 
 CREATE TABLE roster_public_final AS (
 	SELECT *
@@ -117,20 +149,23 @@ DROP TABLE roster_public_school2;
 CREATE TABLE roster_international_school1 AS (
 	SELECT *
 	FROM roster_master_data
-	JOIN high_school_data
-	ON high_school_data.school_type = 'INTERNATIONAL' AND (
-		LOWER(roster_master_data.High_School) = LOWER(high_school_data.Institution)
+	JOIN map_highschooldata
+	ON map_highschooldata.school_type = 'INTERNATIONAL' AND (
+		LOWER(roster_master_data.High_School) = LOWER(map_highschooldata.Institution)
 	) AND (
-		LOWER(high_school_data.Country) = LOWER(roster_master_data.State_or_Country)
+		LOWER(map_highschooldata.Country) = LOWER(roster_master_data.State_or_Country)
 	)
 );
+
+ALTER TABLE roster_international_school1 DROP COLUMN id;
+
 
 DELETE FROM roster_international_school1
 USING (
 	SELECT Institution, Country, COUNT(Institution)
-	FROM high_school_data
+	FROM map_highschooldata
 	GROUP BY Institution, Country
-	HAVING high_school_data.count > 1
+	HAVING map_highschooldata.count > 1
 ) AS temp1
 WHERE LOWER(roster_international_school1.Institution) = LOWER(temp1.Institution) AND LOWER(roster_international_school1.Country) = LOWER(temp1.Country)
 ;
@@ -138,15 +173,18 @@ WHERE LOWER(roster_international_school1.Institution) = LOWER(temp1.Institution)
 CREATE TABLE roster_international_school2 AS (
 	SELECT *
 	FROM roster_master_data
-	JOIN high_school_data
-	ON high_school_data.school_type = 'INTERNATIONAL' AND (
-		LOWER(roster_master_data.High_School) = LOWER(high_school_data.Institution)
+	JOIN map_highschooldata
+	ON map_highschooldata.school_type = 'INTERNATIONAL' AND (
+		LOWER(roster_master_data.High_School) = LOWER(map_highschooldata.Institution)
 	) AND (
-		LOWER(high_school_data.Country) = LOWER(roster_master_data.State_or_Country)
+		LOWER(map_highschooldata.Country) = LOWER(roster_master_data.State_or_Country)
 	) AND (
-		LOWER(roster_master_data.Home_Town) = LOWER(high_school_data.City)
+		LOWER(roster_master_data.Home_Town) = LOWER(map_highschooldata.City)
 	)
 );
+
+ALTER TABLE roster_international_school2 DROP COLUMN id;
+
 
 CREATE TABLE roster_international_final AS (
 	SELECT *
@@ -167,36 +205,53 @@ DROP TABLE roster_international_school2;
 CREATE TABLE roster_unique_final AS (
 	SELECT *
 	FROM roster_master_data
-	JOIN high_school_data
-	ON LOWER(roster_master_data.High_School) = LOWER(high_school_data.Institution) AND (LOWER(high_school_data."State/Province") = LOWER(roster_master_data.State_or_Country)
-	OR LOWER(high_school_data.Country) = LOWER(roster_master_data.State_or_Country))
+	JOIN map_highschooldata
+	ON LOWER(roster_master_data.High_School) = LOWER(map_highschooldata.Institution) AND (LOWER(map_highschooldata.stateorprovince) = LOWER(roster_master_data.State_or_Country)
+	OR LOWER(map_highschooldata.Country) = LOWER(roster_master_data.State_or_Country))
 );
+
+ALTER TABLE roster_unique_final DROP COLUMN id;
+
 
 DELETE FROM roster_unique_final
 USING (
 	SELECT Institution, COUNT(Institution)
-	FROM high_school_data
+	FROM map_highschooldata
 	GROUP BY Institution
-	HAVING high_school_data.count > 1
+	HAVING map_highschooldata.count > 1
 ) AS temp1
 WHERE LOWER(roster_unique_final.Institution) = LOWER(temp1.Institution)
 ;
+
+--boarding school job
+CREATE TABLE roster_boarding_final AS (
+	SELECT *
+	FROM roster_master_data
+	JOIN unique_boarding_schools
+	ON LOWER(roster_master_data.High_School) = LOWER(unique_boarding_schools.institution)
+);
 
 
 -- Union all tables
 
 CREATE TABLE highschool_match_master AS (
 	SELECT *
-	FROM roster_unique_final
+	FROM roster_boarding_final
 	UNION
 	SELECT *
 	FROM (
 		SELECT *
-		FROM roster_public_final
+		FROM roster_unique_final
 		UNION
 		SELECT *
-		FROM roster_international_final
-	) AS temp1
+		FROM (
+			SELECT *
+			FROM roster_public_final
+			UNION
+			SELECT *
+			FROM roster_international_final
+		) AS temp1
+	) AS temp2
 );
 
 -- add id to new table and clear old table
@@ -205,7 +260,7 @@ ALTER TABLE highschool_match_master ADD COLUMN id SERIAL PRIMARY KEY;
 DELETE FROM map_highschoolmatchmaster;
 
 INSERT INTO map_highschoolmatchmaster (
-	SELECT id, roster_year, player_number, first_name, last_name, year, position1, height, weight, home_town, state_or_country, high_school, alternative_school, college, college_league, bio_link, is_starter, accolade, city, institution, "State/Province" AS stateorprovince, country, latitude, longitude, school_type
+	SELECT id, roster_year, player_number, first_name, last_name, year, position1, height, weight, home_town, state_or_country, high_school, alternative_school, college, college_league, bio_link, is_starter, accolade, city, institution, stateorprovince, country, latitude, longitude, school_type
 	FROM highschool_match_master
 );
 
@@ -215,15 +270,16 @@ DROP TABLE roster_international_final;
 DROP TABLE roster_unique_final;
 DROP TABLE roster_master_data;
 DROP TABLE highschool_match_master;
+DROP TABLE roster_boarding_final;
 
 
 -- Group entries
 
 
 CREATE TABLE grouped_data_temp AS (
-	select first_name, last_name, home_town, state_or_country, high_school, alternative_school, college, college_league, MAX(city) AS highSchoolCity, MAX(stateorprovince) AS highSchoolStateOrProvince, MAX(country) AS highSchoolCountry, MAX(school_type) AS school_type, COUNT(is_starter = 'Y') AS starter_count, COUNT(accolade) AS accolade_count, MAX(latitude) AS latitude, MAX(longitude) AS longitude, ARRAY_AGG(roster_year) AS roster_year, ARRAY_AGG(year) AS year, ARRAY_AGG(position1) AS position, ARRAY_AGG(height) AS height, ARRAY_AGG(weight) AS weight, ARRAY_AGG(bio_link) AS bio_link
+	select first_name, last_name, home_town, state_or_country, high_school, MAX(alternative_school) AS alternative_school, college, college_league, MAX(city) AS highSchoolCity, MAX(stateorprovince) AS highSchoolStateOrProvince, MAX(country) AS highSchoolCountry, MAX(school_type) AS school_type, COUNT(is_starter = 'Y') AS starter_count, COUNT(accolade) AS accolade_count, MAX(latitude) AS latitude, MAX(longitude) AS longitude, ARRAY_AGG(roster_year) AS roster_year, ARRAY_AGG(year) AS year, ARRAY_AGG(position1) AS position, ARRAY_AGG(height) AS height, ARRAY_AGG(weight) AS weight, ARRAY_AGG(bio_link) AS bio_link
 	FROM map_highschoolmatchmaster
-	GROUP BY first_name, last_name, home_town, state_or_country, high_school, alternative_school, college, college_league
+	GROUP BY first_name, last_name, home_town, state_or_country, high_school, college, college_league
 );
 
 -- add id to new table and clear old table
@@ -302,36 +358,40 @@ CREATE OR REPLACE FUNCTION update_db_func() RETURNS TRIGGER AS $$
 		CREATE TABLE roster_public_school1 AS (
 			SELECT *
 			FROM roster_master_data
-			JOIN high_school_data
-			ON high_school_data.school_type = 'PUBLIC' AND (
-				LOWER(roster_master_data.High_School) = LOWER(high_school_data.Institution)
+			JOIN map_highschooldata
+			ON map_highschooldata.school_type = 'PUBLIC' AND (
+				LOWER(roster_master_data.High_School) = LOWER(map_highschooldata.Institution)
 			) AND (
-				LOWER(high_school_data."State/Province") = LOWER(roster_master_data.State_or_Country)
+				LOWER(map_highschooldata.stateorprovince) = LOWER(roster_master_data.State_or_Country)
 			)
 		);
 
+		ALTER TABLE roster_public_school1 DROP COLUMN id;
+
 		DELETE FROM roster_public_school1
 		USING (
-			SELECT Institution, "State/Province", COUNT(Institution)
-			FROM high_school_data
-			GROUP BY Institution, "State/Province"
-			HAVING high_school_data.count > 1
+			SELECT Institution, stateorprovince, COUNT(Institution)
+			FROM map_highschooldata
+			GROUP BY Institution, stateorprovince
+			HAVING map_highschooldata.count > 1
 		) AS temp1
-		WHERE LOWER(roster_public_school1.Institution) = LOWER(temp1.Institution) AND LOWER(roster_public_school1."State/Province") = LOWER(temp1."State/Province")
+		WHERE LOWER(roster_public_school1.Institution) = LOWER(temp1.Institution) AND LOWER(roster_public_school1.stateorprovince) = LOWER(temp1.stateorprovince)
 		;
 
 		CREATE TABLE roster_public_school2 AS (
 			SELECT *
 			FROM roster_master_data
-			JOIN high_school_data
-			ON high_school_data.school_type = 'PUBLIC' AND (
-				LOWER(roster_master_data.High_School) = LOWER(high_school_data.Institution)
+			JOIN map_highschooldata
+			ON map_highschooldata.school_type = 'PUBLIC' AND (
+				LOWER(roster_master_data.High_School) = LOWER(map_highschooldata.Institution)
 			) AND (
-				LOWER(high_school_data."State/Province") = LOWER(roster_master_data.State_or_Country)
+				LOWER(map_highschooldata.stateorprovince) = LOWER(roster_master_data.State_or_Country)
 			) AND (
-				LOWER(roster_master_data.Home_Town) = LOWER(high_school_data.City)
+				LOWER(roster_master_data.Home_Town) = LOWER(map_highschooldata.City)
 			)
 		);
+
+		ALTER TABLE roster_public_school2 DROP COLUMN id;
 
 		CREATE TABLE roster_public_final AS (
 			SELECT *
@@ -351,20 +411,22 @@ CREATE OR REPLACE FUNCTION update_db_func() RETURNS TRIGGER AS $$
 		CREATE TABLE roster_international_school1 AS (
 			SELECT *
 			FROM roster_master_data
-			JOIN high_school_data
-			ON high_school_data.school_type = 'INTERNATIONAL' AND (
-				LOWER(roster_master_data.High_School) = LOWER(high_school_data.Institution)
+			JOIN map_highschooldata
+			ON map_highschooldata.school_type = 'INTERNATIONAL' AND (
+				LOWER(roster_master_data.High_School) = LOWER(map_highschooldata.Institution)
 			) AND (
-				LOWER(high_school_data.Country) = LOWER(roster_master_data.State_or_Country)
+				LOWER(map_highschooldata.Country) = LOWER(roster_master_data.State_or_Country)
 			)
 		);
+
+		ALTER TABLE roster_international_school1 DROP COLUMN id;
 
 		DELETE FROM roster_international_school1
 		USING (
 			SELECT Institution, Country, COUNT(Institution)
-			FROM high_school_data
+			FROM map_highschooldata
 			GROUP BY Institution, Country
-			HAVING high_school_data.count > 1
+			HAVING map_highschooldata.count > 1
 		) AS temp1
 		WHERE LOWER(roster_international_school1.Institution) = LOWER(temp1.Institution) AND LOWER(roster_international_school1.Country) = LOWER(temp1.Country)
 		;
@@ -372,15 +434,17 @@ CREATE OR REPLACE FUNCTION update_db_func() RETURNS TRIGGER AS $$
 		CREATE TABLE roster_international_school2 AS (
 			SELECT *
 			FROM roster_master_data
-			JOIN high_school_data
-			ON high_school_data.school_type = 'INTERNATIONAL' AND (
-				LOWER(roster_master_data.High_School) = LOWER(high_school_data.Institution)
+			JOIN map_highschooldata
+			ON map_highschooldata.school_type = 'INTERNATIONAL' AND (
+				LOWER(roster_master_data.High_School) = LOWER(map_highschooldata.Institution)
 			) AND (
-				LOWER(high_school_data.Country) = LOWER(roster_master_data.State_or_Country)
+				LOWER(map_highschooldata.Country) = LOWER(roster_master_data.State_or_Country)
 			) AND (
-				LOWER(roster_master_data.Home_Town) = LOWER(high_school_data.City)
+				LOWER(roster_master_data.Home_Town) = LOWER(map_highschooldata.City)
 			)
 		);
+
+		ALTER TABLE roster_international_school2 DROP COLUMN id;
 
 		CREATE TABLE roster_international_final AS (
 			SELECT *
@@ -401,35 +465,52 @@ CREATE OR REPLACE FUNCTION update_db_func() RETURNS TRIGGER AS $$
 		CREATE TABLE roster_unique_final AS (
 			SELECT *
 			FROM roster_master_data
-			JOIN high_school_data
-			ON LOWER(roster_master_data.High_School) = LOWER(high_school_data.Institution) AND (LOWER(high_school_data."State/Province") = LOWER(roster_master_data.State_or_Country)
-			OR LOWER(high_school_data.Country) = LOWER(roster_master_data.State_or_Country))
+			JOIN map_highschooldata
+			ON LOWER(roster_master_data.High_School) = LOWER(map_highschooldata.Institution) AND (LOWER(map_highschooldata.stateorprovince) = LOWER(roster_master_data.State_or_Country)
+			OR LOWER(map_highschooldata.Country) = LOWER(roster_master_data.State_or_Country))
 		);
+
+		ALTER TABLE roster_unique_final DROP COLUMN id;
 
 		DELETE FROM roster_unique_final
 		USING (
 			SELECT Institution, COUNT(Institution)
-			FROM high_school_data
+			FROM map_highschooldata
 			GROUP BY Institution
-			HAVING high_school_data.count > 1
+			HAVING map_highschooldata.count > 1
 		) AS temp1
 		WHERE LOWER(roster_unique_final.Institution) = LOWER(temp1.Institution)
 		;
 
+		--boarding school job
+		CREATE TABLE roster_boarding_final AS (
+			SELECT *
+			FROM roster_master_data
+			JOIN unique_boarding_schools
+			ON LOWER(roster_master_data.High_School) = LOWER(unique_boarding_schools.institution)
+		);
+
 
 		-- Union all tables
+
 		CREATE TABLE new_highschool_match_master AS (
 			SELECT *
-			FROM roster_unique_final
+			FROM roster_boarding_final
 			UNION
 			SELECT *
 			FROM (
 				SELECT *
-				FROM roster_public_final
+				FROM roster_unique_final
 				UNION
 				SELECT *
-				FROM roster_international_final
-			) AS temp1
+				FROM (
+					SELECT *
+					FROM roster_public_final
+					UNION
+					SELECT *
+					FROM roster_international_final
+				) AS temp1
+			) AS temp2
 		);
 
 		-- Drop all extra tables
@@ -437,6 +518,7 @@ CREATE OR REPLACE FUNCTION update_db_func() RETURNS TRIGGER AS $$
 		DROP TABLE roster_international_final;
 		DROP TABLE roster_unique_final;
 		DROP TABLE roster_master_data;
+		DROP TABLE roster_boarding_final;
 
 
 		-- Union the new and old high school match master data
@@ -445,7 +527,7 @@ CREATE OR REPLACE FUNCTION update_db_func() RETURNS TRIGGER AS $$
 			SELECT roster_year, player_number, first_name, last_name, year, position1, height, weight, home_town, state_or_country, high_school, alternative_school, college, college_league, bio_link, is_starter, accolade, city, institution, stateorprovince, country, latitude, longitude, school_type
 			FROM map_highschoolmatchmaster
 			UNION
-			SELECT roster_year, player_number, first_name, last_name, year, position1, height, weight, home_town, state_or_country, high_school, alternative_school, college, college_league, bio_link, is_starter, accolade, city, institution, "State/Province" AS stateorprovince, country, latitude, longitude, school_type
+			SELECT roster_year, player_number, first_name, last_name, year, position1, height, weight, home_town, state_or_country, high_school, alternative_school, college, college_league, bio_link, is_starter, accolade, city, institution, stateorprovince, country, latitude, longitude, school_type
 			FROM new_highschool_match_master
 		);
 
@@ -467,9 +549,9 @@ CREATE OR REPLACE FUNCTION update_db_func() RETURNS TRIGGER AS $$
 		-- Group entries
 
 		CREATE TABLE grouped_data_temp AS (
-			select first_name, last_name, home_town, state_or_country, high_school, alternative_school, college, college_league, MAX(city) AS highSchoolCity, MAX(stateorprovince) AS highSchoolStateOrProvince, MAX(country) AS highSchoolCountry, MAX(school_type) AS school_type, COUNT(is_starter = 'Y') AS starter_count, COUNT(accolade) AS accolade_count, MAX(latitude) AS latitude, MAX(longitude) AS longitude, ARRAY_AGG(roster_year) AS roster_year, ARRAY_AGG(year) AS year, ARRAY_AGG(position1) AS position, ARRAY_AGG(height) AS height, ARRAY_AGG(weight) AS weight, ARRAY_AGG(bio_link) AS bio_link
+			select first_name, last_name, home_town, state_or_country, high_school, MAX(alternative_school) AS alternative_school, college, college_league, MAX(city) AS highSchoolCity, MAX(stateorprovince) AS highSchoolStateOrProvince, MAX(country) AS highSchoolCountry, MAX(school_type) AS school_type, COUNT(is_starter = 'Y') AS starter_count, COUNT(accolade) AS accolade_count, MAX(latitude) AS latitude, MAX(longitude) AS longitude, ARRAY_AGG(roster_year) AS roster_year, ARRAY_AGG(year) AS year, ARRAY_AGG(position1) AS position, ARRAY_AGG(height) AS height, ARRAY_AGG(weight) AS weight, ARRAY_AGG(bio_link) AS bio_link
 			FROM map_highschoolmatchmaster
-			GROUP BY first_name, last_name, home_town, state_or_country, high_school, alternative_school, college, college_league
+			GROUP BY first_name, last_name, home_town, state_or_country, high_school, college, college_league
 		);
 
 		-- add id to new table and clear old table
