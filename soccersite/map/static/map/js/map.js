@@ -69,7 +69,9 @@ function loadData(map, playerData){
       groupedLatLngData[key]['lat']                = playerData[i]['latitude'];
       groupedLatLngData[key]['lng']                = playerData[i]['longitude'];
       groupedLatLngData[key]['hs']                 = playerData[i]['high_school'];
-      groupedLatLngData[key]['hsCity']             = playerData[i]['highschoolcity'].toLowerCase();
+      if (playerData[i]['highschoolcity'] != null) {
+        groupedLatLngData[key]['hsCity']             = playerData[i]['highschoolcity'].toLowerCase();
+      }
       groupedLatLngData[key]['hsStateOrProvince']  = playerData[i]['highschoolstateorcountry'];
       groupedLatLngData[key]['hsStateOrProvince']  = playerData[i]['highschoolstateorprovince'];
       groupedLatLngData[key]['hsCountry']          = playerData[i]['highschoolcountry'].toLowerCase();
@@ -98,7 +100,9 @@ function loadData(map, playerData){
         },
         number: groupedLatLngData[highSchool]['playerCount'],
         icon: {
-          url: "http://maps.google.com/mapfiles/kml/pal2/icon18.png",
+          url: "http://maps.google.com/mapfiles/kml/shapes/schools.png",
+          scaledSize: new google.maps.Size(35, 35),
+          labelOrigin: { x: 16, y: 26}
         },
         animation: google.maps.Animation.DROP
       });
