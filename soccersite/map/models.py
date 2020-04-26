@@ -40,6 +40,15 @@ class AccoladeData(models.Model):
     accolade    = models.CharField(max_length=20, null=True)
     college     = models.CharField(max_length=50, null=True)
 
+class HighSchoolData(models.Model):
+    city            = models.CharField(max_length=50, null=True)
+    institution     = models.CharField(max_length=100, null=True)
+    stateorprovince = models.CharField(max_length=20, null=True)
+    country         = models.CharField(max_length=50, null=True)
+    latitude        = models.FloatField(null=True)
+    longitude       = models.FloatField(null=True)
+    school_type     = models.CharField(max_length=20, null=True)
+
 class GroupedData(models.Model):
     first_name                   = models.CharField(max_length=50, null=True)
     last_name                    = models.CharField(max_length=50, null=True)
@@ -91,9 +100,14 @@ class HighSchoolMatchMaster(models.Model):
     school_type        = models.CharField(max_length=20, null=True)
 
 class Documents(models.Model):
-    description  = models.CharField(max_length=255, blank=True)
+    description  = models.CharField(max_length=255)
     rosterData   = models.FileField(upload_to='documents/')
     starterData  = models.FileField(upload_to='documents/')
     accoladeData = models.FileField(upload_to='documents/')
-    sqlFile      = models.FileField(upload_to='backups/')
     uploaded_at  = models.DateTimeField(auto_now_add=True)
+
+
+class BackUp(models.Model):
+    description = models.CharField(max_length=255)
+    file        = models.FileField(upload_to="backups/")
+    uploaded_at = models.DateTimeField(auto_now_add=True)
