@@ -26,7 +26,7 @@ leagueDict ={
 
         'WAC' : ['Air Force Academy'],
 
-        'AMERICAN ATHLETIC': ['Southern Methodist University'],
+        'AMERICAN ATHLETIC': ['SMU'],
 
     }
 
