@@ -131,7 +131,8 @@ def upload_file(request):
         form = DocumentForm()
 
     return render(request, 'map/upload.html', {'form':form})
-
+    
+@staff_member_required
 def restore(request):
     versions = reversed(BackUp.objects.all().values('description', 'uploaded_at'))
     if(request.method=='POST'):
