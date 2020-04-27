@@ -1,6 +1,7 @@
 from django.db import models
 from django.conf import settings
 from django.contrib.postgres.fields import ArrayField
+import os
 # Create your models here.
 
 class RosterData(models.Model):
@@ -100,7 +101,7 @@ class HighSchoolMatchMaster(models.Model):
     school_type        = models.CharField(max_length=20, null=True)
 
 class Documents(models.Model):
-    description  = models.CharField(max_length=255)
+    description  = models.CharField(unique=True, max_length=255)
     rosterData   = models.FileField(upload_to='documents/')
     starterData  = models.FileField(upload_to='documents/')
     accoladeData = models.FileField(upload_to='documents/')
@@ -108,6 +109,9 @@ class Documents(models.Model):
 
 
 class BackUp(models.Model):
-    description = models.CharField(max_length=255)
-    file        = models.FileField(upload_to="backups/")
+    description = models.CharField(unique=True, max_length=255)
+    file        = models.FileField()
     uploaded_at = models.DateTimeField(auto_now_add=True)
+
+    def filename(self):
+        return os.path.basename(self.file.name)

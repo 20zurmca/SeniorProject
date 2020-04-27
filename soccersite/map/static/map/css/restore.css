@@ -75,19 +75,21 @@ padding-left: 40%;
   color: #ffffff;
 }
 
-
-.upload-data-form{
-  display: inline-block;
-  position:absolute;
-  left:30%;
-}
-
 .version-form{
   display: inline-block;
   margin-left: 35%;
   position: absolute;
-  left:35%;
-  bottom:  300px;
+  text-align: center;
+  top: 250px;
+}
+
+#versionControlForm{
+  text-align: center;
+  padding-left:100px;
+}
+
+#restoreButton{
+  margin-right: 75px;
 }
 
 #banner{

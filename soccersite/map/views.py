@@ -2,7 +2,7 @@ from django.shortcuts import render
 from django.http import HttpResponse, JsonResponse
 from django.conf import settings
 from django.db.models import Count, Q, F, Func
-from .models import GroupedData, RosterData, StarterData, AccoladeData, Documents, BackUp
+from .models import GroupedData, RosterData, StarterData, AccoladeData, Documents, BackUp, HighSchoolMatchMaster
 from django.core import serializers
 import json
 from .forms import MHSForm, DocumentForm
@@ -10,6 +10,12 @@ from django.contrib.admin.views.decorators import staff_member_required
 import csv
 import codecs
 import subprocess
+from random import randint
+
+def _random_with_N_digits(n):
+    range_start = 10**(n-1)
+    range_end = (10**n)-1
+    return randint(range_start, range_end)
 
 def index(request):
     colleges  = GroupedData.objects.values_list('college', flat=True).distinct().order_by('college')
@@ -104,34 +110,43 @@ def about(request):
 
 @staff_member_required
 def upload_file(request):
-    versions = Documents.objects.all().values('description', 'uploaded_at').reverse()
-    if request.method == 'POST':
+    if(request.method == 'POST'):
         form = DocumentForm(request.POST, request.FILES)
         if form.is_valid():
             save_rosterData(form.cleaned_data['rosterData'])
             save_starterData(form.cleaned_data['starterData'])
             save_accoladeData(form.cleaned_data['accoladeData'])
             form.save()
-            versions = Documents.objects.all().values('description', 'uploaded_at').reverse()
             #writing backup file
-            json_dump = subprocess.run(["python", "manage.py", "dumpdata", "--exclude", \
-                                    "auth_group", "auth_group_permissions", "auth_permission", \
-                                    "auth_user", "auth_user_groups", "auth_user_user_permissions", \
-                                    "django_admin_log", "django_content_type", "django_migrations", \
-                                    "django_session", "map_documents", "unique_boarding_schools"]).output()
-                                    
-            new_version = BackUp(description = form.cleaned_data['description'], file=json_dump)
+            fn = "dumpfile" + str(_random_with_N_digits(10)) + ".json"
+            json_dump = subprocess.run(["python", "manage.py", "dumpdata", "-o", "map/fixtures/" + fn, \
+                                        "--exclude=admin", "--exclude=auth", "--exclude=contenttypes", \
+                                        "--exclude=sessions", "--exclude=messages", "--exclude=staticfiles", \
+                                        "--exclude=map.Documents", "--exclude=map.BackUp", "--exclude=map.HighSchoolData"])
+
+            new_version = BackUp(description = form.cleaned_data['description'], file=fn)
             new_version.save()
-            return render(request, 'map/upload.html', {'form':form, \
-                                                        'versions': versions})
+            return render(request, 'map/upload.html', {'form': form})
     else:
         form = DocumentForm()
 
-    return render(request, 'map/upload.html', {'form':form, \
-                                                'versions': versions})
+    return render(request, 'map/upload.html', {'form':form})
 
 def restore(request):
-
+    versions = reversed(BackUp.objects.all().values('description', 'uploaded_at'))
+    if(request.method=='POST'):
+        if(request.POST.get('json_data')):
+            payload = json.loads(request.POST.get('json_data'))
+            description = payload['version']
+            backUpFile  = "map/fixtures/" + BackUp.objects.filter(description=description).get().filename()
+            RosterData.objects.all().delete()
+            StarterData.objects.all().delete()
+            AccoladeData.objects.all().delete()
+            GroupedData.objects.all().delete()
+            HighSchoolMatchMaster.objects.all().delete()
+            p = subprocess.Popen(["python", "manage.py", "loaddata", backUpFile])
+            p.wait()
+    return render(request, 'map/restore.html', {'versions': versions})
 
 
 def save_rosterData(filename):
