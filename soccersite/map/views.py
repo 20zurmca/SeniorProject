@@ -43,6 +43,10 @@ def index(request):
 
         players = None
 
+        #if nothing is selected, default to search all
+        if((len(c) == 0) and (len(pos) == 0) and (len(sy) == 0) and (len(acy) == 0)):
+            c = colleges;
+
         if(len(c) > 0): #if a college is selected
             players = GroupedData.objects.filter(college__in=c)
 
