@@ -86,64 +86,61 @@ $(document).on('submit', '#filterForm', function(e){
   selectedAllConferenceYears =  allConferenceSelector.options.find("selected", "any");
   let selectedSomething      = (selectedColleges.length > 0 || selectedPositions.length > 0 ||
                                 selectedStarterYears.length > 0 || selectedAllConferenceYears.length > 0);
-  if(!selectedSomething){
-    alert("Select at least one drop down to query.");
-  } else {
-    let multipleChecked = 'selected';
-    if (!$("#moreThanOneSchool").is(":checked")) {
-      multipleChecked = '';
-    }
 
-    $.ajaxSetup({
-           headers: { "X-CSRFToken": getCookie("csrftoken") }
-       });
-
-    $.ajax({
-      type: 'POST',
-      url: window.location,
-      data: { json_data: JSON.stringify({
-        collegeLeagues:$('#collegeLeagueSelector').val(),
-        colleges:$('#collegeSelector').val(),
-        positions:$('#positionSelector').val(),
-        starterYears:$('#starterSelector').val(),
-        allConferenceYears:$('#allConferenceSelector').val(),
-        multipleHS:multipleChecked
-      })},
-      success:function(response){
-        loadData(map, response['players']); //loading data in map.js
-        var player_data = '';
-        if(dt){
-          dt.destroy();
-        }
-
-        $.each(response['players'], function(key, value){
-          let association = _findAssociativeIndices(value.roster_year);
-          let currentBioLink = _getCurrentDataElement(value.bio_link, association);
-          player_data += '<tr onclick = goToRosterPage("'.concat(currentBioLink).concat('")>');
-          player_data += '<td>' + _sortAggregateData(value.roster_year)                                + '</td>';
-          player_data += '<td>' + value.first_name                                                     + '</td>';
-          player_data += '<td>' + value.last_name                                                      + '</td>';
-          player_data += '<td>' + _getCurrentDataElement(value.position, association)                  + '</td>';
-          player_data += '<td>' + convertToInches(_getCurrentDataElement(value.heights, association))  + '</td>';
-          player_data += '<td>' + _getCurrentDataElement(value.weights, association)                   + '</td>';
-          player_data += '<td>' + value.starter_count                                                  + '</td>';
-          player_data += '<td>' + value.accolade_count                                                 + '</td>';
-          player_data += '<td>' + value.college_league                                                 + '</td>';
-          player_data += '<td>' + value.college                                                        + '</td>';
-          player_data += '<td>' + value.home_town                                                      + '</td>';
-          player_data += '<td>' + value.state_or_country                                               + '</td>';
-          player_data += '<td>' + value.high_school                                                    + '</td>';
-          player_data += '</tr>';
-        });
-        document.getElementById('resultTableBody').innerHTML = player_data;
-        dt = $('#resultTable').DataTable({
-          "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]],
-          "scrollX": true
-        });
-      },
-      error:function(){
-        console.log("Error with form submission");
-      }
-    });
+  let multipleChecked = 'selected';
+  if (!$("#moreThanOneSchool").is(":checked")) {
+    multipleChecked = '';
   }
+
+  $.ajaxSetup({
+          headers: { "X-CSRFToken": getCookie("csrftoken") }
+      });
+
+  $.ajax({
+    type: 'POST',
+    url: window.location,
+    data: { json_data: JSON.stringify({
+      collegeLeagues:$('#collegeLeagueSelector').val(),
+      colleges:$('#collegeSelector').val(),
+      positions:$('#positionSelector').val(),
+      starterYears:$('#starterSelector').val(),
+      allConferenceYears:$('#allConferenceSelector').val(),
+      multipleHS:multipleChecked
+    })},
+    success:function(response){
+      loadData(map, response['players']); //loading data in map.js
+      var player_data = '';
+      if(dt){
+        dt.destroy();
+      }
+
+      $.each(response['players'], function(key, value){
+        let association = _findAssociativeIndices(value.roster_year);
+        let currentBioLink = _getCurrentDataElement(value.bio_link, association);
+        player_data += '<tr onclick = goToRosterPage("'.concat(currentBioLink).concat('")>');
+        player_data += '<td>' + _sortAggregateData(value.roster_year)                                + '</td>';
+        player_data += '<td>' + value.first_name                                                     + '</td>';
+        player_data += '<td>' + value.last_name                                                      + '</td>';
+        player_data += '<td>' + _getCurrentDataElement(value.position, association)                  + '</td>';
+        player_data += '<td>' + convertToInches(_getCurrentDataElement(value.heights, association))  + '</td>';
+        player_data += '<td>' + _getCurrentDataElement(value.weights, association)                   + '</td>';
+        player_data += '<td>' + value.starter_count                                                  + '</td>';
+        player_data += '<td>' + value.accolade_count                                                 + '</td>';
+        player_data += '<td>' + value.college_league                                                 + '</td>';
+        player_data += '<td>' + value.college                                                        + '</td>';
+        player_data += '<td>' + value.home_town                                                      + '</td>';
+        player_data += '<td>' + value.state_or_country                                               + '</td>';
+        player_data += '<td>' + value.high_school                                                    + '</td>';
+        player_data += '</tr>';
+      });
+      document.getElementById('resultTableBody').innerHTML = player_data;
+      dt = $('#resultTable').DataTable({
+        "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]],
+        "scrollX": true
+      });
+    },
+    error:function(){
+      console.log("Error with form submission");
+    }
+  });
 });
