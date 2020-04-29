@@ -2,7 +2,7 @@ from django.shortcuts import render
 from django.http import HttpResponse, JsonResponse
 from django.conf import settings
 from django.db.models import Count, Q, F, Func
-from .models import GroupedData, RosterData, StarterData, AccoladeData, Documents, BackUp, HighSchoolMatchMaster
+from .models import GroupedData, RosterData, StarterData, AccoladeData, Documents, BackUp, HighSchoolMatchMaster, HighSchoolData
 from django.core import serializers
 import json
 from .forms import MHSForm, DocumentForm
@@ -106,7 +106,19 @@ def index(request):
 def about(request):
     return render(request, 'map/about.html')
 
+def manualupload(request):
+    positions = GroupedData.objects.annotate(arr_els=Func(F('position'), function='unnest')).values_list('arr_els', flat=True).distinct()
+    colleges  = GroupedData.objects.values_list('college', flat=True).distinct().order_by('college')
+    leagues   = GroupedData.objects.values_list('college_league', flat=True).distinct().order_by('college_league')
 
+    schools = HighSchoolData.objects.values('city', 'institution', 'stateorprovince', 'country').order_by('institution')
+
+    context = {'positions':positions,
+               'colleges': colleges,
+               'leagues': leagues,
+               'schools': schools}
+
+    return render(request, 'map/manualupload.html', context)
 
 @staff_member_required
 def upload_file(request):
@@ -131,7 +143,7 @@ def upload_file(request):
         form = DocumentForm()
 
     return render(request, 'map/upload.html', {'form':form})
-    
+
 @staff_member_required
 def restore(request):
     versions = reversed(BackUp.objects.all().values('description', 'uploaded_at'))
@@ -146,7 +158,8 @@ def restore(request):
             GroupedData.objects.all().delete()
             HighSchoolMatchMaster.objects.all().delete()
             p = subprocess.Popen(["python", "manage.py", "loaddata", backUpFile])
-            p.wait()
+            while(GroupedData.objects.all()[0] is None):
+                continue
     return render(request, 'map/restore.html', {'versions': versions})
 
 
