@@ -121,6 +121,7 @@ def manualupload(request):
     if(request.method=='POST'):
         payload = json.loads(request.POST.get('json_data'))
         print(payload)
+        record = HighSchoolMatchMaster(payload['alternativeSchool'])
 
     return render(request, 'map/manualupload.html', context)
 

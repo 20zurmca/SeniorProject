@@ -638,25 +638,52 @@
           position:$('#positionSelector').val(),
           height:$('#heightInput').val(),
           weight:$('#weightInput').val(),
-          homeTown:$('homeTownInput').val(),
-          stateOrCountrySelector:$('stateOrCountrySelector').val(),
-          highSchool:$('highSchoolInput').val(),
-          highSchoolCity:$('highSchoolCity').val(),
-          highSchoolStateOrProvince:$('highSchoolStateOrProvince').val(),
-          highSchoolCountry:$('highSchoolCountry').val(),
-          highSchoolLatitude:$('highSchoolLatitude').val(),
-          highSchoolLongitude:$('highSchoolLongitude').val(),
-          schoolTypeSelector:$('schoolTypeSelector').val(),
-          alternativeSchoolInput:$('alternativeSchoolInput').val(),
-          college:$('collegeSelector').val(),
-          collegeLeague:$('collegeLeagueSelector').val(),
-          bioLink:$('bioLinkInput').val(),
-          isStarter:$('isStarterSelector').val(),
-          accolade:$('accoladeSelector').val()
+          homeTown:$('#homeTownInput').val(),
+          stateOrCountry:$('#stateOrCountrySelector').val(),
+          highSchool:$('#highSchoolInput').val(),
+          highSchoolCity:$('#highSchoolCity').val(),
+          highSchoolStateOrProvince:$('#highSchoolStateOrProvince').val(),
+          highSchoolCountry:$('#highSchoolCountry').val(),
+          highSchoolLatitude:$('#highSchoolLatitude').val(),
+          highSchoolLongitude:$('#highSchoolLongitude').val(),
+          schoolType:$('#schoolTypeSelector').val(),
+          alternativeSchool:$('#alternativeSchoolInput').val(),
+          college:$('#collegeSelector').val(),
+          collegeLeague:$('#collegeLeagueSelector').val(),
+          bioLink:$('#bioLinkInput').val(),
+          isStarter:$('#isStarterSelector').val(),
+          accolade:$('#accoladeSelector').val()
         })
 
+        var selectionString = "Roster Year: " + $('#rosterYearInput').val() + "\n"
+                            + "Player Number: " + $('#playerNumberInput').val() + "\n"
+                            + "First Name: " + $('#firstNameInput').val() + "\n"
+                            + "Last Name: " + $('#lastNameInput').val() + "\n"
+                            + "Class Year: " + $('#classYearSelector').val() + "\n"
+                            + "Position: " + $('#positionSelector').val() + "\n"
+                            + "Height: " + $('#heightInput').val() + "\n"
+                            + "Weight: " + $('#weightInput').val() + "\n"
+                            + "Home Town: " + $('#homeTownInput').val() + "\n"
+                            + "State or Country: " + $('#stateOrCountrySelector').val() + "\n"
+                            + "High School: " + $('#highSchoolInput').val() + "\n"
+                            + "High School City: " + $('#highSchoolCity').val() + "\n"
+                            + "High School State or Province: " + $('#highSchoolStateOrProvince').val() + "\n"
+                            + "High School Country: " + $('#highSchoolCountry').val() + "\n"
+                            + "High School Latitude: " + $('#highSchoolLatitude').val() + "\n"
+                            + "High School Longitude: " + $('#highSchoolLongitude').val() + "\n"
+                            + "School Type: " + $('#schoolTypeSelector').val() + "\n"
+                            + "Alternative School: " + $('#alternativeSchoolInput').val() + "\n"
+                            + "College: " + $('#collegeSelector').val() + "\n"
+                            + "College League: " + $('#collegeLeagueSelector').val() + "\n"
+                            + "Bio Link: " + $('#bioLinkInput').val() + "\n"
+                            + "Is Starter: " + $('#isStarterSelector').val() + "\n"
+                            + "Accolade: " + $('#accoladeSelector').val();
+
         const msg = "Press OK to continue, Cancel to change:\n\n";
-        confirm(msg + dict);
+        var ok = confirm(msg + selectionString);
+        if(!ok){
+          return;
+        }
 
         $.ajaxSetup({
             headers: { "X-CSRFToken": getCookie("csrftoken") }
@@ -667,8 +694,14 @@
           url: window.location,
           data: {json_data: dict},
 
-          success:function(){
-
+          success:function(response){
+              if(ok){
+                if(response['success'] == 'true'){
+                  alert("Record Added!")
+                } else {
+                  alert("BUG REPORT: Problem With Adding Record.")
+                }
+              }
           },
           error:function(){
             console.log("Error With Form Submission.");
