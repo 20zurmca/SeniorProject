@@ -126,7 +126,7 @@ function loadData(map, playerData){
            '<h1 id="firstHeading" class="firstHeading">'+ groupedLatLngData[highSchool]['hs'] +'</h1>'+
            '<div id="bodyContent">'+
            '<p style="text-transform:capitalize">'+groupedLatLngData[highSchool]['hsCity'] +
-           stateOrProvince + country + '</p>' + 
+           stateOrProvince + country + '</p>' +
            '<p style="text-transform:capitalize">'+ "Student Count: " + groupedLatLngData[highSchool]['playerCount'] +
            '</div>'+
            '</div>';
@@ -468,6 +468,12 @@ function initMap() {
                 east: 180
             }
         },
+        mapTypeControlOptions: {
+           mapTypeIds: [
+             google.maps.MapTypeId.ROADMAP,
+             google.maps.MapTypeId.SATELLITE
+           ]
+         },
         gestureHandling: 'greedy'
       });
 
