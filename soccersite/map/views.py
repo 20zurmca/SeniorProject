@@ -115,12 +115,12 @@ def manualupload(request):
     colleges  = GroupedData.objects.values_list('college', flat=True).distinct().order_by('college')
     leagues   = GroupedData.objects.values_list('college_league', flat=True).distinct().order_by('college_league')
 
-    schools = HighSchoolData.objects.values('city', 'institution', 'stateorprovince', 'country').order_by('institution')
-
     context = {'positions':positions,
                'colleges': colleges,
-               'leagues': leagues,
-               'schools': schools}
+               'leagues': leagues}
+    if(request.method=='POST'):
+        payload = json.loads(request.POST.get('json_data'))
+        print(payload)
 
     return render(request, 'map/manualupload.html', context)
 

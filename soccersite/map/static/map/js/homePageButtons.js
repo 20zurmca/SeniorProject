@@ -3,8 +3,7 @@ function submit() {
   selectedPositions          = positionSelector.options.find("selected", "any");
   selectedStarterYears       = starterSelector.options.find("selected", "any");
   selectedAllConferenceYears = allConferenceSelector.options.find("selected", "any");
-  let selectedSomething      = (selectedColleges.length > 0 || selectedPositions.length > 0 ||
-                                selectedStarterYears.length > 0 || selectedAllConferenceYears.length > 0);
+
   if(selectedSomething){
       document.getElementById('markerControl').style.fontWeight = "bold";
       document.getElementById('markerControl').disabled = false;
