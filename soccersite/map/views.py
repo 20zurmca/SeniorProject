@@ -120,8 +120,32 @@ def manualupload(request):
                'leagues': leagues}
     if(request.method=='POST'):
         payload = json.loads(request.POST.get('json_data'))
-        print(payload)
-        record = HighSchoolMatchMaster(payload['alternativeSchool'])
+        record = HighSchoolMatchMaster(payload['rosterYear'],
+                                       payload['playerNumber'],
+                                       payload['firstName'],
+                                       payload['lastName'],
+                                       payload['classYear'],
+                                       payload['position'],
+                                       payload['height'],
+                                       payload['weight'],
+                                       payload['homeTown'],
+                                       payload['stateOrCountry'],
+                                       payload['highSchool'],
+                                       payload['alternativeSchool'],
+                                       payload['college'],
+                                       payload['collegeLeague'],
+                                       payload['bioLink'],
+                                       payload['isStarter'],
+                                       payload['accolade'],
+                                       payload['highSchoolCity'],
+                                       payload['highSchool'],
+                                       payload['highSchoolStateOrProvince'],
+                                       payload['highSchoolCountry'],
+                                       payload['highSchoolLatitude'],
+                                       payload['highSchoolLongitude'],
+                                       payload['schoolType'])
+        record.save()
+        return JsonResponse({"sucess":"true"})
 
     return render(request, 'map/manualupload.html', context)
 
