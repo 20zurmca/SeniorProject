@@ -120,7 +120,9 @@ def manualupload(request):
                'leagues': leagues}
     if(request.method=='POST'):
         payload = json.loads(request.POST.get('json_data'))
-        record = HighSchoolMatchMaster(payload['rosterYear'],
+        mostRecentId = HighSchoolMatchMaster.values_list('id', flat=True).order_by('id')[-1]
+        record = HighSchoolMatchMaster(mostRecentId + 1,
+                                       payload['rosterYear'],
                                        payload['playerNumber'],
                                        payload['firstName'],
                                        payload['lastName'],
