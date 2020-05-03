@@ -115,12 +115,9 @@ def manualupload(request):
     colleges  = GroupedData.objects.values_list('college', flat=True).distinct().order_by('college')
     leagues   = GroupedData.objects.values_list('college_league', flat=True).distinct().order_by('college_league')
 
-    schools = HighSchoolData.objects.values('city', 'institution', 'stateorprovince', 'country').order_by('institution')
-
     context = {'positions':positions,
                'colleges': colleges,
-               'leagues': leagues,
-               'schools': schools}
+               'leagues': leagues}
 
     return render(request, 'map/manualupload.html', context)
 
@@ -193,7 +190,7 @@ def save_rosterData(filename):
         input_data.high_school = record[13]
         input_data.alternative_school = record[14]
         input_data.college = record[15]
-        input_data.college_league = record[16]
+        input_data.college_league = record[16].upper()
         input_data.bio_link = record[17]
         input_data.save()
 
