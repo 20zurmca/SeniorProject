@@ -3,7 +3,7 @@
 <html lang="en" dir="ltr">
   <head>
     <meta charset="utf-8">
-    <title>Lafayette Soccer Project - About</title>
+    <title>Lafayette Soccer Project - Manual Upload</title>
     <!-- bootstrap stuff -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
     <link href="https://fonts.googleapis.com/css2?family=Lato:wght@700&display=swap" rel="stylesheet">
@@ -48,14 +48,14 @@
 
       <div class="form-group">
         <label for="FirstName">First Name</label>
-        <input type="firstname" class="form-control" id="firstNameInput" placeholder="Enter Player's First Name" requried>
+        <input type="firstname" class="form-control" id="firstNameInput" aria-describedby="firstNameHelp" placeholder="Enter Player's First Name" required>
+        <small id="firstNameHelp" class="form-text text-muted">Required Field</small>
       </div>
 
       <div class="form-group">
         <label for="LastName">Last Name</label>
         <input type="lastname" class="form-control" id="lastNameInput" placeholder="Enter Player's Last Name">
       </div>
-
 
       <div class="form-group">
         <label for="Class Year">Class Year</label>
@@ -67,6 +67,21 @@
             <option>Junior</option>
             <option>Senior</option>
             <option>Graduate</option>
+          </optgroup>
+        </select>
+       </div>
+      </div>
+
+      <div class="form-group">
+        <label for="Position">Position</label>
+        <div>
+        <select class="select-search" name="positions" id="positionSelector">
+          <optgroup label="Position">
+            {% for position in positions %}
+            {% if position and position.strip %} <!-- do not include empty positions -->
+            <option>{{position}}</option>
+            {% endif %}
+            {% endfor %}
           </optgroup>
         </select>
        </div>
@@ -331,14 +346,14 @@
               <option value="Romania">Romania</option>
               <option value="Russia">Russia</option>
               <option value="Rwanda">Rwanda</option>
-              <option value="St Barthelemy">St Barthelemy</option>
-              <option value="St Eustatius">St Eustatius</option>
-              <option value="St Helena">St Helena</option>
-              <option value="St Kitts-Nevis">St Kitts-Nevis</option>
-              <option value="St Lucia">St Lucia</option>
-              <option value="St Maarten">St Maarten</option>
-              <option value="St Pierre & Miquelon">St Pierre & Miquelon</option>
-              <option value="St Vincent & Grenadines">St Vincent & Grenadines</option>
+              <option value="St. Barthelemy">St. Barthelemy</option>
+              <option value="St. Eustatius">St. Eustatius</option>
+              <option value="St. Helena">St. Helena</option>
+              <option value="St. Kitts-Nevis">St. Kitts-Nevis</option>
+              <option value="St. Lucia">St. Lucia</option>
+              <option value="St. Maarten">St. Maarten</option>
+              <option value="St. Pierre & Miquelon">St. Pierre & Miquelon</option>
+              <option value="St. Vincent & Grenadines">St. Vincent & Grenadines</option>
               <option value="Saipan">Saipan</option>
               <option value="Samoa">Samoa</option>
               <option value="Samoa American">Samoa American</option>
@@ -403,13 +418,58 @@
      <div class="form-group">
        <label for="HighSchool">High School</label>
        <input type="highSchool" class="form-control" id="highSchoolInput" aria-describedby="highSchoolHelp" placeholder="Enter Player's High School" required>
-       <small id="homeTownHelp" class="form-text text-muted">Receive High School Name From High School Data Spreadsheet</small>
+       <small id="highSchoolHelp" class="form-text text-muted">Receive High School Name From High School Data Spreadsheet. Required Field</small>
      </div>
+
+     <div class="form-group">
+       <label for="HighSchoolCity">High School City</label>
+       <input type="highSchoolCity" class="form-control" id="highSchoolCity" aria-describedby="highSchoolCityHelp" placeholder="Enter Player's High School City">
+       <small id="highSchoolCityHelp" class="form-text text-muted">Receive High School City From High School Data Spreadsheet</small>
+     </div>
+
+     <div class="form-group">
+       <label for="HighSchoolStateOrProvince">High School State or Province</label>
+       <input type="highSchoolStateOrProvince" class="form-control" id="highSchoolStateOrProvince" aria-describedby="highSchoolStateOrProvinceHelp" placeholder="Enter Player's High School State or Province">
+       <small id="highSchoolCityHelp" class="form-text text-muted">Receive High School City From High School Data Spreadsheet. Not a required field</small>
+     </div>
+
+     <div class="form-group">
+       <label for="HighSchoolCountry">High School Country</label>
+       <input type="highSchoolCountry" class="form-control" id="highSchoolCountry" aria-describedby="highSchoolCountryHelp" placeholder="Enter Player's High School Country">
+       <small id="highSchoolCountryHelp" class="form-text text-muted">Receive High School City From High School Data Spreadsheet. Not a required field</small>
+     </div>
+
+     <div class="form-group">
+       <label for="HighSchoolLatitude">High School Latitude</label>
+       <input type="highSchoolLatitude" class="form-control" id="highSchoolLatitude" aria-describedby="highSchoolLatitudeHelp" placeholder="Enter Player's High School Latitude" required>
+       <small id="highSchoolLatitudeHelp" class="form-text text-muted">Receive High School Latitude From High School Data Spreadsheet. Required field</small>
+     </div>
+
+     <div class="form-group">
+       <label for="HighSchoolLongitude">High School Longitude</label>
+       <input type="highSchoolLongitude" class="form-control" id="highSchoolLongitude" aria-describedby="highSchoolLongitudeHelp" placeholder="Enter Player's High School Longitude" required>
+       <small id="highSchoolLongitudeHelp" class="form-text text-muted">Receive High School Longitude From High School Data Spreadsheet. Required field</small>
+     </div>
+     <!-- College -->
+     <div class="form-group">
+       <label for="SchoolType">School Type</label>
+       <div>
+       <select class="select-search" name="schoolTypes" id="schoolTypeSelector">
+         <optgroup>
+             <option value='PUBLIC'>PUBLIC</option>
+             <option value='PRIVATE'>PRIVATE</option>
+             <option value='INTERNATIONAL'>INTERNATIONAL</option>
+             <option value='BOARDING'>BOARDING</option>
+         </optgroup>
+       </select>
+      </div>
+     </div>
+
 
      <div class="form-group">
        <label for="AlternativeSchool">Alternative School</label>
        <input type="alternativeSchool" class="form-control" id="alternativeSchoolInput" aria-describedby="alternativeSchoolHelp" placeholder="Enter Player's Alternative School">
-       <small id="homeTownHelp" class="form-text text-muted">Receive High School Name From High School Data Spreadsheet Or Leave Blank</small>
+       <small id="alternativeSchoolHelp" class="form-text text-muted">Receive High School Name From High School Data Spreadsheet Or Leave Blank</small>
      </div>
 
       <!-- College -->
@@ -417,10 +477,11 @@
         <label for="College">College</label>
         <div>
         <select class="select-search" name="colleges" id="collegeSelector">
-          {% for college in colleges %}
-          <option value="{{college}}" id="{{college}}">{{college}}</option>
-          {% endfor %}
-        </optgroup>
+          <optgroup label="College"
+            {% for college in colleges %}
+            <option value="{{college}}" id="{{college}}">{{college}}</option>
+            {% endfor %}
+          </optgroup>
         </select>
        </div>
       </div>
@@ -437,6 +498,12 @@
             </optgroup>
           </select>
        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="BioLink">Bio Link</label>
+        <input type="biolink" class="form-control" id="bioLinkInput" aria-describedby="bioLinkHelp" placeholder="Enter Player's Bio Link">
+        <small id="bioLinkHelp" class="form-text text-muted">Acquired From Roster Site</small>
       </div>
 
       <!-- is Starter -->
@@ -467,6 +534,11 @@
           </select>
        </div>
       </div>
+
+      <div class="submit-button">
+        <input type="submit" class="btn btn-primary btn-lg" value="Submit" id="button1"></input>
+      </div>
+
     </form>
 
 
@@ -480,14 +552,6 @@
     <script src="https://code.jquery.com/jquery-3.4.1.js" integrity="sha256-WpOohJOqMqqyKL9FccASB9O0KwACQJpFTUBLTYOVvVU="
     crossorigin="anonymous"></script>
 
-    <!-- Maps -->
-    <script src="https://unpkg.com/@google/markerclustererplus@4.0.1/dist/markerclustererplus.min.js"></script>
-    <script src="{% static 'map/js/form.js' %}"></script>
-    <script src="{% static 'map/js/map.js' %}"></script>
-    <script async defer
-    src="https://maps.googleapis.com/maps/api/js?key={{API_KEY}}&libraries=visualization&callback=initMap">
-    </script>
-
     <!--Bootstrap.js -->
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
     integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
@@ -497,45 +561,153 @@
     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/tail.select@0.5.15/js/tail.select.min.js"></script>
 
     <script>
-      var collegeSelector = tail.select("#positionSelector", {
-        placeholder: "Position",
-        width:455
-      });
-
       var stateOrCountrySelector = tail.select("#stateOrCountrySelector", {
         search: true,
         placeholder: "State or Country",
-        width:455
+        width:"100.1%"
       });
 
       var collegeSelector = tail.select("#collegeSelector", {
         search: true,
         placeholder: "College",
-        width:455
+        width:"100.1%"
       });
 
       var classYearSelector = tail.select("#classYearSelector", {
         search: true,
         placeholder: "Class Year",
-        width:455
+        width:"100.1%"
+      });
+
+      var positionSelector = tail.select("#positionSelector", {
+        placeholder: "Position",
+        width:"100.1%"
       });
 
       var collegeLeagueSelector = tail.select("#collegeLeagueSelector", {
         search: true,
         placeholder: "League",
-        width:455
+        width:"100.1%"
       });
 
-      var isStarterSelector = tail.select("#isStarterSelector", {
+      var starterSelector = tail.select("#isStarterSelector", {
         placeholder: "Is Starter",
-        width:455
+        width:"100.1%"
       });
 
       var accoladeSelector = tail.select("#accoladeSelector", {
         placeholder: "Accolade",
-        width:455
+        width:"100.1%"
+      });
+
+      var schoolTypeSelector = tail.select("#schoolTypeSelector", {
+        placeholder: "School Type",
+        width:"100.1%"
+      });
+
+      function getCookie(c_name)
+      {
+          if (document.cookie.length > 0)
+          {
+              c_start = document.cookie.indexOf(c_name + "=");
+              if (c_start != -1)
+              {
+                  c_start = c_start + c_name.length + 1;
+                  c_end = document.cookie.indexOf(";", c_start);
+                  if (c_end == -1) c_end = document.cookie.length;
+                  return unescape(document.cookie.substring(c_start,c_end));
+              }
+          }
+          return "";
+       }
+
+      $(document).on('submit', '#matchedHighSchoolPlayerForm', function(e){
+        e.preventDefault(); //prevent refresh
+
+        if($('#heightInput').val() && !$('#heightInput').val().match("^([3-9])'([1-9]|10|11)$")){
+          alert("ERROR: Format height as feet'inches. Examples: 5'11, 5'9, 6'1, 6'0. Min Height: 3'0, Max height: 9'11");
+          return;
+        }
+
+        var dict = JSON.stringify({
+          rosterYear:$('#rosterYearInput').val(),
+          playerNumber:$('#playerNumberInput').val(),
+          firstName:$('#firstNameInput').val(),
+          lastName:$('#lastNameInput').val(),
+          classYear:$('#classYearSelector').val(),
+          position:$('#positionSelector').val(),
+          height:$('#heightInput').val(),
+          weight:$('#weightInput').val(),
+          homeTown:$('#homeTownInput').val(),
+          stateOrCountry:$('#stateOrCountrySelector').val(),
+          highSchool:$('#highSchoolInput').val(),
+          highSchoolCity:$('#highSchoolCity').val(),
+          highSchoolStateOrProvince:$('#highSchoolStateOrProvince').val(),
+          highSchoolCountry:$('#highSchoolCountry').val(),
+          highSchoolLatitude:$('#highSchoolLatitude').val(),
+          highSchoolLongitude:$('#highSchoolLongitude').val(),
+          schoolType:$('#schoolTypeSelector').val(),
+          alternativeSchool:$('#alternativeSchoolInput').val(),
+          college:$('#collegeSelector').val(),
+          collegeLeague:$('#collegeLeagueSelector').val(),
+          bioLink:$('#bioLinkInput').val(),
+          isStarter:$('#isStarterSelector').val(),
+          accolade:$('#accoladeSelector').val()
+        })
+
+        var selectionString = "Roster Year: " + $('#rosterYearInput').val() + "\n"
+                            + "Player Number: " + $('#playerNumberInput').val() + "\n"
+                            + "First Name: " + $('#firstNameInput').val() + "\n"
+                            + "Last Name: " + $('#lastNameInput').val() + "\n"
+                            + "Class Year: " + $('#classYearSelector').val() + "\n"
+                            + "Position: " + $('#positionSelector').val() + "\n"
+                            + "Height: " + $('#heightInput').val() + "\n"
+                            + "Weight: " + $('#weightInput').val() + "\n"
+                            + "Home Town: " + $('#homeTownInput').val() + "\n"
+                            + "State or Country: " + $('#stateOrCountrySelector').val() + "\n"
+                            + "High School: " + $('#highSchoolInput').val() + "\n"
+                            + "High School City: " + $('#highSchoolCity').val() + "\n"
+                            + "High School State or Province: " + $('#highSchoolStateOrProvince').val() + "\n"
+                            + "High School Country: " + $('#highSchoolCountry').val() + "\n"
+                            + "High School Latitude: " + $('#highSchoolLatitude').val() + "\n"
+                            + "High School Longitude: " + $('#highSchoolLongitude').val() + "\n"
+                            + "School Type: " + $('#schoolTypeSelector').val() + "\n"
+                            + "Alternative School: " + $('#alternativeSchoolInput').val() + "\n"
+                            + "College: " + $('#collegeSelector').val() + "\n"
+                            + "College League: " + $('#collegeLeagueSelector').val() + "\n"
+                            + "Bio Link: " + $('#bioLinkInput').val() + "\n"
+                            + "Is Starter: " + $('#isStarterSelector').val() + "\n"
+                            + "Accolade: " + $('#accoladeSelector').val();
+
+        const msg = "Press OK to continue, Cancel to change:\n\n";
+        var ok = confirm(msg + selectionString);
+        if(!ok){
+          return;
+        }
+
+        $.ajaxSetup({
+            headers: { "X-CSRFToken": getCookie("csrftoken") }
+          });
+
+        $.ajax({
+          type: 'POST',
+          url: window.location,
+          data: {json_data: dict},
+
+          success:function(response){
+              if(ok){
+                if(response['success'] == 'true'){
+                  alert("Record Added!")
+                } else {
+                  alert("BUG REPORT: Problem With Adding Record.")
+                }
+              }
+          },
+          error:function(){
+            console.log("Error With Form Submission.");
+          }
+        });
       });
     </script>
-
   </body>
 </html>

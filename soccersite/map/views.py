@@ -118,6 +118,36 @@ def manualupload(request):
     context = {'positions':positions,
                'colleges': colleges,
                'leagues': leagues}
+    if(request.method=='POST'):
+        payload = json.loads(request.POST.get('json_data'))
+        mostRecentId = HighSchoolMatchMaster.values_list('id', flat=True).order_by('id')[-1]
+        record = HighSchoolMatchMaster(mostRecentId + 1,
+                                       payload['rosterYear'],
+                                       payload['playerNumber'],
+                                       payload['firstName'],
+                                       payload['lastName'],
+                                       payload['classYear'],
+                                       payload['position'],
+                                       payload['height'],
+                                       payload['weight'],
+                                       payload['homeTown'],
+                                       payload['stateOrCountry'],
+                                       payload['highSchool'],
+                                       payload['alternativeSchool'],
+                                       payload['college'],
+                                       payload['collegeLeague'],
+                                       payload['bioLink'],
+                                       payload['isStarter'],
+                                       payload['accolade'],
+                                       payload['highSchoolCity'],
+                                       payload['highSchool'],
+                                       payload['highSchoolStateOrProvince'],
+                                       payload['highSchoolCountry'],
+                                       payload['highSchoolLatitude'],
+                                       payload['highSchoolLongitude'],
+                                       payload['schoolType'])
+        record.save()
+        return JsonResponse({"sucess":"true"})
 
     return render(request, 'map/manualupload.html', context)
 

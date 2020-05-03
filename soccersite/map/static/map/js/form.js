@@ -80,12 +80,6 @@ function getCookie(c_name)
 
 $(document).on('submit', '#filterForm', function(e){
   e.preventDefault(); //prevent refresh
-  selectedColleges           = collegeSelector.options.find("selected", "any"); //from selectors.js
-  selectedPositions          = positionSelector.options.find("selected", "any");
-  selectedStarterYears       = starterSelector.options.find("selected", "any");
-  selectedAllConferenceYears =  allConferenceSelector.options.find("selected", "any");
-  let selectedSomething      = (selectedColleges.length > 0 || selectedPositions.length > 0 ||
-                                selectedStarterYears.length > 0 || selectedAllConferenceYears.length > 0);
 
   let multipleChecked = 'selected';
   if (!$("#moreThanOneSchool").is(":checked")) {

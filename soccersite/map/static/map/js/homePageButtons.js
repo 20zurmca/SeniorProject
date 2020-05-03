@@ -1,16 +1,10 @@
 function submit() {
-  selectedColleges           = collegeSelector.options.find("selected", "any"); //from selectors.js
-  selectedPositions          = positionSelector.options.find("selected", "any");
-  selectedStarterYears       = starterSelector.options.find("selected", "any");
-  selectedAllConferenceYears = allConferenceSelector.options.find("selected", "any");
-  let selectedSomething      = (selectedColleges.length > 0 || selectedPositions.length > 0 ||
-                                selectedStarterYears.length > 0 || selectedAllConferenceYears.length > 0);
   document.getElementById('markerControl').style.fontWeight = "bold";
   document.getElementById('markerControl').disabled = false;
   document.getElementById('zoomControl').disabled = false;
   document.getElementById('heatMapControl').disabled = false;
   if(document.getElementById('noQuerySelected')){
-    document.getElementById('noQuerySelected').style.display = "none";
+      document.getElementById('noQuerySelected').style.display = "none";
   }
   submitted=true;
   $('.loader').show();
