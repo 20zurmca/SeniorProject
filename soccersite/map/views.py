@@ -162,7 +162,9 @@ def manualupload(request):
 def upload_file(request):
     if(request.method == 'POST'):
         form = DocumentForm(request.POST, request.FILES)
+        print("here")
         if form.is_valid():
+            print("not here")
             save_rosterData(form.cleaned_data['rosterData'])
             save_starterData(form.cleaned_data['starterData'])
             save_accoladeData(form.cleaned_data['accoladeData'])
@@ -176,7 +178,9 @@ def upload_file(request):
 
             new_version = BackUp(description = form.cleaned_data['description'], file=fn)
             new_version.save()
-            return render(request, 'map/upload.html', {'form': form})
+            #context = {'form': form, 'uploaded': True}
+            #return render(request, 'map/upload.html', context)
+            return JsonResponse({"sucess":"true"})
     else:
         form = DocumentForm()
 
