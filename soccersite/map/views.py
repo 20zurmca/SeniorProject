@@ -227,7 +227,7 @@ def save_rosterData(filename):
         input_data.high_school = record[13]
         input_data.alternative_school = record[14]
         input_data.college = record[15]
-        input_data.college_league = record[16]
+        input_data.college_league = record[16].upper()
         input_data.bio_link = record[17]
         input_data.save()
 
