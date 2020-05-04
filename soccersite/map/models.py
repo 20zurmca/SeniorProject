@@ -113,6 +113,8 @@ class BackUp(models.Model):
     description = models.CharField(unique=True, max_length=255)
     file        = models.FileField()
     uploaded_at = models.DateTimeField(auto_now_add=True)
+    isCurrent   = models.BooleanField(default=False)
+    isLoaded    = models.BooleanField(default=False)
 
     def filename(self):
         return os.path.basename(self.file.name)

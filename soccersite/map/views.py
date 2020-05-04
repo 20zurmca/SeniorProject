@@ -21,10 +21,12 @@ def index(request):
     colleges  = GroupedData.objects.values_list('college', flat=True).distinct().order_by('college')
     leagues   = GroupedData.objects.values_list('college_league', flat=True).distinct().order_by('college_league')
     positions = GroupedData.objects.annotate(arr_els=Func(F('position'), function='unnest')).values_list('arr_els', flat=True).distinct()
+    currentBackUpVersion = BackUp.objects.filter(isCurrent=True).first()
     context = {'API_KEY': settings.GOOGLE_MAPS_API_KEY,
                'colleges': colleges,
                'leagues': leagues,
                'positions': positions,
+               'currentBackUp': currentBackUpVersion
                }
 
     if(request.method == 'POST'): #form.js will check for at least one college selected before submission
@@ -176,11 +178,17 @@ def upload_file(request):
                                         "--exclude=sessions", "--exclude=messages", "--exclude=staticfiles", \
                                         "--exclude=map.Documents", "--exclude=map.BackUp", "--exclude=map.HighSchoolData"])
 
-            new_version = BackUp(description = form.cleaned_data['description'], file=fn)
+            #setting old current version to false
+            old_version = BackUp.objects.filter(isCurrent=True).first()
+            old_version['currentVersion'] = False
+            old_version['isLoaded'] = False
+            old_version.save()
+            #setting new version to true
+            new_version = BackUp(description = form.cleaned_data['description'], file=fn, currentVersion=True, isLoaded=True)
             new_version.save()
             #context = {'form': form, 'uploaded': True}
             #return render(request, 'map/upload.html', context)
-            return JsonResponse({"sucess":"true"})
+            return JsonResponse({"success":"true"})
     else:
         form = DocumentForm()
 
@@ -193,6 +201,16 @@ def restore(request):
         if(request.POST.get('json_data')):
             payload = json.loads(request.POST.get('json_data'))
             description = payload['version']
+            old_version = BackUp.objects.filter(isCurrent=True).first()
+            old_version['currentVersion'] = False
+            old_version['isLoaded'] = False
+            old_version.save()
+
+            new_version = BackUp.objects.filter(description=description).first()
+            new_version['currentVersion'] = True
+            new_version['isLoaded'] = False
+            new_version.save()
+
             backUpFile  = "map/fixtures/" + BackUp.objects.filter(description=description).get().filename()
             RosterData.objects.all().delete()
             StarterData.objects.all().delete()
@@ -200,9 +218,13 @@ def restore(request):
             GroupedData.objects.all().delete()
             HighSchoolMatchMaster.objects.all().delete()
             p = subprocess.Popen(["python", "manage.py", "loaddata", backUpFile])
-            while(GroupedData.objects.all()[0] is None):
-                continue
-    return render(request, 'map/restore.html', {'versions': versions})
+
+            if(HighSchoolMatchMaster.objects.all().exists()): #finish loading
+                new_version['isLoaded'] = True
+
+    currentBackUpVersion = BackUp.objects.filter(isCurrent=True).first()
+    return render(request, 'map/restore.html', {'versions': versions,
+                                                'currentBackUp': currentBackUpVersion})
 
 
 def save_rosterData(filename):
