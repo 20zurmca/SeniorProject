@@ -69,5 +69,5 @@ class Documents(models.Model):
     description = models.CharField(max_length=255, blank=True)
     rosterData = models.FileField(upload_to='documents/')
     starterData = models.FileField(upload_to='documents/')
-    accolateData = models.FileField(upload_to='documents/')
+    accoladeData = models.FileField(upload_to='documents/')
     uploaded_at = models.DateTimeField(auto_now_add=True)

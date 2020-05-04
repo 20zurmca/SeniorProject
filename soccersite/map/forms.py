@@ -4,7 +4,7 @@ from .models import Documents
 class DocumentForm(forms.ModelForm):
     class Meta:
         model = Documents
-        fields = ('description', 'rosterData', 'starterData','accolateData', )
+        fields = ('description', 'rosterData', 'starterData','accoladeData', )
 
 
 

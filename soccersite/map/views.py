@@ -96,7 +96,7 @@ def upload_file(request):
         if form.is_valid():
             save_rosterData(form.cleaned_data['rosterData'])
             save_starterData(form.cleaned_data['starterData'])
-            save_accolateData(form.cleaned_data['accolateData'])
+            save_accoladeData(form.cleaned_data['accoladeData'])
             form.save()
             return render(request, 'map/upload.html', {'form':form})
     else:
@@ -157,7 +157,7 @@ def save_starterData(filename):
         input_data.college = record[9]
         input_data.save()
 
-def save_accolateData(filename):
+def save_accoladeData(filename):
     records = csv.reader(codecs.iterdecode(filename,'utf-8'))
     next(records)
     for record in records:
