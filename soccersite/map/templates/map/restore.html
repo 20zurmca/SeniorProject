@@ -35,6 +35,19 @@
           </div>
         </div>
 
+        <div class="data-version">
+          <p id="version-info">
+            Current Data Version: {{ currentBackUp.description }}
+          </p>
+          <p id="loaded-info">
+            {% if currentBackUp.isLoaded %}
+              Current Data Version: Loaded
+            {% else %}
+              Current Data Version: Not Loaded
+            {% endif %}
+          </p>
+        </div>
+
         <div class = "version-form">
           <form method="POST" id='versionControlForm'>
             {% csrf_token %}
