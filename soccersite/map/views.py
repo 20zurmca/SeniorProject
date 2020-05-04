@@ -120,7 +120,7 @@ def manualupload(request):
                'leagues': leagues}
     if(request.method=='POST'):
         payload = json.loads(request.POST.get('json_data'))
-        mostRecentId = HighSchoolMatchMaster.values_list('id', flat=True).order_by('id')[-1]
+        mostRecentId = HighSchoolMatchMaster.objects.values_list('id', flat=True).order_by('id').latest('id')
         record = HighSchoolMatchMaster(mostRecentId + 1,
                                        payload['rosterYear'],
                                        payload['playerNumber'],
@@ -147,7 +147,14 @@ def manualupload(request):
                                        payload['highSchoolLongitude'],
                                        payload['schoolType'])
         record.save()
-        return JsonResponse({"sucess":"true"})
+        #insert into document table to trigger the triger and group the inserted players
+        doc = Documents(description="Manual Upload" + str(_random_with_N_digits(3)),
+                       rosterData=None,
+                       starterData=None,
+                       accoladeData=None,
+                       manual_upload=True)
+        doc.save()
+        return JsonResponse({"success":"true"})
 
     return render(request, 'map/manualupload.html', context)
 
