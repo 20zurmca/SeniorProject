@@ -36,25 +36,25 @@
       {% csrf_token %}
       <div class="form-group">
         <label for="RosterYear">Roster Year</label>
-        <input type="rosteryear" class="form-control" id="rosterYearInput" aria-describedby="rosterYearHelp" placeholder="Enter Roster Year">
+        <input type="number" class="form-control" id="rosterYearInput" aria-describedby="rosterYearHelp" placeholder="Enter Roster Year" required>
         <small id="rosterYearHelp" class="form-text text-muted">Single year the player was on the roster i.e 2019</small>
       </div>
 
       <div class="form-group">
         <label for="PlayerNumber">Player Number</label>
-        <input type="playernumber" class="form-control" id="playerNumberInput" aria-describedby="playerNumberHelp" placeholder="Enter Player Number">
+        <input type="number" class="form-control" id="playerNumberInput" aria-describedby="playerNumberHelp" placeholder="Enter Player Number">
         <small id="playerNumberHelp" class="form-text text-muted">Player's Jersey # i.e 2019</small>
       </div>
 
       <div class="form-group">
         <label for="FirstName">First Name</label>
-        <input type="firstname" class="form-control" id="firstNameInput" aria-describedby="firstNameHelp" placeholder="Enter Player's First Name" required>
+        <input type="text" class="form-control" id="firstNameInput" aria-describedby="firstNameHelp" placeholder="Enter Player's First Name" required>
         <small id="firstNameHelp" class="form-text text-muted">Required Field</small>
       </div>
 
       <div class="form-group">
         <label for="LastName">Last Name</label>
-        <input type="lastname" class="form-control" id="lastNameInput" placeholder="Enter Player's Last Name">
+        <input type="text" class="form-control" id="lastNameInput" placeholder="Enter Player's Last Name" requried>
       </div>
 
       <div class="form-group">
@@ -90,19 +90,19 @@
 
       <div class="form-group">
         <label for="Height">Height</label>
-        <input type="height" class="form-control" id="heightInput" aria-describedby="heightHelp" placeholder="Enter Player's Height">
+        <input type="text" class="form-control" id="heightInput" aria-describedby="heightHelp" placeholder="Enter Player's Height">
         <small id="heightHelp" class="form-text text-muted">i.e 5'11 or leave blank</small>
       </div>
 
       <div class="form-group">
         <label for="Weight">Weight</label>
-        <input type="weight" class="form-control" id="weightInput" aria-describedby="weightHelp" placeholder="Enter Player's Weight">
+        <input type="number" class="form-control" id="weightInput" aria-describedby="weightHelp" placeholder="Enter Player's Weight">
         <small id="weightHelp" class="form-text text-muted">i.e 170 or leave blank</small>
       </div>
 
       <div class="form-group">
         <label for="HomeTown">Home Town</label>
-        <input type="homeTown" class="form-control" id="homeTownInput" aria-describedby="homeTownHelp" placeholder="Enter Player's Home Town">
+        <input type="text" class="form-control" id="homeTownInput" aria-describedby="homeTownHelp" placeholder="Enter Player's Home Town" required>
         <small id="homeTownHelp" class="form-text text-muted">i.e Sommerset or Madrid</small>
       </div>
 
@@ -417,37 +417,37 @@
 
      <div class="form-group">
        <label for="HighSchool">High School</label>
-       <input type="highSchool" class="form-control" id="highSchoolInput" aria-describedby="highSchoolHelp" placeholder="Enter Player's High School" required>
+       <input type="text" class="form-control" id="highSchoolInput" aria-describedby="highSchoolHelp" placeholder="Enter Player's High School" required>
        <small id="highSchoolHelp" class="form-text text-muted">Receive High School Name From High School Data Spreadsheet. Required Field</small>
      </div>
 
      <div class="form-group">
        <label for="HighSchoolCity">High School City</label>
-       <input type="highSchoolCity" class="form-control" id="highSchoolCity" aria-describedby="highSchoolCityHelp" placeholder="Enter Player's High School City">
+       <input type="text" class="form-control" id="highSchoolCity" aria-describedby="highSchoolCityHelp" placeholder="Enter Player's High School City">
        <small id="highSchoolCityHelp" class="form-text text-muted">Receive High School City From High School Data Spreadsheet</small>
      </div>
 
      <div class="form-group">
        <label for="HighSchoolStateOrProvince">High School State or Province</label>
-       <input type="highSchoolStateOrProvince" class="form-control" id="highSchoolStateOrProvince" aria-describedby="highSchoolStateOrProvinceHelp" placeholder="Enter Player's High School State or Province">
+       <input type="text" class="form-control" id="highSchoolStateOrProvince" aria-describedby="highSchoolStateOrProvinceHelp" placeholder="Enter Player's High School State or Province">
        <small id="highSchoolCityHelp" class="form-text text-muted">Receive High School City From High School Data Spreadsheet. Not a required field</small>
      </div>
 
      <div class="form-group">
        <label for="HighSchoolCountry">High School Country</label>
-       <input type="highSchoolCountry" class="form-control" id="highSchoolCountry" aria-describedby="highSchoolCountryHelp" placeholder="Enter Player's High School Country">
+       <input type="txt" class="form-control" id="highSchoolCountry" aria-describedby="highSchoolCountryHelp" placeholder="Enter Player's High School Country">
        <small id="highSchoolCountryHelp" class="form-text text-muted">Receive High School City From High School Data Spreadsheet. Not a required field</small>
      </div>
 
      <div class="form-group">
        <label for="HighSchoolLatitude">High School Latitude</label>
-       <input type="highSchoolLatitude" class="form-control" id="highSchoolLatitude" aria-describedby="highSchoolLatitudeHelp" placeholder="Enter Player's High School Latitude" required>
+       <input type="number" class="form-control" id="highSchoolLatitude" aria-describedby="highSchoolLatitudeHelp" placeholder="Enter Player's High School Latitude" required>
        <small id="highSchoolLatitudeHelp" class="form-text text-muted">Receive High School Latitude From High School Data Spreadsheet. Required field</small>
      </div>
 
      <div class="form-group">
        <label for="HighSchoolLongitude">High School Longitude</label>
-       <input type="highSchoolLongitude" class="form-control" id="highSchoolLongitude" aria-describedby="highSchoolLongitudeHelp" placeholder="Enter Player's High School Longitude" required>
+       <input type="number" class="form-control" id="highSchoolLongitude" aria-describedby="highSchoolLongitudeHelp" placeholder="Enter Player's High School Longitude" required>
        <small id="highSchoolLongitudeHelp" class="form-text text-muted">Receive High School Longitude From High School Data Spreadsheet. Required field</small>
      </div>
      <!-- College -->
@@ -468,7 +468,7 @@
 
      <div class="form-group">
        <label for="AlternativeSchool">Alternative School</label>
-       <input type="alternativeSchool" class="form-control" id="alternativeSchoolInput" aria-describedby="alternativeSchoolHelp" placeholder="Enter Player's Alternative School">
+       <input type="text" class="form-control" id="alternativeSchoolInput" aria-describedby="alternativeSchoolHelp" placeholder="Enter Player's Alternative School">
        <small id="alternativeSchoolHelp" class="form-text text-muted">Receive High School Name From High School Data Spreadsheet Or Leave Blank</small>
      </div>
 
@@ -502,7 +502,7 @@
 
       <div class="form-group">
         <label for="BioLink">Bio Link</label>
-        <input type="biolink" class="form-control" id="bioLinkInput" aria-describedby="bioLinkHelp" placeholder="Enter Player's Bio Link">
+        <input type="url" class="form-control" id="bioLinkInput" aria-describedby="bioLinkHelp" placeholder="Enter Player's Bio Link">
         <small id="bioLinkHelp" class="form-text text-muted">Acquired From Roster Site</small>
       </div>
 
@@ -512,8 +512,8 @@
         <div>
           <select class="select-search" name="isStarter" id="isStarterSelector">
             <optgroup label="Is Starter">
-              <option value="Y">Y</option>
-              <option value="N">N</option>
+              <option value="Y">N</option>
+              <option value="N">Y</option>
             </optgroup>
           </select>
        </div>
@@ -704,7 +704,7 @@
               }
           },
           error:function(){
-            console.log("Error With Form Submission.");
+            console.log("ERROR With Form Submission.");
           }
         });
       });

@@ -101,11 +101,12 @@ class HighSchoolMatchMaster(models.Model):
     school_type        = models.CharField(max_length=20, null=True)
 
 class Documents(models.Model):
-    description  = models.CharField(unique=True, max_length=255)
-    rosterData   = models.FileField(upload_to='documents/')
-    starterData  = models.FileField(upload_to='documents/')
-    accoladeData = models.FileField(upload_to='documents/')
-    uploaded_at  = models.DateTimeField(auto_now_add=True)
+    description   = models.CharField(unique=True, max_length=255)
+    rosterData    = models.FileField(upload_to='documents/', null=True)
+    starterData   = models.FileField(upload_to='documents/', null=True)
+    accoladeData  = models.FileField(upload_to='documents/', null=True)
+    uploaded_at   = models.DateTimeField(auto_now_add=True)
+    manual_upload = models.BooleanField(default=False)
 
 
 class BackUp(models.Model):
