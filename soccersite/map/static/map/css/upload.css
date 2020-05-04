@@ -2,6 +2,23 @@ body {
   background-color: #21252b;
 }
 
+.loader-wrapper{
+  text-align: center;
+  padding-bottom: 15px;
+}
+
+
+.loader {
+  border: 16px solid #f3f3f3;
+  border-radius: 50%;
+  border-top: 16px solid #21252b;
+  width: 70px;
+  height: 70px;
+  -webkit-animation: spin 2s linear infinite; /* Safari */
+  animation: spin 0.8s linear infinite;
+  display: none;
+}
+
 .container-bgimage{
   background-image: url('../img/grass.png');
   background-size: cover;
@@ -10,7 +27,7 @@ body {
 
 .footer_image {
   background-repeat: no-repeat;
-  margin-top: 650px;
+  margin-top: 850px;
   text-align: center;
   margin-bottom: 50px;
 }
@@ -50,11 +67,21 @@ padding-left: 40%;
   margin-left: 14%;
 }
 
+#restoreButton{
+  margin-top: 10px;
+}
+
 #upload_toolbar{
   position: absolute;
   font-size: 20px;
   right:10px;
   top: 0px;
+}
+
+#manual_button{
+  margin-left: 75%;
+  margin-top: 185px;
+  font-size: 15;
 }
 
 .button_default {
@@ -69,6 +96,21 @@ padding-left: 40%;
 .button_default:hover {
   background-color: #343a40;
   color: #ffffff;
+}
+
+
+.upload-data-form{
+  display: inline-block;
+  position:absolute;
+  left:30%;
+}
+
+.version-form{
+  display: inline-block;
+  margin-left: 35%;
+  position: absolute;
+  left:35%;
+  bottom:  300px;
 }
 
 #banner{

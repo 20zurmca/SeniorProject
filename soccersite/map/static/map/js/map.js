@@ -69,7 +69,9 @@ function loadData(map, playerData){
       groupedLatLngData[key]['lat']                = playerData[i]['latitude'];
       groupedLatLngData[key]['lng']                = playerData[i]['longitude'];
       groupedLatLngData[key]['hs']                 = playerData[i]['high_school'];
-      groupedLatLngData[key]['hsCity']             = playerData[i]['highschoolcity'].toLowerCase();
+      if (playerData[i]['highschoolcity'] != null) {
+        groupedLatLngData[key]['hsCity']             = playerData[i]['highschoolcity'].toLowerCase();
+      }
       groupedLatLngData[key]['hsStateOrProvince']  = playerData[i]['highschoolstateorcountry'];
       groupedLatLngData[key]['hsStateOrProvince']  = playerData[i]['highschoolstateorprovince'];
       groupedLatLngData[key]['hsCountry']          = playerData[i]['highschoolcountry'].toLowerCase();
@@ -98,7 +100,9 @@ function loadData(map, playerData){
         },
         number: groupedLatLngData[highSchool]['playerCount'],
         icon: {
-          url: "http://maps.google.com/mapfiles/kml/pal2/icon18.png",
+          url: "http://maps.google.com/mapfiles/kml/shapes/schools.png",
+          scaledSize: new google.maps.Size(35, 35),
+          labelOrigin: { x: 16, y: 26}
         },
         animation: google.maps.Animation.DROP
       });
@@ -110,7 +114,9 @@ function loadData(map, playerData){
 
       if (stateOrProvince == null) {
         stateOrProvince = "";
-        country = groupedLatLngData[highSchool]['hsCountry'];
+        country = ", " + groupedLatLngData[highSchool]['hsCountry'];
+      } else {
+        stateOrProvince = ", " + stateOrProvince;
       }
 
       //building info window
@@ -119,8 +125,8 @@ function loadData(map, playerData){
            '</div>'+
            '<h1 id="firstHeading" class="firstHeading">'+ groupedLatLngData[highSchool]['hs'] +'</h1>'+
            '<div id="bodyContent">'+
-           '<p style="text-transform:capitalize">'+groupedLatLngData[highSchool]['hsCity'] + ' ' +
-           stateOrProvince + country + '</p>' + 
+           '<p style="text-transform:capitalize">'+groupedLatLngData[highSchool]['hsCity'] +
+           stateOrProvince + country + '</p>' +
            '<p style="text-transform:capitalize">'+ "Student Count: " + groupedLatLngData[highSchool]['playerCount'] +
            '</div>'+
            '</div>';
@@ -462,6 +468,12 @@ function initMap() {
                 east: 180
             }
         },
+        mapTypeControlOptions: {
+           mapTypeIds: [
+             google.maps.MapTypeId.ROADMAP,
+             google.maps.MapTypeId.SATELLITE
+           ]
+         },
         gestureHandling: 'greedy'
       });
 

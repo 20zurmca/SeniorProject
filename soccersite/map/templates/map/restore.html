@@ -1,0 +1,115 @@
+<!DOCTYPE>
+{% load static %}
+<html>
+    <head>
+      <meta charset="utf-8">
+      <title>Upload File</title>
+      <!-- bootstrap stuff -->
+      <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+      integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+      <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
+      <!-- google font -->
+      <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Cabin&display=swap">
+      <link href="https://fonts.googleapis.com/css2?family=Lato:wght@700&display=swap" rel="stylesheet">
+      <!-- tail select -->
+      <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/tail.select@latest/css/bootstrap4/tail.select-default.css">
+
+      <link rel="shortcut icon" href="{% static 'map/img/favicon.ico' %}" />
+      <link rel="stylesheet" type="text/css" href="{% static 'map/css/restore.css' %}">
+    </head>
+    <body>
+      <div class="container-bgimage">
+        <div id="banner">
+          <div>
+            <a style="text-decoration:none" href='/'>
+              <img class = "block" src = "{% static 'map/img/logo.png' %}" width = 254 height = 86>
+            </a>
+            <p class="blocktext">Talent is in the Data</p>
+            <div id='upload_toolbar'>
+              <a href='/about' class="badge button_default">About</a>
+              <a href='/upload' class="badge button_default">Upload Data</a>
+              <a href='/restore' class="badge button_default">Restore Data</a>
+              <a href='/admin' class="badge button_default">Admin Login</a>
+            </div>
+          </div>
+        </div>
+
+        <div class = "version-form">
+          <form method="POST" id='versionControlForm'>
+            {% csrf_token %}
+            <select class="search-description" id="dbVersion">
+              <optgroup label="Versions">
+                {% for version in versions %}
+                <option data-description= "{{version.uploaded_at}}">{{version.description}}</option>
+                {% endfor %}
+              </optgroup>
+            </select>
+            <button type="submit" class="btn btn-primary" id="restoreButton">Restore</button>
+          </form>
+        </div>
+
+        <div class="footer_image">
+          <!-- image details in css -->
+          <h5 id="footer_name">© Copyright 2020</h5>
+          <img id="footer_img" src="{% static 'map/img/logo.png' %}" width = 195 height = 66>
+        </div>
+      </div>
+
+     <!-- jQuery library -->
+     <script src="https://code.jquery.com/jquery-3.4.1.js" integrity="sha256-WpOohJOqMqqyKL9FccASB9O0KwACQJpFTUBLTYOVvVU="
+     crossorigin="anonymous"></script>
+
+      <!--Bootstrap.js -->
+      <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+      integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+      crossorigin="anonymous"></script>
+
+      <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/tail.select@0.5.15/js/tail.select.min.js"></script>
+
+      <script>
+        var versionSelector = tail.select("#dbVersion", {
+          placeholder: "Restore Data Version",
+          multiShowCount: false,
+          search: true,
+          descriptions: true
+        });
+
+        function getCookie(c_name)
+        {
+            if (document.cookie.length > 0)
+            {
+                c_start = document.cookie.indexOf(c_name + "=");
+                if (c_start != -1)
+                {
+                    c_start = c_start + c_name.length + 1;
+                    c_end = document.cookie.indexOf(";", c_start);
+                    if (c_end == -1) c_end = document.cookie.length;
+                    return unescape(document.cookie.substring(c_start, c_end));
+                }
+            }
+            return "";
+         }
+
+        $(document).on('submit', '#versionControlForm', function(e){
+          //e.preventDefault();
+          $.ajaxSetup({
+                  headers: { "X-CSRFToken": getCookie("csrftoken") }
+          });
+
+            $.ajax({
+              type: 'POST',
+              url: "/restore",
+              data: { json_data: JSON.stringify({
+                version:$('#dbVersion').val(),
+              })},
+              success:function(response){
+
+              },
+              error:function(){
+                console.log("Error with form submission");
+              }
+            });
+          });
+      </script>
+    </body>
+</html>

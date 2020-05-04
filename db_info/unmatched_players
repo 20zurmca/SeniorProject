@@ -1,0 +1,66 @@
+--Entire Job
+
+
+--Create tables for roster data aggregation and copy in data
+
+\COPY map_rosterdata FROM 'roster_data.csv' DELIMITER ',' CSV HEADER;
+
+\COPY map_starterdata FROM 'starter_data.csv' DELIMITER ',' CSV HEADER;
+
+\COPY map_accoladedata FROM 'accolades.csv' DELIMITER ',' CSV HEADER;
+
+
+--Create table for high school data and copy in the data
+\COPY map_highschooldata FROM 'high_school_data.csv' DELIMITER ',' CSV HEADER;
+
+UPDATE map_highschooldata SET Institution = LOWER(Institution);
+
+--Join with starter data
+
+CREATE TABLE roster_starter_data AS (
+	SELECT map_rosterdata.Roster_Year, map_rosterdata.Player_Number, map_rosterdata.First_Name, map_rosterdata.Last_Name, map_rosterdata.Year, map_rosterdata.Position1, map_rosterdata.Position2, map_rosterdata.Position3, map_rosterdata.Height, map_rosterdata.Weight, map_rosterdata.Home_Town, map_rosterdata.State_or_Country, map_rosterdata.High_School, map_rosterdata.Alternative_School, map_rosterdata.College, map_rosterdata.College_League, map_rosterdata.Bio_Link, map_starterdata.Potential_Starts, map_starterdata.GP, map_starterdata.GS, map_starterdata.Is_Starter
+	FROM map_rosterdata
+	LEFT JOIN map_starterdata
+	ON map_rosterdata.First_Name=map_starterdata.First_Name AND map_rosterdata.Last_Name=map_starterdata.Last_Name AND map_rosterdata.Roster_Year=map_starterdata.Roster_Year AND map_rosterdata.College=map_starterdata.College
+);
+
+
+--Join with accolade data
+
+CREATE TABLE roster_master_data AS (
+	SELECT roster_starter_data.Roster_Year, roster_starter_data.Player_Number, roster_starter_data.First_Name, roster_starter_data.Last_Name, roster_starter_data.Year, roster_starter_data.Position1, roster_starter_data.Position2, roster_starter_data.Position3, roster_starter_data.Height, roster_starter_data.Weight, roster_starter_data.Home_Town, roster_starter_data.State_or_Country, roster_starter_data.High_School, roster_starter_data.Alternative_School, roster_starter_data.College, roster_starter_data.College_League, roster_starter_data.Bio_Link, roster_starter_data.Potential_Starts, roster_starter_data.GP, roster_starter_data.GS, roster_starter_data.Is_Starter, map_accoladedata.Accolade
+	FROM roster_starter_data
+	LEFT JOIN map_accoladedata
+	ON roster_starter_data.First_Name=map_accoladedata.First_Name AND roster_starter_data.Last_Name=map_accoladedata.Last_Name AND roster_starter_data.Roster_Year=map_accoladedata.Roster_Year AND roster_starter_data.College=map_accoladedata.College
+);
+
+
+--Delete rows from original tables and the extra table
+DELETE FROM map_rosterdata;
+DELETE FROM map_starterdata;
+DELETE FROM map_accoladedata;
+DROP TABLE roster_starter_data;
+
+
+--Drop unneeded columns
+ALTER TABLE roster_master_data DROP COLUMN Position2;
+ALTER TABLE roster_master_data DROP COLUMN Position3;
+ALTER TABLE roster_master_data DROP COLUMN Potential_Starts;
+ALTER TABLE roster_master_data DROP COLUMN GP;
+ALTER TABLE roster_master_data DROP COLUMN GS;
+
+
+-- Drop those entires with a null high school and alternative school
+
+DELETE FROM roster_master_data
+WHERE High_School IS NULL AND Alternative_School IS NULL;
+
+
+DELETE FROM roster_master_data
+USING map_highschoolmatchmaster
+WHERE LOWER(roster_master_data.first_name) = LOWER(map_highschoolmatchmaster.first_name) AND LOWER(roster_master_data.last_name) = LOWER(map_highschoolmatchmaster.last_name) AND LOWER(roster_master_data.home_town) = LOWER(map_highschoolmatchmaster.home_town) AND LOWER(roster_master_data.state_or_country) = LOWER(map_highschoolmatchmaster.state_or_country) AND LOWER(roster_master_data.high_school) = LOWER(map_highschoolmatchmaster.high_school) AND LOWER(roster_master_data.college) = LOWER(map_highschoolmatchmaster.college) AND LOWER(roster_master_data.college_league) = LOWER(map_highschoolmatchmaster.college_league);
+
+
+-- \Copy roster_master_data to 'umatched_players.csv' DELIMITER ',' CSV HEADER;
+
+-- DROP TABLE roster_master_data;

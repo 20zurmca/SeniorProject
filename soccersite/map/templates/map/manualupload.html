@@ -1,0 +1,713 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title>Lafayette Soccer Project - Manual Upload</title>
+    <!-- bootstrap stuff -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link href="https://fonts.googleapis.com/css2?family=Lato:wght@700&display=swap" rel="stylesheet">
+    <!-- tail select -->
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/tail.select@latest/css/bootstrap4/tail.select-default.css">
+    <!-- google font -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Cabin&display=swap">
+    <!-- map applicaton static files -->
+    <link rel="shortcut icon" href="{% static 'map/img/favicon.ico' %}" />
+    <link rel="stylesheet" type="text/css" href="{% static 'map/css/manualupload.css' %}">
+  </head>
+  <body>
+    <div id="banner">
+      <div class="toolbar">
+        <a style="text-decoration:none" href='/'>
+          <img class = "block" src = "{% static 'map/img/logo.png' %}" width = 254 height = 86>
+        </a>
+        <p class="blocktext">Talent is in the Data</p>
+        <div id='about_toolbar'>
+            <a href='/about' class="badge button_default">About</a>
+            <a href='/upload' class="badge button_default">Upload Data</a>
+            <a href='/restore' class="badge button_default">Restore Data</a>
+            <a href='/admin' class="badge button_default">Admin Login</a>
+        </div>
+      </div>
+    </div>
+
+    <hr class = "line_sep">
+    <form method='POST' id="matchedHighSchoolPlayerForm">
+      {% csrf_token %}
+      <div class="form-group">
+        <label for="RosterYear">Roster Year</label>
+        <input type="rosteryear" class="form-control" id="rosterYearInput" aria-describedby="rosterYearHelp" placeholder="Enter Roster Year">
+        <small id="rosterYearHelp" class="form-text text-muted">Single year the player was on the roster i.e 2019</small>
+      </div>
+
+      <div class="form-group">
+        <label for="PlayerNumber">Player Number</label>
+        <input type="playernumber" class="form-control" id="playerNumberInput" aria-describedby="playerNumberHelp" placeholder="Enter Player Number">
+        <small id="playerNumberHelp" class="form-text text-muted">Player's Jersey # i.e 2019</small>
+      </div>
+
+      <div class="form-group">
+        <label for="FirstName">First Name</label>
+        <input type="firstname" class="form-control" id="firstNameInput" aria-describedby="firstNameHelp" placeholder="Enter Player's First Name" required>
+        <small id="firstNameHelp" class="form-text text-muted">Required Field</small>
+      </div>
+
+      <div class="form-group">
+        <label for="LastName">Last Name</label>
+        <input type="lastname" class="form-control" id="lastNameInput" placeholder="Enter Player's Last Name">
+      </div>
+
+      <div class="form-group">
+        <label for="Class Year">Class Year</label>
+        <div>
+        <select class="select-search" name="classYears" id="classYearSelector">
+          <optgroup label="Class Year">
+            <option>Freshman</option>
+            <option>Sophomore</option>
+            <option>Junior</option>
+            <option>Senior</option>
+            <option>Graduate</option>
+          </optgroup>
+        </select>
+       </div>
+      </div>
+
+      <div class="form-group">
+        <label for="Position">Position</label>
+        <div>
+        <select class="select-search" name="positions" id="positionSelector">
+          <optgroup label="Position">
+            {% for position in positions %}
+            {% if position and position.strip %} <!-- do not include empty positions -->
+            <option>{{position}}</option>
+            {% endif %}
+            {% endfor %}
+          </optgroup>
+        </select>
+       </div>
+      </div>
+
+
+      <div class="form-group">
+        <label for="Height">Height</label>
+        <input type="height" class="form-control" id="heightInput" aria-describedby="heightHelp" placeholder="Enter Player's Height">
+        <small id="heightHelp" class="form-text text-muted">i.e 5'11 or leave blank</small>
+      </div>
+
+      <div class="form-group">
+        <label for="Weight">Weight</label>
+        <input type="weight" class="form-control" id="weightInput" aria-describedby="weightHelp" placeholder="Enter Player's Weight">
+        <small id="weightHelp" class="form-text text-muted">i.e 170 or leave blank</small>
+      </div>
+
+      <div class="form-group">
+        <label for="HomeTown">Home Town</label>
+        <input type="homeTown" class="form-control" id="homeTownInput" aria-describedby="homeTownHelp" placeholder="Enter Player's Home Town">
+        <small id="homeTownHelp" class="form-text text-muted">i.e Sommerset or Madrid</small>
+      </div>
+
+      <div class="form-group">
+        <label for="StateOrCountry">State or Country</label>
+        <div>
+        <select class="select-search" name="stateOrCountry" id="stateOrCountrySelector">
+          <optgroup label="States">
+            <option value="AL">AL</option>
+          	<option value="AK">AK</option>
+          	<option value="AR">AR</option>
+          	<option value="AZ">AZ</option>
+          	<option value="CA">CA</option>
+          	<option value="CO">CO</option>
+          	<option value="CT">CT</option>
+          	<option value="DC">DC</option>
+          	<option value="DE">DE</option>
+          	<option value="FL">FL</option>
+          	<option value="GA">GA</option>
+          	<option value="HI">HI</option>
+          	<option value="IA">IA</option>
+          	<option value="ID">ID</option>
+          	<option value="IL">IL</option>
+          	<option value="IN">IN</option>
+          	<option value="KS">KS</option>
+          	<option value="KY">KY</option>
+          	<option value="LA">LA</option>
+          	<option value="MA">MA</option>
+          	<option value="MD">MD</option>
+          	<option value="ME">ME</option>
+          	<option value="MI">MI</option>
+          	<option value="MN">MN</option>
+          	<option value="MO">MO</option>
+          	<option value="MS">MS</option>
+          	<option value="MT">MT</option>
+          	<option value="NC">NC</option>
+          	<option value="NE">NE</option>
+          	<option value="NH">NH</option>
+          	<option value="NJ">NJ</option>
+          	<option value="NM">NM</option>
+          	<option value="NV">NV</option>
+          	<option value="NY">NY</option>
+          	<option value="ND">ND</option>
+          	<option value="OH">OH</option>
+          	<option value="OK">OK</option>
+          	<option value="OR">OR</option>
+          	<option value="PA">PA</option>
+          	<option value="RI">RI</option>
+          	<option value="SC">SC</option>
+          	<option value="SD">SD</option>
+          	<option value="TN">TN</option>
+          	<option value="TX">TX</option>
+          	<option value="UT">UT</option>
+          	<option value="VT">VT</option>
+          	<option value="VA">VA</option>
+          	<option value="WA">WA</option>
+          	<option value="WI">WI</option>
+          	<option value="WV">WV</option>
+          	<option value="WY">WY</option>
+          </optgroup>
+          <optgroup label="Countries & U.S Territories">
+              <option value="Afganistan">Afghanistan</option>
+              <option value="Albania">Albania</option>
+              <option value="Algeria">Algeria</option>
+              <option value="American Samoa">American Samoa</option>
+              <option value="Andorra">Andorra</option>
+              <option value="Angola">Angola</option>
+              <option value="Anguilla">Anguilla</option>
+              <option value="Antigua & Barbuda">Antigua & Barbuda</option>
+              <option value="Argentina">Argentina</option>
+              <option value="Armenia">Armenia</option>
+              <option value="Aruba">Aruba</option>
+              <option value="Australia">Australia</option>
+              <option value="Austria">Austria</option>
+              <option value="Azerbaijan">Azerbaijan</option>
+              <option value="Bahamas">Bahamas</option>
+              <option value="Bahrain">Bahrain</option>
+              <option value="Bangladesh">Bangladesh</option>
+              <option value="Barbados">Barbados</option>
+              <option value="Belarus">Belarus</option>
+              <option value="Belgium">Belgium</option>
+              <option value="Belize">Belize</option>
+              <option value="Benin">Benin</option>
+              <option value="Bermuda">Bermuda</option>
+              <option value="Bhutan">Bhutan</option>
+              <option value="Bolivia">Bolivia</option>
+              <option value="Bonaire">Bonaire</option>
+              <option value="Bosnia & Herzegovina">Bosnia & Herzegovina</option>
+              <option value="Botswana">Botswana</option>
+              <option value="Brazil">Brazil</option>
+              <option value="British Indian Ocean Ter">British Indian Ocean Ter</option>
+              <option value="Brunei">Brunei</option>
+              <option value="Bulgaria">Bulgaria</option>
+              <option value="Burkina Faso">Burkina Faso</option>
+              <option value="Burundi">Burundi</option>
+              <option value="Cambodia">Cambodia</option>
+              <option value="Cameroon">Cameroon</option>
+              <option value="Canada">Canada</option>
+              <option value="Canary Islands">Canary Islands</option>
+              <option value="Cape Verde">Cape Verde</option>
+              <option value="Cayman Islands">Cayman Islands</option>
+              <option value="Central African Republic">Central African Republic</option>
+              <option value="Chad">Chad</option>
+              <option value="Channel Islands">Channel Islands</option>
+              <option value="Chile">Chile</option>
+              <option value="China">China</option>
+              <option value="Christmas Island">Christmas Island</option>
+              <option value="Cocos Island">Cocos Island</option>
+              <option value="Colombia">Colombia</option>
+              <option value="Comoros">Comoros</option>
+              <option value="Congo">Congo</option>
+              <option value="Cook Islands">Cook Islands</option>
+              <option value="Costa Rica">Costa Rica</option>
+              <option value="Cote DIvoire">Cote DIvoire</option>
+              <option value="Croatia">Croatia</option>
+              <option value="Cuba">Cuba</option>
+              <option value="Curaco">Curacao</option>
+              <option value="Cyprus">Cyprus</option>
+              <option value="Czech Republic">Czech Republic</option>
+              <option value="Denmark">Denmark</option>
+              <option value="Djibouti">Djibouti</option>
+              <option value="Dominica">Dominica</option>
+              <option value="Dominican Republic">Dominican Republic</option>
+              <option value="East Timor">East Timor</option>
+              <option value="Ecuador">Ecuador</option>
+              <option value="Egypt">Egypt</option>
+              <option value="El Salvador">El Salvador</option>
+              <option value="Equatorial Guinea">Equatorial Guinea</option>
+              <option value="Eritrea">Eritrea</option>
+              <option value="Estonia">Estonia</option>
+              <option value="Ethiopia">Ethiopia</option>
+              <option value="Falkland Islands">Falkland Islands</option>
+              <option value="Faroe Islands">Faroe Islands</option>
+              <option value="Fiji">Fiji</option>
+              <option value="Finland">Finland</option>
+              <option value="France">France</option>
+              <option value="French Guiana">French Guiana</option>
+              <option value="French Polynesia">French Polynesia</option>
+              <option value="French Southern Ter">French Southern Ter</option>
+              <option value="Gabon">Gabon</option>
+              <option value="Gambia">Gambia</option>
+              <option value="Georgia">Georgia</option>
+              <option value="Germany">Germany</option>
+              <option value="Ghana">Ghana</option>
+              <option value="Gibraltar">Gibraltar</option>
+              <option value="Great Britain">Great Britain</option>
+              <option value="Greece">Greece</option>
+              <option value="Greenland">Greenland</option>
+              <option value="Grenada">Grenada</option>
+              <option value="Guadeloupe">Guadeloupe</option>
+              <option value="Guam">Guam</option>
+              <option value="Guatemala">Guatemala</option>
+              <option value="Guinea">Guinea</option>
+              <option value="Guyana">Guyana</option>
+              <option value="Haiti">Haiti</option>
+              <option value="Hawaii">Hawaii</option>
+              <option value="Honduras">Honduras</option>
+              <option value="Hong Kong">Hong Kong</option>
+              <option value="Hungary">Hungary</option>
+              <option value="Iceland">Iceland</option>
+              <option value="Indonesia">Indonesia</option>
+              <option value="India">India</option>
+              <option value="Iran">Iran</option>
+              <option value="Iraq">Iraq</option>
+              <option value="Ireland">Ireland</option>
+              <option value="Isle of Man">Isle of Man</option>
+              <option value="Israel">Israel</option>
+              <option value="Italy">Italy</option>
+              <option value="Jamaica">Jamaica</option>
+              <option value="Japan">Japan</option>
+              <option value="Jordan">Jordan</option>
+              <option value="Kazakhstan">Kazakhstan</option>
+              <option value="Kenya">Kenya</option>
+              <option value="Kiribati">Kiribati</option>
+              <option value="Korea North">Korea North</option>
+              <option value="Korea Sout">Korea South</option>
+              <option value="Kuwait">Kuwait</option>
+              <option value="Kyrgyzstan">Kyrgyzstan</option>
+              <option value="Laos">Laos</option>
+              <option value="Latvia">Latvia</option>
+              <option value="Lebanon">Lebanon</option>
+              <option value="Lesotho">Lesotho</option>
+              <option value="Liberia">Liberia</option>
+              <option value="Libya">Libya</option>
+              <option value="Liechtenstein">Liechtenstein</option>
+              <option value="Lithuania">Lithuania</option>
+              <option value="Luxembourg">Luxembourg</option>
+              <option value="Macau">Macau</option>
+              <option value="Macedonia">Macedonia</option>
+              <option value="Madagascar">Madagascar</option>
+              <option value="Malaysia">Malaysia</option>
+              <option value="Malawi">Malawi</option>
+              <option value="Maldives">Maldives</option>
+              <option value="Mali">Mali</option>
+              <option value="Malta">Malta</option>
+              <option value="Marshall Islands">Marshall Islands</option>
+              <option value="Martinique">Martinique</option>
+              <option value="Mauritania">Mauritania</option>
+              <option value="Mauritius">Mauritius</option>
+              <option value="Mayotte">Mayotte</option>
+              <option value="Mexico">Mexico</option>
+              <option value="Midway Islands">Midway Islands</option>
+              <option value="Moldova">Moldova</option>
+              <option value="Monaco">Monaco</option>
+              <option value="Mongolia">Mongolia</option>
+              <option value="Montserrat">Montserrat</option>
+              <option value="Morocco">Morocco</option>
+              <option value="Mozambique">Mozambique</option>
+              <option value="Myanmar">Myanmar</option>
+              <option value="Nambia">Nambia</option>
+              <option value="Nauru">Nauru</option>
+              <option value="Nepal">Nepal</option>
+              <option value="Netherland Antilles">Netherland Antilles</option>
+              <option value="Netherlands">Netherlands (Holland, Europe)</option>
+              <option value="Nevis">Nevis</option>
+              <option value="New Caledonia">New Caledonia</option>
+              <option value="New Zealand">New Zealand</option>
+              <option value="Nicaragua">Nicaragua</option>
+              <option value="Niger">Niger</option>
+              <option value="Nigeria">Nigeria</option>
+              <option value="Niue">Niue</option>
+              <option value="Norfolk Island">Norfolk Island</option>
+              <option value="Norway">Norway</option>
+              <option value="Oman">Oman</option>
+              <option value="Pakistan">Pakistan</option>
+              <option value="Palau Island">Palau Island</option>
+              <option value="Palestine">Palestine</option>
+              <option value="Panama">Panama</option>
+              <option value="Papua New Guinea">Papua New Guinea</option>
+              <option value="Paraguay">Paraguay</option>
+              <option value="Peru">Peru</option>
+              <option value="Phillipines">Philippines</option>
+              <option value="Pitcairn Island">Pitcairn Island</option>
+              <option value="Poland">Poland</option>
+              <option value="Portugal">Portugal</option>
+              <option value="Puerto Rico">Puerto Rico</option>
+              <option value="Qatar">Qatar</option>
+              <option value="Republic of Montenegro">Republic of Montenegro</option>
+              <option value="Republic of Serbia">Republic of Serbia</option>
+              <option value="Reunion">Reunion</option>
+              <option value="Romania">Romania</option>
+              <option value="Russia">Russia</option>
+              <option value="Rwanda">Rwanda</option>
+              <option value="St. Barthelemy">St. Barthelemy</option>
+              <option value="St. Eustatius">St. Eustatius</option>
+              <option value="St. Helena">St. Helena</option>
+              <option value="St. Kitts-Nevis">St. Kitts-Nevis</option>
+              <option value="St. Lucia">St. Lucia</option>
+              <option value="St. Maarten">St. Maarten</option>
+              <option value="St. Pierre & Miquelon">St. Pierre & Miquelon</option>
+              <option value="St. Vincent & Grenadines">St. Vincent & Grenadines</option>
+              <option value="Saipan">Saipan</option>
+              <option value="Samoa">Samoa</option>
+              <option value="Samoa American">Samoa American</option>
+              <option value="San Marino">San Marino</option>
+              <option value="Sao Tome & Principe">Sao Tome & Principe</option>
+              <option value="Saudi Arabia">Saudi Arabia</option>
+              <option value="Senegal">Senegal</option>
+              <option value="Seychelles">Seychelles</option>
+              <option value="Sierra Leone">Sierra Leone</option>
+              <option value="Singapore">Singapore</option>
+              <option value="Slovakia">Slovakia</option>
+              <option value="Slovenia">Slovenia</option>
+              <option value="Solomon Islands">Solomon Islands</option>
+              <option value="Somalia">Somalia</option>
+              <option value="South Africa">South Africa</option>
+              <option value="Spain">Spain</option>
+              <option value="Sri Lanka">Sri Lanka</option>
+              <option value="Sudan">Sudan</option>
+              <option value="Suriname">Suriname</option>
+              <option value="Swaziland">Swaziland</option>
+              <option value="Sweden">Sweden</option>
+              <option value="Switzerland">Switzerland</option>
+              <option value="Syria">Syria</option>
+              <option value="Tahiti">Tahiti</option>
+              <option value="Taiwan">Taiwan</option>
+              <option value="Tajikistan">Tajikistan</option>
+              <option value="Tanzania">Tanzania</option>
+              <option value="Thailand">Thailand</option>
+              <option value="Togo">Togo</option>
+              <option value="Tokelau">Tokelau</option>
+              <option value="Tonga">Tonga</option>
+              <option value="Trinidad & Tobago">Trinidad & Tobago</option>
+              <option value="Tunisia">Tunisia</option>
+              <option value="Turkey">Turkey</option>
+              <option value="Turkmenistan">Turkmenistan</option>
+              <option value="Turks & Caicos Is">Turks & Caicos Is</option>
+              <option value="Tuvalu">Tuvalu</option>
+              <option value="Uganda">Uganda</option>
+              <option value="United Kingdom">United Kingdom</option>
+              <option value="Ukraine">Ukraine</option>
+              <option value="United Arab Erimates">United Arab Emirates</option>
+              <option value="United States of America">United States of America</option>
+              <option value="Uraguay">Uruguay</option>
+              <option value="Uzbekistan">Uzbekistan</option>
+              <option value="Vanuatu">Vanuatu</option>
+              <option value="Vatican City State">Vatican City State</option>
+              <option value="Venezuela">Venezuela</option>
+              <option value="Vietnam">Vietnam</option>
+              <option value="Virgin Islands (Brit)">Virgin Islands (Brit)</option>
+              <option value="Virgin Islands (USA)">Virgin Islands (USA)</option>
+              <option value="Wake Island">Wake Island</option>
+              <option value="Wallis & Futana Is">Wallis & Futana Is</option>
+              <option value="Yemen">Yemen</option>
+              <option value="Zaire">Zaire</option>
+              <option value="Zambia">Zambia</option>
+              <option value="Zimbabwe">Zimbabwe</option>
+          </optgroup>
+        </select>
+       </div>
+     </div>
+
+     <div class="form-group">
+       <label for="HighSchool">High School</label>
+       <input type="highSchool" class="form-control" id="highSchoolInput" aria-describedby="highSchoolHelp" placeholder="Enter Player's High School" required>
+       <small id="highSchoolHelp" class="form-text text-muted">Receive High School Name From High School Data Spreadsheet. Required Field</small>
+     </div>
+
+     <div class="form-group">
+       <label for="HighSchoolCity">High School City</label>
+       <input type="highSchoolCity" class="form-control" id="highSchoolCity" aria-describedby="highSchoolCityHelp" placeholder="Enter Player's High School City">
+       <small id="highSchoolCityHelp" class="form-text text-muted">Receive High School City From High School Data Spreadsheet</small>
+     </div>
+
+     <div class="form-group">
+       <label for="HighSchoolStateOrProvince">High School State or Province</label>
+       <input type="highSchoolStateOrProvince" class="form-control" id="highSchoolStateOrProvince" aria-describedby="highSchoolStateOrProvinceHelp" placeholder="Enter Player's High School State or Province">
+       <small id="highSchoolCityHelp" class="form-text text-muted">Receive High School City From High School Data Spreadsheet. Not a required field</small>
+     </div>
+
+     <div class="form-group">
+       <label for="HighSchoolCountry">High School Country</label>
+       <input type="highSchoolCountry" class="form-control" id="highSchoolCountry" aria-describedby="highSchoolCountryHelp" placeholder="Enter Player's High School Country">
+       <small id="highSchoolCountryHelp" class="form-text text-muted">Receive High School City From High School Data Spreadsheet. Not a required field</small>
+     </div>
+
+     <div class="form-group">
+       <label for="HighSchoolLatitude">High School Latitude</label>
+       <input type="highSchoolLatitude" class="form-control" id="highSchoolLatitude" aria-describedby="highSchoolLatitudeHelp" placeholder="Enter Player's High School Latitude" required>
+       <small id="highSchoolLatitudeHelp" class="form-text text-muted">Receive High School Latitude From High School Data Spreadsheet. Required field</small>
+     </div>
+
+     <div class="form-group">
+       <label for="HighSchoolLongitude">High School Longitude</label>
+       <input type="highSchoolLongitude" class="form-control" id="highSchoolLongitude" aria-describedby="highSchoolLongitudeHelp" placeholder="Enter Player's High School Longitude" required>
+       <small id="highSchoolLongitudeHelp" class="form-text text-muted">Receive High School Longitude From High School Data Spreadsheet. Required field</small>
+     </div>
+     <!-- College -->
+     <div class="form-group">
+       <label for="SchoolType">School Type</label>
+       <div>
+       <select class="select-search" name="schoolTypes" id="schoolTypeSelector">
+         <optgroup>
+             <option value='PUBLIC'>PUBLIC</option>
+             <option value='PRIVATE'>PRIVATE</option>
+             <option value='INTERNATIONAL'>INTERNATIONAL</option>
+             <option value='BOARDING'>BOARDING</option>
+         </optgroup>
+       </select>
+      </div>
+     </div>
+
+
+     <div class="form-group">
+       <label for="AlternativeSchool">Alternative School</label>
+       <input type="alternativeSchool" class="form-control" id="alternativeSchoolInput" aria-describedby="alternativeSchoolHelp" placeholder="Enter Player's Alternative School">
+       <small id="alternativeSchoolHelp" class="form-text text-muted">Receive High School Name From High School Data Spreadsheet Or Leave Blank</small>
+     </div>
+
+      <!-- College -->
+      <div class="form-group">
+        <label for="College">College</label>
+        <div>
+        <select class="select-search" name="colleges" id="collegeSelector">
+          <optgroup label="College"
+            {% for college in colleges %}
+            <option value="{{college}}" id="{{college}}">{{college}}</option>
+            {% endfor %}
+          </optgroup>
+        </select>
+       </div>
+      </div>
+
+      <!-- College League -->
+      <div class="form-group">
+        <label for="CollegeLeague">College League</label>
+        <div>
+          <select class="select-search" name="collegeLeagues" id="collegeLeagueSelector">
+            <optgroup label="College League">
+              {% for league in leagues %}
+              <option value="{{league}}" id="{{league}}">{{league}}</option>
+              {% endfor %}
+            </optgroup>
+          </select>
+       </div>
+      </div>
+
+      <div class="form-group">
+        <label for="BioLink">Bio Link</label>
+        <input type="biolink" class="form-control" id="bioLinkInput" aria-describedby="bioLinkHelp" placeholder="Enter Player's Bio Link">
+        <small id="bioLinkHelp" class="form-text text-muted">Acquired From Roster Site</small>
+      </div>
+
+      <!-- is Starter -->
+      <div class="form-group">
+        <label for="IsStarter">Is Starter</label>
+        <div>
+          <select class="select-search" name="isStarter" id="isStarterSelector">
+            <optgroup label="Is Starter">
+              <option value="Y">Y</option>
+              <option value="N">N</option>
+            </optgroup>
+          </select>
+       </div>
+      </div>
+
+      <!-- accolade -->
+      <div class="form-group">
+        <label for="Accolade">Accolade</label>
+        <div>
+          <select class="select-search"  name="accolade" id="accoladeSelector">
+            <optgroup label="Accolade">
+              <option value="None">None</option>
+              <option value="First Team">First Team</option>
+              <option value="Second Team">Second Team</option>
+              <option value="Third Team">Third Team</option>
+              <option value="Honorable Mention">Honorable Mention</option>
+            </optgroup>
+          </select>
+       </div>
+      </div>
+
+      <div class="submit-button">
+        <input type="submit" class="btn btn-primary btn-lg" value="Submit" id="button1"></input>
+      </div>
+
+    </form>
+
+
+    <div class="footer_image">
+      <!-- image details in css -->
+      <h5 id="footer_name">© Copyright 2020</h5>
+      <img id="footer_img" src="{% static 'map/img/logo.png' %}" width = 195 height = 66>
+    </div>
+
+    <!-- jQuery library -->
+    <script src="https://code.jquery.com/jquery-3.4.1.js" integrity="sha256-WpOohJOqMqqyKL9FccASB9O0KwACQJpFTUBLTYOVvVU="
+    crossorigin="anonymous"></script>
+
+    <!--Bootstrap.js -->
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+    integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+    crossorigin="anonymous"></script>
+
+    <!--Tail select -->
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/tail.select@0.5.15/js/tail.select.min.js"></script>
+
+    <script>
+      var stateOrCountrySelector = tail.select("#stateOrCountrySelector", {
+        search: true,
+        placeholder: "State or Country",
+        width:"100.1%"
+      });
+
+      var collegeSelector = tail.select("#collegeSelector", {
+        search: true,
+        placeholder: "College",
+        width:"100.1%"
+      });
+
+      var classYearSelector = tail.select("#classYearSelector", {
+        search: true,
+        placeholder: "Class Year",
+        width:"100.1%"
+      });
+
+      var positionSelector = tail.select("#positionSelector", {
+        placeholder: "Position",
+        width:"100.1%"
+      });
+
+      var collegeLeagueSelector = tail.select("#collegeLeagueSelector", {
+        search: true,
+        placeholder: "League",
+        width:"100.1%"
+      });
+
+      var starterSelector = tail.select("#isStarterSelector", {
+        placeholder: "Is Starter",
+        width:"100.1%"
+      });
+
+      var accoladeSelector = tail.select("#accoladeSelector", {
+        placeholder: "Accolade",
+        width:"100.1%"
+      });
+
+      var schoolTypeSelector = tail.select("#schoolTypeSelector", {
+        placeholder: "School Type",
+        width:"100.1%"
+      });
+
+      function getCookie(c_name)
+      {
+          if (document.cookie.length > 0)
+          {
+              c_start = document.cookie.indexOf(c_name + "=");
+              if (c_start != -1)
+              {
+                  c_start = c_start + c_name.length + 1;
+                  c_end = document.cookie.indexOf(";", c_start);
+                  if (c_end == -1) c_end = document.cookie.length;
+                  return unescape(document.cookie.substring(c_start,c_end));
+              }
+          }
+          return "";
+       }
+
+      $(document).on('submit', '#matchedHighSchoolPlayerForm', function(e){
+        e.preventDefault(); //prevent refresh
+
+        if($('#heightInput').val() && !$('#heightInput').val().match("^([3-9])'([1-9]|10|11)$")){
+          alert("ERROR: Format height as feet'inches. Examples: 5'11, 5'9, 6'1, 6'0. Min Height: 3'0, Max height: 9'11");
+          return;
+        }
+
+        var dict = JSON.stringify({
+          rosterYear:$('#rosterYearInput').val(),
+          playerNumber:$('#playerNumberInput').val(),
+          firstName:$('#firstNameInput').val(),
+          lastName:$('#lastNameInput').val(),
+          classYear:$('#classYearSelector').val(),
+          position:$('#positionSelector').val(),
+          height:$('#heightInput').val(),
+          weight:$('#weightInput').val(),
+          homeTown:$('#homeTownInput').val(),
+          stateOrCountry:$('#stateOrCountrySelector').val(),
+          highSchool:$('#highSchoolInput').val(),
+          highSchoolCity:$('#highSchoolCity').val(),
+          highSchoolStateOrProvince:$('#highSchoolStateOrProvince').val(),
+          highSchoolCountry:$('#highSchoolCountry').val(),
+          highSchoolLatitude:$('#highSchoolLatitude').val(),
+          highSchoolLongitude:$('#highSchoolLongitude').val(),
+          schoolType:$('#schoolTypeSelector').val(),
+          alternativeSchool:$('#alternativeSchoolInput').val(),
+          college:$('#collegeSelector').val(),
+          collegeLeague:$('#collegeLeagueSelector').val(),
+          bioLink:$('#bioLinkInput').val(),
+          isStarter:$('#isStarterSelector').val(),
+          accolade:$('#accoladeSelector').val()
+        })
+
+        var selectionString = "Roster Year: " + $('#rosterYearInput').val() + "\n"
+                            + "Player Number: " + $('#playerNumberInput').val() + "\n"
+                            + "First Name: " + $('#firstNameInput').val() + "\n"
+                            + "Last Name: " + $('#lastNameInput').val() + "\n"
+                            + "Class Year: " + $('#classYearSelector').val() + "\n"
+                            + "Position: " + $('#positionSelector').val() + "\n"
+                            + "Height: " + $('#heightInput').val() + "\n"
+                            + "Weight: " + $('#weightInput').val() + "\n"
+                            + "Home Town: " + $('#homeTownInput').val() + "\n"
+                            + "State or Country: " + $('#stateOrCountrySelector').val() + "\n"
+                            + "High School: " + $('#highSchoolInput').val() + "\n"
+                            + "High School City: " + $('#highSchoolCity').val() + "\n"
+                            + "High School State or Province: " + $('#highSchoolStateOrProvince').val() + "\n"
+                            + "High School Country: " + $('#highSchoolCountry').val() + "\n"
+                            + "High School Latitude: " + $('#highSchoolLatitude').val() + "\n"
+                            + "High School Longitude: " + $('#highSchoolLongitude').val() + "\n"
+                            + "School Type: " + $('#schoolTypeSelector').val() + "\n"
+                            + "Alternative School: " + $('#alternativeSchoolInput').val() + "\n"
+                            + "College: " + $('#collegeSelector').val() + "\n"
+                            + "College League: " + $('#collegeLeagueSelector').val() + "\n"
+                            + "Bio Link: " + $('#bioLinkInput').val() + "\n"
+                            + "Is Starter: " + $('#isStarterSelector').val() + "\n"
+                            + "Accolade: " + $('#accoladeSelector').val();
+
+        const msg = "Press OK to continue, Cancel to change:\n\n";
+        var ok = confirm(msg + selectionString);
+        if(!ok){
+          return;
+        }
+
+        $.ajaxSetup({
+            headers: { "X-CSRFToken": getCookie("csrftoken") }
+          });
+
+        $.ajax({
+          type: 'POST',
+          url: window.location,
+          data: {json_data: dict},
+
+          success:function(response){
+              if(ok){
+                if(response['success'] == 'true'){
+                  alert("Record Added!")
+                } else {
+                  alert("BUG REPORT: Problem With Adding Record.")
+                }
+              }
+          },
+          error:function(){
+            console.log("Error With Form Submission.");
+          }
+        });
+      });
+    </script>
+  </body>
+</html>

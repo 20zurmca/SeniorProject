@@ -2,13 +2,20 @@ from django.shortcuts import render
 from django.http import HttpResponse, JsonResponse
 from django.conf import settings
 from django.db.models import Count, Q, F, Func
-from .models import GroupedData, RosterData, StarterData, AccoladeData
+from .models import GroupedData, RosterData, StarterData, AccoladeData, Documents, BackUp, HighSchoolMatchMaster, HighSchoolData
 from django.core import serializers
 import json
 from .forms import MHSForm, DocumentForm
 from django.contrib.admin.views.decorators import staff_member_required
 import csv
 import codecs
+import subprocess
+from random import randint
+
+def _random_with_N_digits(n):
+    range_start = 10**(n-1)
+    range_end = (10**n)-1
+    return randint(range_start, range_end)
 
 def index(request):
     colleges  = GroupedData.objects.values_list('college', flat=True).distinct().order_by('college')
@@ -30,28 +37,36 @@ def index(request):
         starterYearFourOrMore = '4+' in sy
         allConferenceYearsFourOrMore = '4+' in acy
 
+        multiplePlayersPerSchool = False
+        if(payload['multipleHS'] == 'selected'):
+            multiplePlayersPerSchool = True
+
         players = None
 
-        if(len(c) > 0):
+        #if nothing is selected, default to search all
+        if((len(c) == 0) and (len(pos) == 0) and (len(sy) == 0) and (len(acy) == 0)):
+            c = colleges;
+
+        if(len(c) > 0): #if a college is selected
             players = GroupedData.objects.filter(college__in=c)
 
-        if(len(pos) > 0):
-            if(players):
+        if(len(pos) > 0): #if a position is selected
+            if(players): #if there was a college selected
                 players = players.filter(position__overlap=pos)
             else:
                 players = GroupedData.objects.filter(position__overlap=pos)
 
-        if(len(sy) > 0):
-            if(players):
-                if(starterYearFourOrMore):
-                    if(len(sy) == 1):
+        if(len(sy) > 0): #if a starter year was selected
+            if(players): #if there was a college selected or a position selected
+                if(starterYearFourOrMore): #if 4+ was selected
+                    if(len(sy) == 1): #if only 4+ was selected
                         players = players.filter(starter_count__gte=4)
-                    else:
+                    else: #if other things including 4+ was selected
                         players = players.filter(Q(starter_count__gte=4) | Q(starter_count__in=sy[:-1]))
                 else:
                     players = players.filter(starter_count__in=sy)
 
-            else:
+            else: #if there weren't any players filtered yet
                 if(starterYearFourOrMore):
                     if(len(sy) == 1):
                         players = GroupedData.objects.filter(starter_count__gte=4)
@@ -60,7 +75,7 @@ def index(request):
                 else:
                     players = GroupedData.objects.filter(starter_count__in=sy)
 
-        if(len(acy) > 0):
+        if(len(acy) > 0): #same logic as starter years
             if(players):
                 if(allConferenceYearsFourOrMore):
                     if(len(acy) == 1):
@@ -79,6 +94,14 @@ def index(request):
                 else:
                     players = GroupedData.objects.filter(accolade_count__in=acy)
 
+        if(multiplePlayersPerSchool):
+            dupeHS = players.values('high_school', 'highschoolcity') \
+                       .annotate(hs_cnt=Count('high_school'), city_cnt=Count('highschoolcity')) \
+                       .order_by() \
+                       .filter(Q(hs_cnt__gt=1) & Q(city_cnt__gt=1))
+
+            players = players.filter(high_school__in=[item['high_school'] for item in dupeHS])
+
         data  =  {'players': list(players.values())}
         return JsonResponse(data)
 
@@ -87,22 +110,92 @@ def index(request):
 def about(request):
     return render(request, 'map/about.html')
 
+def manualupload(request):
+    positions = GroupedData.objects.annotate(arr_els=Func(F('position'), function='unnest')).values_list('arr_els', flat=True).distinct()
+    colleges  = GroupedData.objects.values_list('college', flat=True).distinct().order_by('college')
+    leagues   = GroupedData.objects.values_list('college_league', flat=True).distinct().order_by('college_league')
 
+    context = {'positions':positions,
+               'colleges': colleges,
+               'leagues': leagues}
+    if(request.method=='POST'):
+        payload = json.loads(request.POST.get('json_data'))
+        mostRecentId = HighSchoolMatchMaster.values_list('id', flat=True).order_by('id')[-1]
+        record = HighSchoolMatchMaster(mostRecentId + 1,
+                                       payload['rosterYear'],
+                                       payload['playerNumber'],
+                                       payload['firstName'],
+                                       payload['lastName'],
+                                       payload['classYear'],
+                                       payload['position'],
+                                       payload['height'],
+                                       payload['weight'],
+                                       payload['homeTown'],
+                                       payload['stateOrCountry'],
+                                       payload['highSchool'],
+                                       payload['alternativeSchool'],
+                                       payload['college'],
+                                       payload['collegeLeague'],
+                                       payload['bioLink'],
+                                       payload['isStarter'],
+                                       payload['accolade'],
+                                       payload['highSchoolCity'],
+                                       payload['highSchool'],
+                                       payload['highSchoolStateOrProvince'],
+                                       payload['highSchoolCountry'],
+                                       payload['highSchoolLatitude'],
+                                       payload['highSchoolLongitude'],
+                                       payload['schoolType'])
+        record.save()
+        return JsonResponse({"sucess":"true"})
+
+    return render(request, 'map/manualupload.html', context)
 
 @staff_member_required
 def upload_file(request):
-    if request.method == 'POST':
+    if(request.method == 'POST'):
         form = DocumentForm(request.POST, request.FILES)
+        print("here")
         if form.is_valid():
+            print("not here")
             save_rosterData(form.cleaned_data['rosterData'])
             save_starterData(form.cleaned_data['starterData'])
             save_accoladeData(form.cleaned_data['accoladeData'])
             form.save()
-            return render(request, 'map/upload.html', {'form':form})
+            #writing backup file
+            fn = "dumpfile" + str(_random_with_N_digits(10)) + ".json"
+            json_dump = subprocess.run(["python", "manage.py", "dumpdata", "-o", "map/fixtures/" + fn, \
+                                        "--exclude=admin", "--exclude=auth", "--exclude=contenttypes", \
+                                        "--exclude=sessions", "--exclude=messages", "--exclude=staticfiles", \
+                                        "--exclude=map.Documents", "--exclude=map.BackUp", "--exclude=map.HighSchoolData"])
+
+            new_version = BackUp(description = form.cleaned_data['description'], file=fn)
+            new_version.save()
+            #context = {'form': form, 'uploaded': True}
+            #return render(request, 'map/upload.html', context)
+            return JsonResponse({"sucess":"true"})
     else:
         form = DocumentForm()
+
     return render(request, 'map/upload.html', {'form':form})
 
+@staff_member_required
+def restore(request):
+    versions = reversed(BackUp.objects.all().values('description', 'uploaded_at'))
+    if(request.method=='POST'):
+        if(request.POST.get('json_data')):
+            payload = json.loads(request.POST.get('json_data'))
+            description = payload['version']
+            backUpFile  = "map/fixtures/" + BackUp.objects.filter(description=description).get().filename()
+            RosterData.objects.all().delete()
+            StarterData.objects.all().delete()
+            AccoladeData.objects.all().delete()
+            GroupedData.objects.all().delete()
+            HighSchoolMatchMaster.objects.all().delete()
+            p = subprocess.Popen(["python", "manage.py", "loaddata", backUpFile])
+            while(GroupedData.objects.all()[0] is None):
+                continue
+    return render(request, 'map/restore.html', {'versions': versions})
 
 
 def save_rosterData(filename):
@@ -131,7 +224,7 @@ def save_rosterData(filename):
         input_data.high_school = record[13]
         input_data.alternative_school = record[14]
         input_data.college = record[15]
-        input_data.college_league = record[16]
+        input_data.college_league = record[16].upper()
         input_data.bio_link = record[17]
         input_data.save()
 

@@ -15,7 +15,6 @@
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Cabin&display=swap">
   <link href="https://fonts.googleapis.com/css2?family=Lato:wght@700&display=swap" rel="stylesheet">
 
-
   <!-- tail select -->
   <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/tail.select@latest/css/bootstrap4/tail.select-default.css">
   <!-- map applicaton static files -->
@@ -35,9 +34,8 @@
         <p class="blocktext">Talent is in the Data</p>
         <div id='index_toolbar'>
           <a href='/about' class="badge button_default">About</a>
-
           <a href='/upload' class="badge button_default">Upload Data</a>
-
+          <a href='/restore' class="badge button_default">Restore Data</a>
           <a href='/admin' class="badge button_default">Admin Login</a>
         </div>
       </div>
@@ -103,7 +101,7 @@
             <div class="form-check">
               <input class="form-check-input" type="checkbox" id="moreThanOneSchool" value="multiple">
               <label class="form-check-label" for="moreThanOneSchool">
-                More Than One Player Per High School
+                Exclude High Schools With Only One Player
               </label>
             </div>
           </div>
@@ -166,7 +164,8 @@
   <script src="{% static 'map/js/form.js' %}"></script>
   <script src="{% static 'map/js/map.js' %}"></script>
   <script async defer
-  src="https://maps.googleapis.com/maps/api/js?key={{API_KEY}}&libraries=visualization&callback=initMap"></script>
+  src="https://maps.googleapis.com/maps/api/js?key={{API_KEY}}&libraries=visualization&callback=initMap">
+  </script>
 
   <!--Bootstrap.js -->
   <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
@@ -178,7 +177,6 @@
   <!-- Other js -->
   <script src="{% static 'map/js/selectors.js' %}"></script>
   <script src="{% static 'map/js/homePageButtons.js' %}"></script>
-  <!-- eliminating flash of unstyled content (FOUC) -->
 
   <!-- datatable -->
   <script src = "https://cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js"></script>
