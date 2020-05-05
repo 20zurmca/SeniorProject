@@ -164,12 +164,7 @@ def manualupload(request):
 def upload_file(request):
     if(request.method == 'POST'):
         form = DocumentForm(request.POST, request.FILES)
-
-        print(request.FILES.lists())
-
-        print("here")
         if form.is_valid():
-            print("not here")
             save_rosterData(form.cleaned_data['rosterData'])
             save_starterData(form.cleaned_data['starterData'])
             save_accoladeData(form.cleaned_data['accoladeData'])
@@ -180,12 +175,15 @@ def upload_file(request):
                                         "--exclude=admin", "--exclude=auth", "--exclude=contenttypes", \
                                         "--exclude=sessions", "--exclude=messages", "--exclude=staticfiles", \
                                         "--exclude=map.Documents", "--exclude=map.BackUp", "--exclude=map.HighSchoolData"])
+            old_version = BackUp.objects.filter(isCurrent=True).first()
+            old_version.isCurrent = False
+            old_version.isLoaded = False
+            old_version.save(update_fields=['isCurrent', 'isLoaded'])
 
-            new_version = BackUp(description = form.cleaned_data['description'], file=fn)
-            #new_version.save()
-            context = {'form': form, 'uploaded': True}
+            new_version = BackUp(description = form.cleaned_data['description'], file=fn, isCurrent=True, isLoaded=True)
+            new_version.save()
+            context = {'form': form}
             return render(request, 'map/upload.html', context)
-            #return JsonResponse({"success":"true"})
     else:
         form = DocumentForm()
 
@@ -199,14 +197,14 @@ def restore(request):
             payload = json.loads(request.POST.get('json_data'))
             description = payload['version']
             old_version = BackUp.objects.filter(isCurrent=True).first()
-            old_version['currentVersion'] = False
-            old_version['isLoaded'] = False
-            old_version.save()
+            old_version.isCurrent = False
+            old_version.isLoaded = False
+            old_version.save(update_fields=['isCurrent', 'isLoaded'])
 
             new_version = BackUp.objects.filter(description=description).first()
-            new_version['currentVersion'] = True
-            new_version['isLoaded'] = False
-            new_version.save()
+            new_version.isCurrent = True
+            new_version.isLoaded = False
+            new_version.save(update_fields=['isCurrent', 'isLoaded'])
 
             backUpFile  = "map/fixtures/" + BackUp.objects.filter(description=description).get().filename()
             RosterData.objects.all().delete()
@@ -216,9 +214,14 @@ def restore(request):
             HighSchoolMatchMaster.objects.all().delete()
             p = subprocess.Popen(["python", "manage.py", "loaddata", backUpFile])
 
-            if(HighSchoolMatchMaster.objects.all().exists()): #finish loading
-                new_version['isLoaded'] = True
-
+            currentBackUpVersion = BackUp.objects.filter(isCurrent=True).first()
+            return render(request, 'map/restore.html', {'versions': versions,
+                                                        'currentBackUp': currentBackUpVersion})
+    #acquire currentBackup to render
+    new_version = BackUp.objects.filter(isCurrent=True).first()
+    if(HighSchoolMatchMaster.objects.all().exists()): #finish loading
+        new_version.isLoaded = True
+        new_version.save()
     currentBackUpVersion = BackUp.objects.filter(isCurrent=True).first()
     return render(request, 'map/restore.html', {'versions': versions,
                                                 'currentBackUp': currentBackUpVersion})

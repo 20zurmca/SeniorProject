@@ -87,9 +87,6 @@
 
 
       $(document).on('submit', '#upload_form', function(e){
-        e.preventDefault(); //prevent refresh
-
-
         $.ajaxSetup({
             headers: { "X-CSRFToken": getCookie("csrftoken") }
           });
@@ -98,25 +95,15 @@
           type: 'POST',
           url: window.location,
           success:function(){
-                var responseVal = {{uploaded}}
-                if(responseVal){
-                  console.log("here1")
-                  document.getElementById("loader1").style.display = "none";
-                  alert("The form was submitted successfully");
-                } else {
-                  console.log("here2")
-                  document.getElementById("loader1").style.display = "none";
-                  alert("BUG REPORT: Problem With Uploading Data.")
-                }
-
+            document.getElementById("loader1").style.display = "none";
+            alert("The files were uploaded successfully. Now creating backup.");
           },
           error:function(){
-            console.log("Error With Form Submission.");
+            document.getElementById("loader1").style.display = "none";
+            alert("BUG REPORT: Problem With Uploading Data.")
           }
         });
       });
-
-
       </script>
     </body>
 </html>
