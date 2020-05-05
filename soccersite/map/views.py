@@ -165,7 +165,6 @@ def upload_file(request):
     if(request.method == 'POST'):
         form = DocumentForm(request.POST, request.FILES)
         if form.is_valid():
-            print("not here")
             a = save_rosterData(form.cleaned_data['rosterData'])
             b = save_starterData(form.cleaned_data['starterData'])
             c = save_accoladeData(form.cleaned_data['accoladeData'])
@@ -180,9 +179,12 @@ def upload_file(request):
             old_version.isCurrent = False
             old_version.isLoaded = False
             old_version.save(update_fields=['isCurrent', 'isLoaded'])
+            print("Old version is: " + old_version.description + " " + "IsCurrent: " + str(old_version.isCurrent) + " IsLoaded: " + str(old_version.isLoaded))
 
             new_version = BackUp(description = form.cleaned_data['description'], file=fn, isCurrent=True, isLoaded=True)
             new_version.save()
+            print("New version is: " + new_version.description + " " + "IsCurrent: " + str(new_version.isCurrent) + " IsLoaded: " + str(new_version.isLoaded))
+
             if(a and b and c):
                 context = {'form': form, 'uploaded': True}
             else:
@@ -204,11 +206,14 @@ def restore(request):
             old_version.isCurrent = False
             old_version.isLoaded = False
             old_version.save(update_fields=['isCurrent', 'isLoaded'])
+            print("Old version is: " + BackUp.objects.filter(description=old_version.description).first().description  + " " + "IsCurrent: " + str(BackUp.objects.filter(description=old_version.description).first().isCurrent) + " IsLoaded: " + str(BackUp.objects.filter(description=old_version.description).first().isLoaded))
+
 
             new_version = BackUp.objects.filter(description=description).first()
             new_version.isCurrent = True
             new_version.isLoaded = False
             new_version.save(update_fields=['isCurrent', 'isLoaded'])
+            print("New version is: " + new_version.description + " " + "IsCurrent: " + str(new_version.isCurrent) + " IsLoaded: " + str(new_version.isLoaded))
 
             backUpFile  = "map/fixtures/" + BackUp.objects.filter(description=description).get().filename()
             RosterData.objects.all().delete()
