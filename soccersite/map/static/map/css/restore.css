@@ -15,6 +15,20 @@ body {
   margin-bottom: 50px;
 }
 
+.data-version{
+  font-family: 'Cabin', sans-serif;
+  margin-left: 2.5%;
+  margin-bottom: 4%;
+}
+
+#version-info{
+  color: white;
+}
+
+#loaded-info{
+  color:white;
+}
+
 #footer_name {
   color: white;
 }

@@ -23,10 +23,11 @@
         </a>
         <p class="blocktext">Talent is in the Data</p>
         <div id='about_toolbar'>
-            <a href='/about' class="badge button_default">About</a>
-            <a href='/upload' class="badge button_default">Upload Data</a>
-            <a href='/restore' class="badge button_default">Restore Data</a>
-            <a href='/admin' class="badge button_default">Admin Login</a>
+          <a href='/about' class="badge button_default">About</a>
+          <a href='/upload' class="badge button_default">Upload Scraped Data</a>
+          <a href='/manualupload' class="badge button_default">Upload Manual Data</a>
+          <a href='/restore' class="badge button_default">Restore Data</a>
+          <a href='/admin' class="badge button_default">Admin Login</a>
         </div>
       </div>
     </div>
@@ -37,24 +38,25 @@
       <div class="form-group">
         <label for="RosterYear">Roster Year</label>
         <input type="number" class="form-control" id="rosterYearInput" aria-describedby="rosterYearHelp" placeholder="Enter Roster Year" required>
-        <small id="rosterYearHelp" class="form-text text-muted">Single year the player was on the roster i.e 2019</small>
+        <small id="rosterYearHelp" class="form-text text-muted">Single year the player was on the roster i.e 2019. Required Field.</small>
       </div>
 
       <div class="form-group">
         <label for="PlayerNumber">Player Number</label>
         <input type="number" class="form-control" id="playerNumberInput" aria-describedby="playerNumberHelp" placeholder="Enter Player Number">
-        <small id="playerNumberHelp" class="form-text text-muted">Player's Jersey # i.e 2019</small>
+        <small id="playerNumberHelp" class="form-text text-muted">Player's Jersey # i.e 2019.</small>
       </div>
 
       <div class="form-group">
         <label for="FirstName">First Name</label>
         <input type="text" class="form-control" id="firstNameInput" aria-describedby="firstNameHelp" placeholder="Enter Player's First Name" required>
-        <small id="firstNameHelp" class="form-text text-muted">Required Field</small>
+        <small id="firstNameHelp" class="form-text text-muted">Required Field.</small>
       </div>
 
       <div class="form-group">
         <label for="LastName">Last Name</label>
         <input type="text" class="form-control" id="lastNameInput" placeholder="Enter Player's Last Name" requried>
+        <small id="firstNameHelp" class="form-text text-muted">Required Field.</small>
       </div>
 
       <div class="form-group">
@@ -103,7 +105,7 @@
       <div class="form-group">
         <label for="HomeTown">Home Town</label>
         <input type="text" class="form-control" id="homeTownInput" aria-describedby="homeTownHelp" placeholder="Enter Player's Home Town" required>
-        <small id="homeTownHelp" class="form-text text-muted">i.e Sommerset or Madrid</small>
+        <small id="homeTownHelp" class="form-text text-muted">i.e Sommerset or Madrid. Required field.</small>
       </div>
 
       <div class="form-group">
@@ -418,7 +420,7 @@
      <div class="form-group">
        <label for="HighSchool">High School</label>
        <input type="text" class="form-control" id="highSchoolInput" aria-describedby="highSchoolHelp" placeholder="Enter Player's High School" required>
-       <small id="highSchoolHelp" class="form-text text-muted">Receive High School Name From High School Data Spreadsheet. Required Field</small>
+       <small id="highSchoolHelp" class="form-text text-muted">Receive High School Name From High School Data Spreadsheet. Required Field.</small>
      </div>
 
      <div class="form-group">
@@ -430,25 +432,25 @@
      <div class="form-group">
        <label for="HighSchoolStateOrProvince">High School State or Province</label>
        <input type="text" class="form-control" id="highSchoolStateOrProvince" aria-describedby="highSchoolStateOrProvinceHelp" placeholder="Enter Player's High School State or Province">
-       <small id="highSchoolCityHelp" class="form-text text-muted">Receive High School City From High School Data Spreadsheet. Not a required field</small>
+       <small id="highSchoolCityHelp" class="form-text text-muted">Receive High School City From High School Data Spreadsheet.</small>
      </div>
 
      <div class="form-group">
        <label for="HighSchoolCountry">High School Country</label>
        <input type="txt" class="form-control" id="highSchoolCountry" aria-describedby="highSchoolCountryHelp" placeholder="Enter Player's High School Country">
-       <small id="highSchoolCountryHelp" class="form-text text-muted">Receive High School City From High School Data Spreadsheet. Not a required field</small>
+       <small id="highSchoolCountryHelp" class="form-text text-muted">Receive High School City From High School Data Spreadsheet.</small>
      </div>
 
      <div class="form-group">
        <label for="HighSchoolLatitude">High School Latitude</label>
        <input type="number" class="form-control" id="highSchoolLatitude" aria-describedby="highSchoolLatitudeHelp" placeholder="Enter Player's High School Latitude" required>
-       <small id="highSchoolLatitudeHelp" class="form-text text-muted">Receive High School Latitude From High School Data Spreadsheet. Required field</small>
+       <small id="highSchoolLatitudeHelp" class="form-text text-muted">Receive High School Latitude From High School Data Spreadsheet. Required field.</small>
      </div>
 
      <div class="form-group">
        <label for="HighSchoolLongitude">High School Longitude</label>
        <input type="number" class="form-control" id="highSchoolLongitude" aria-describedby="highSchoolLongitudeHelp" placeholder="Enter Player's High School Longitude" required>
-       <small id="highSchoolLongitudeHelp" class="form-text text-muted">Receive High School Longitude From High School Data Spreadsheet. Required field</small>
+       <small id="highSchoolLongitudeHelp" class="form-text text-muted">Receive High School Longitude From High School Data Spreadsheet. Required field.</small>
      </div>
      <!-- College -->
      <div class="form-group">

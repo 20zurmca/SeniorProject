@@ -27,15 +27,13 @@
             <p class="blocktext">Talent is in the Data</p>
             <div id='upload_toolbar'>
               <a href='/about' class="badge button_default">About</a>
-              <a href='/upload' class="badge button_default">Upload Data</a>
+              <a href='/upload' class="badge button_default">Upload Scraped Data</a>
+              <a href='/manualupload' class="badge button_default">Upload Manual Data</a>
               <a href='/restore' class="badge button_default">Restore Data</a>
               <a href='/admin' class="badge button_default">Admin Login</a>
             </div>
           </div>
         </div>
-
-        <button onclick=" window.location.href = '/manualupload';" class="btn btn-primary" id="manual_Button">Click Here For Manual Upload</button>
-
 
         <div class = "upload-data-form">
           <form method="post" enctype="multipart/form-data" id='upload_form' onsubmit="load()">

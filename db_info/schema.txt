@@ -1,0 +1,201 @@
+                    List of relations
+ Schema |            Name            | Type  |   Owner
+--------+----------------------------+-------+------------
+ public | auth_group                 | table | socceruser
+ public | auth_group_permissions     | table | socceruser
+ public | auth_permission            | table | socceruser
+ public | auth_user                  | table | socceruser
+ public | auth_user_groups           | table | socceruser
+ public | auth_user_user_permissions | table | socceruser
+ public | django_admin_log           | table | socceruser
+ public | django_content_type        | table | socceruser
+ public | django_migrations          | table | socceruser
+ public | django_session             | table | socceruser
+ public | map_accoladedata           | table | socceruser
+ public | map_backup                 | table | socceruser
+ public | map_documents              | table | socceruser
+ public | map_groupeddata            | table | socceruser
+ public | map_highschooldata         | table | socceruser
+ public | map_highschoolmatchmaster  | table | socceruser
+ public | map_rosterdata             | table | socceruser
+ public | map_starterdata            | table | socceruser
+ public | unique_boarding_schools    | table | zurmuhlc
+
+
+                                                          Table "public.map_accoladedata"
+   Column    |         Type          | Collation | Nullable |                   Default                    | Storage  | Stats target | Description
+-------------+-----------------------+-----------+----------+----------------------------------------------+----------+--------------+-------------
+ id          | integer               |           | not null | nextval('map_accoladedata_id_seq'::regclass) | plain    |              |
+ roster_year | integer               |           |          |                                              | plain    |              |
+ first_name  | character varying(50) |           |          |                                              | extended |              |
+ last_name   | character varying(50) |           |          |                                              | extended |              |
+ accolade    | character varying(20) |           |          |                                              | extended |              |
+ college     | character varying(50) |           |          |                                              | extended |              |
+Indexes:
+    "map_accoladedata_pkey" PRIMARY KEY, btree (id)
+
+
+                                                           Table "public.map_backup"
+                                                           Table "public.map_backup"
+   Column    |           Type           | Collation | Nullable |                Default                 | Storage  | Stats target | Description
+-------------+--------------------------+-----------+----------+----------------------------------------+----------+--------------+-------------
+ id          | integer                  |           | not null | nextval('map_backup_id_seq'::regclass) | plain    |              |
+ description | character varying(255)   |           | not null |                                        | extended |              |
+ file        | character varying(100)   |           | not null |                                        | extended |              |
+ uploaded_at | timestamp with time zone |           | not null |                                        | plain    |              |
+ isCurrent   | boolean                  |           | not null |                                        | plain    |              |
+ isLoaded    | boolean                  |           | not null |                                        | plain    |              |
+Indexes:
+    "map_backup_pkey" PRIMARY KEY, btree (id)
+    "map_backup_description_7672c6b3_uniq" UNIQUE CONSTRAINT, btree (description)
+    "map_backup_description_7672c6b3_like" btree (description varchar_pattern_ops)
+
+
+                                                            Table "public.map_documents"
+    Column     |           Type           | Collation | Nullable |                  Default                  | Storage  | Stats target | Description
+---------------+--------------------------+-----------+----------+-------------------------------------------+----------+--------------+-------------
+ id            | integer                  |           | not null | nextval('map_documents_id_seq'::regclass) | plain    |              |
+ description   | character varying(255)   |           | not null |                                           | extended |              |
+ rosterData    | character varying(100)   |           |          |                                           | extended |              |
+ starterData   | character varying(100)   |           |          |                                           | extended |              |
+ accoladeData  | character varying(100)   |           |          |                                           | extended |              |
+ uploaded_at   | timestamp with time zone |           | not null |                                           | plain    |              |
+ manual_upload | boolean                  |           | not null |                                           | plain    |              |
+Indexes:
+    "map_documents_pkey" PRIMARY KEY, btree (id)
+    "map_documents_description_79ef817e_uniq" UNIQUE CONSTRAINT, btree (description)
+    "map_documents_description_79ef817e_like" btree (description varchar_pattern_ops)
+Triggers:
+    update_db AFTER INSERT ON map_documents FOR EACH ROW EXECUTE PROCEDURE update_db_func()
+
+
+                                                                  Table "public.map_groupeddata"
+          Column           |           Type           | Collation | Nullable |                   Default                   | Storage  | Stats target | Description
+---------------------------+--------------------------+-----------+----------+---------------------------------------------+----------+--------------+-------------
+ id                        | integer                  |           | not null | nextval('map_groupeddata_id_seq'::regclass) | plain    |              |
+ first_name                | character varying(50)    |           |          |                                             | extended |              |
+ last_name                 | character varying(50)    |           |          |                                             | extended |              |
+ home_town                 | character varying(30)    |           |          |                                             | extended |              |
+ state_or_country          | character varying(20)    |           |          |                                             | extended |              |
+ high_school               | character varying(100)   |           |          |                                             | extended |              |
+ alternative_school        | character varying(50)    |           |          |                                             | extended |              |
+ college                   | character varying(50)    |           |          |                                             | extended |              |
+ college_league            | character varying(50)    |           |          |                                             | extended |              |
+ highschoolcity            | text                     |           |          |                                             | extended |              |
+ highschoolstateorprovince | text                     |           |          |                                             | extended |              |
+ highschoolcountry         | text                     |           |          |                                             | extended |              |
+ school_type               | character varying(13)    |           |          |                                             | extended |              |
+ starter_count             | integer                  |           |          |                                             | plain    |              |
+ accolade_count            | integer                  |           |          |                                             | plain    |              |
+ latitude                  | double precision         |           |          |                                             | plain    |              |
+ longitude                 | double precision         |           |          |                                             | plain    |              |
+ roster_year               | integer[]                |           | not null |                                             | extended |              |
+ year                      | character varying(50)[]  |           | not null |                                             | extended |              |
+ position                  | character varying(50)[]  |           | not null |                                             | extended |              |
+ heights                   | character varying(5)[]   |           | not null |                                             | extended |              |
+ weights                   | integer[]                |           | not null |                                             | extended |              |
+ bio_link                  | character varying(100)[] |           | not null |                                             | extended |              |
+Indexes:
+    "map_groupeddata_pkey" PRIMARY KEY, btree (id)
+
+
+                                                            Table "public.map_highschooldata"
+     Column      |          Type          | Collation | Nullable |                    Default                     | Storage  | Stats target | Description
+-----------------+------------------------+-----------+----------+------------------------------------------------+----------+--------------+-------------
+ id              | integer                |           | not null | nextval('map_highschooldata_id_seq'::regclass) | plain    |              |
+ city            | character varying(50)  |           |          |                                                | extended |              |
+ institution     | character varying(100) |           |          |                                                | extended |              |
+ stateorprovince | character varying(20)  |           |          |                                                | extended |              |
+ country         | character varying(50)  |           |          |                                                | extended |              |
+ latitude        | double precision       |           |          |                                                | plain    |              |
+ longitude       | double precision       |           |          |                                                | plain    |              |
+ school_type     | character varying(20)  |           |          |                                                | extended |              |
+Indexes:
+    "map_highschooldata_pkey" PRIMARY KEY, btree (id)
+
+
+                                                              Table "public.map_highschoolmatchmaster"
+       Column       |          Type          | Collation | Nullable |                        Default                        | Storage  | Stats target | Description
+--------------------+------------------------+-----------+----------+-------------------------------------------------------+----------+--------------+-------------
+ id                 | integer                |           | not null | nextval('map_highschoolmatchmaster_id_seq'::regclass) | plain    |              |
+ roster_year        | integer                |           |          |                                                       | plain    |              |
+ player_number      | character varying(10)  |           |          |                                                       | extended |              |
+ first_name         | character varying(50)  |           |          |                                                       | extended |              |
+ last_name          | character varying(50)  |           |          |                                                       | extended |              |
+ year               | character varying(10)  |           |          |                                                       | extended |              |
+ position1          | character varying(20)  |           |          |                                                       | extended |              |
+ height             | character varying(10)  |           |          |                                                       | extended |              |
+ weight             | integer                |           |          |                                                       | plain    |              |
+ home_town          | character varying(30)  |           |          |                                                       | extended |              |
+ state_or_country   | character varying(20)  |           |          |                                                       | extended |              |
+ high_school        | character varying(100) |           |          |                                                       | extended |              |
+ alternative_school | character varying(50)  |           |          |                                                       | extended |              |
+ college            | character varying(50)  |           |          |                                                       | extended |              |
+ college_league     | character varying(50)  |           |          |                                                       | extended |              |
+ bio_link           | character varying(100) |           |          |                                                       | extended |              |
+ is_starter         | character varying(1)   |           |          |                                                       | extended |              |
+ accolade           | character varying(20)  |           |          |                                                       | extended |              |
+ city               | character varying(30)  |           |          |                                                       | extended |              |
+ institution        | character varying(100) |           |          |                                                       | extended |              |
+ stateorprovince    | character varying(20)  |           |          |                                                       | extended |              |
+ country            | character varying(50)  |           |          |                                                       | extended |              |
+ latitude           | double precision       |           |          |                                                       | plain    |              |
+ longitude          | double precision       |           |          |                                                       | plain    |              |
+ school_type        | character varying(20)  |           |          |                                                       | extended |              |
+Indexes:
+    "map_highschoolmatchmaster_pkey" PRIMARY KEY, btree (id)
+
+
+                                                              Table "public.map_rosterdata"
+       Column       |          Type          | Collation | Nullable |                  Default                   | Storage  | Stats target | Description
+--------------------+------------------------+-----------+----------+--------------------------------------------+----------+--------------+-------------
+ id                 | integer                |           | not null | nextval('map_rosterdata_id_seq'::regclass) | plain    |              |
+ roster_year        | integer                |           |          |                                            | plain    |              |
+ player_number      | character varying(10)  |           |          |                                            | extended |              |
+ first_name         | character varying(50)  |           |          |                                            | extended |              |
+ last_name          | character varying(50)  |           |          |                                            | extended |              |
+ year               | character varying(10)  |           |          |                                            | extended |              |
+ position1          | character varying(20)  |           |          |                                            | extended |              |
+ position2          | character varying(20)  |           |          |                                            | extended |              |
+ position3          | character varying(10)  |           |          |                                            | extended |              |
+ height             | character varying(10)  |           |          |                                            | extended |              |
+ weight             | integer                |           |          |                                            | plain    |              |
+ home_town          | character varying(30)  |           |          |                                            | extended |              |
+ state_or_country   | character varying(20)  |           |          |                                            | extended |              |
+ high_school        | character varying(100) |           |          |                                            | extended |              |
+ alternative_school | character varying(50)  |           |          |                                            | extended |              |
+ college            | character varying(50)  |           |          |                                            | extended |              |
+ college_league     | character varying(50)  |           |          |                                            | extended |              |
+ bio_link           | character varying(100) |           |          |                                            | extended |              |
+Indexes:
+    "map_rosterdata_pkey" PRIMARY KEY, btree (id)
+
+
+                                                            Table "public.map_starterdata"
+      Column      |         Type          | Collation | Nullable |                   Default                   | Storage  | Stats target | Description
+------------------+-----------------------+-----------+----------+---------------------------------------------+----------+--------------+-------------
+ id               | integer               |           | not null | nextval('map_starterdata_id_seq'::regclass) | plain    |              |
+ roster_year      | integer               |           |          |                                             | plain    |              |
+ number           | integer               |           |          |                                             | plain    |              |
+ first_name       | character varying(50) |           |          |                                             | extended |              |
+ last_name        | character varying(50) |           |          |                                             | extended |              |
+ potential_starts | integer               |           |          |                                             | plain    |              |
+ gp               | integer               |           |          |                                             | plain    |              |
+ gs               | integer               |           |          |                                             | plain    |              |
+ is_starter       | character varying(1)  |           |          |                                             | extended |              |
+ college          | character varying(50) |           |          |                                             | extended |              |
+Indexes:
+    "map_starterdata_pkey" PRIMARY KEY, btree (id)
+
+
+                                      Table "public.unique_boarding_schools"
+     Column      |          Type          | Collation | Nullable | Default | Storage  | Stats target | Description
+-----------------+------------------------+-----------+----------+---------+----------+--------------+-------------
+ city            | character varying(50)  |           |          |         | extended |              |
+ institution     | character varying(100) |           |          |         | extended |              |
+ stateorprovince | character varying(20)  |           |          |         | extended |              |
+ country         | character varying(50)  |           |          |         | extended |              |
+ latitude        | double precision       |           |          |         | plain    |              |
+ longitude       | double precision       |           |          |         | plain    |              |
+ school_type     | character varying(20)  |           |          |         | extended |              |
+
