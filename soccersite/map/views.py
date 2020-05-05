@@ -203,11 +203,12 @@ def restore(request):
             payload = json.loads(request.POST.get('json_data'))
             description = payload['version']
             old_version = BackUp.objects.filter(isCurrent=True).first()
-            old_version.isCurrent = False
-            old_version.isLoaded = False
-            old_version.save(update_fields=['isCurrent', 'isLoaded'])
-            print("Old version is: " + BackUp.objects.filter(description=old_version.description).first().description  + " " + "IsCurrent: " + str(BackUp.objects.filter(description=old_version.description).first().isCurrent) + " IsLoaded: " + str(BackUp.objects.filter(description=old_version.description).first().isLoaded))
-
+            descpt = old_version.description
+            fn = old_version.file
+            old_version.delete()
+            old_version_temp = BackUp(description=descpt, file=fn, isCurrent=False, isLoaded=False)
+            old_version_temp.save()
+            print("Old version is: " + BackUp.objects.filter(description=old_version_temp.description).first().description  + " " + "IsCurrent: " + str(BackUp.objects.filter(description=old_version_temp.description).first().isCurrent) + " IsLoaded: " + str(BackUp.objects.filter(description=old_version_temp.description).first().isLoaded))
 
             new_version = BackUp.objects.filter(description=description).first()
             new_version.isCurrent = True
@@ -229,8 +230,11 @@ def restore(request):
     #acquire currentBackup to render
     new_version = BackUp.objects.filter(isCurrent=True).first()
     if(HighSchoolMatchMaster.objects.all().exists()): #finish loading
-        new_version.isLoaded = True
-        new_version.save()
+        try:
+            new_version.isLoaded = True
+            new_version.save(update_fields=['isLoaded'])
+        except:
+            pass
     currentBackUpVersion = BackUp.objects.filter(isCurrent=True).first()
     return render(request, 'map/restore.html', {'versions': versions,
                                                 'currentBackUp': currentBackUpVersion})
