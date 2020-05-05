@@ -162,6 +162,9 @@ def manualupload(request):
 def upload_file(request):
     if(request.method == 'POST'):
         form = DocumentForm(request.POST, request.FILES)
+
+        print(request.FILES.lists())
+
         print("here")
         if form.is_valid():
             print("not here")
@@ -177,10 +180,10 @@ def upload_file(request):
                                         "--exclude=map.Documents", "--exclude=map.BackUp", "--exclude=map.HighSchoolData"])
 
             new_version = BackUp(description = form.cleaned_data['description'], file=fn)
-            new_version.save()
-            #context = {'form': form, 'uploaded': True}
-            #return render(request, 'map/upload.html', context)
-            return JsonResponse({"sucess":"true"})
+            #new_version.save()
+            context = {'form': form, 'uploaded': True}
+            return render(request, 'map/upload.html', context)
+            #return JsonResponse({"success":"true"})
     else:
         form = DocumentForm()
 

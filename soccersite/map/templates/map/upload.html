@@ -87,21 +87,27 @@
           return "";
        }
 
+
       $(document).on('submit', '#upload_form', function(e){
         e.preventDefault(); //prevent refresh
+
+
         $.ajaxSetup({
             headers: { "X-CSRFToken": getCookie("csrftoken") }
           });
+
         $.ajax({
           type: 'POST',
           url: window.location,
-
-          success:function(response){
-            console.log(response);
-                if(response['success'] == 'true'){
+          success:function(){
+                var responseVal = {{uploaded}}
+                if(responseVal){
+                  console.log("here1")
                   document.getElementById("loader1").style.display = "none";
                   alert("The form was submitted successfully");
                 } else {
+                  console.log("here2")
+                  document.getElementById("loader1").style.display = "none";
                   alert("BUG REPORT: Problem With Uploading Data.")
                 }
 
