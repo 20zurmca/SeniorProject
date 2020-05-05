@@ -165,9 +165,10 @@ def upload_file(request):
     if(request.method == 'POST'):
         form = DocumentForm(request.POST, request.FILES)
         if form.is_valid():
-            save_rosterData(form.cleaned_data['rosterData'])
-            save_starterData(form.cleaned_data['starterData'])
-            save_accoladeData(form.cleaned_data['accoladeData'])
+            print("not here")
+            a = save_rosterData(form.cleaned_data['rosterData'])
+            b = save_starterData(form.cleaned_data['starterData'])
+            c = save_accoladeData(form.cleaned_data['accoladeData'])
             form.save()
             #writing backup file
             fn = "dumpfile" + str(_random_with_N_digits(10)) + ".json"
@@ -182,7 +183,10 @@ def upload_file(request):
 
             new_version = BackUp(description = form.cleaned_data['description'], file=fn, isCurrent=True, isLoaded=True)
             new_version.save()
-            context = {'form': form}
+            if(a and b and c):
+                context = {'form': form, 'uploaded': True}
+            else:
+                context = {'form': form, 'uploaded': False}
             return render(request, 'map/upload.html', context)
     else:
         form = DocumentForm()
@@ -228,65 +232,80 @@ def restore(request):
 
 
 def save_rosterData(filename):
-    records = csv.reader(codecs.iterdecode(filename,'utf-8'))
-    next(records)
-    for record in records:
-        input_data = RosterData()
-        input_data.roster_year = record[1]
-        if record[2] == '':
-            input_data.player_number = 0
-        else:
-            input_data.player_number = record[2]
-        input_data.first_name = record[3]
-        input_data.last_name = record[4]
-        input_data.year = record[5]
-        input_data.position1 = record[6]
-        input_data.position2 = record[7]
-        input_data.position3 = record[8]
-        input_data.height = record[9]
-        if record[10] == '':
-            input_data.weight = 0
-        else:
-            input_data.weight = record[10]
-        input_data.home_town = record[11]
-        input_data.state_or_country = record[12]
-        input_data.high_school = record[13]
-        input_data.alternative_school = record[14]
-        input_data.college = record[15]
-        input_data.college_league = record[16].upper()
-        input_data.bio_link = record[17]
-        input_data.save()
+    try:
+        records = csv.reader(codecs.iterdecode(filename,'utf-8'))
+        next(records)
+        for record in records:
+            input_data = RosterData()
+            input_data.roster_year = record[1]
+            if record[2] == '':
+                input_data.player_number = 0
+            else:
+                input_data.player_number = record[2]
+            input_data.first_name = record[3]
+            input_data.last_name = record[4]
+            input_data.year = record[5]
+            input_data.position1 = record[6]
+            input_data.position2 = record[7]
+            input_data.position3 = record[8]
+            input_data.height = record[9]
+            if record[10] == '':
+                input_data.weight = 0
+            else:
+                input_data.weight = record[10]
+            input_data.home_town = record[11]
+            input_data.state_or_country = record[12]
+            input_data.high_school = record[13]
+            input_data.alternative_school = record[14]
+            input_data.college = record[15]
+            input_data.college_league = record[16].upper()
+            input_data.bio_link = record[17]
+            input_data.save()
+    except:
+        return False
+    else:
+        return True
 
 def save_starterData(filename):
-    records = csv.reader(codecs.iterdecode(filename,'utf-8'))
-    next(records)
-    for record in records:
-        input_data = StarterData()
-        input_data.roster_year = record[1]
-        input_data.number = record[2]
-        input_data.first_name = record[3]
-        input_data.last_name = record[4]
-        input_data.potential_starts = record[5]
-        if record[6] == '':
-            input_data.gp = 0
-        else:
-            input_data.gp = record[6]
-        if record[7] == '':
-            input_data.gs = 0
-        else:
-            input_data.gs = record[7]
-        input_data.is_starter = record[8]
-        input_data.college = record[9]
-        input_data.save()
+    try:
+        records = csv.reader(codecs.iterdecode(filename,'utf-8'))
+        next(records)
+        for record in records:
+            input_data = StarterData()
+            input_data.roster_year = record[1]
+            input_data.number = record[2]
+            input_data.first_name = record[3]
+            input_data.last_name = record[4]
+            input_data.potential_starts = record[5]
+            if record[6] == '':
+                input_data.gp = 0
+            else:
+                input_data.gp = record[6]
+            if record[7] == '':
+                input_data.gs = 0
+            else:
+                input_data.gs = record[7]
+            input_data.is_starter = record[8]
+            input_data.college = record[9]
+            input_data.save()
+    except:
+        return False
+    else:
+        return True
 
 def save_accoladeData(filename):
-    records = csv.reader(codecs.iterdecode(filename,'utf-8'))
-    next(records)
-    for record in records:
-        input_data = AccoladeData()
-        input_data.roster_year = record[1]
-        input_data.first_name = record[2]
-        input_data.last_name = record[3]
-        input_data.accolade = record[4]
-        input_data.college = record[5]
-        input_data.save()
+    try:
+        records = csv.reader(codecs.iterdecode(filename,'utf-8'))
+        next(records)
+        for record in records:
+            input_data = AccoladeData()
+            input_data.roster_year = record[1]
+            input_data.first_name = record[2]
+            input_data.last_name = record[3]
+            input_data.accolade = record[4]
+            input_data.college = record[5]
+            input_data.save()
+    except:
+        return False
+    else:
+        return True
