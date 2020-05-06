@@ -1,9 +1,0 @@
--- Drop all tables in db for easy cleanup
-
-DROP TABLE map_documents;
-DROP TABLE map_groupeddata;
-DROP TABLE high_school_data;
-DROP TABLE highschool_match_master;
-DROP TABLE map_rosterdata;
-DROP TABLE map_starterdata;
-DROP TABLE map_accoladedata;
