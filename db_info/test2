@@ -1,5 +1,0 @@
-\COPY map_starterdata FROM 'new_starter_data.csv' DELIMITER ',' CSV HEADER;
-\COPY map_rosterdata FROM 'new_roster_data.csv' DELIMITER ',' CSV HEADER;
-\COPY map_accoladedata FROM 'new_accolades.csv' DELIMITER ',' CSV HEADER;
-
-INSERT INTO map_documents (description, document) VALUES ('hi', 'doc 1');
