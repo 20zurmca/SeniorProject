@@ -1,12 +1,12 @@
 # SeniorProject
 Senior Project for Lafayette College
 
-/data contains data for the initial database creating
-/db_info contains SQL scripts to set up the database
-/scripts contains the python scripts for scraping the web data
-/soccersite is the django web application
-/templates contains template .csv files for adding data to the project for future roster years
-/test_files are test .csv files to upload (ONLY FOR LOCAL DEVELOPMENT)
+/data contains data for the creating the initial database\n
+/db_info contains SQL scripts to set up the database\n
+/scripts contains the python scripts for scraping the web data\n
+/soccersite is the django web application\n
+/templates contains template .csv files for adding data to the project for future roster years\n
+/test_files are test .csv files to upload (ONLY FOR LOCAL DEVELOPMENT)\n
 
 
 Copyright (C) <5/6/20>  <Dennis Bohn, Cameron Zurmuhl, Joseph Teddick, Matt Gerber, Xingwen Wei>
