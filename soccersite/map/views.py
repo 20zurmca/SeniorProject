@@ -1,3 +1,8 @@
+"""
+views.py provides the backend application logic such as database accesses
+and data transformations
+"""
+
 from django.shortcuts import render
 from django.http import HttpResponse, JsonResponse
 from django.conf import settings
@@ -5,18 +10,26 @@ from django.db.models import Count, Q, F, Func
 from .models import GroupedData, RosterData, StarterData, AccoladeData, Documents, BackUp, HighSchoolMatchMaster, HighSchoolData
 from django.core import serializers
 import json
-from .forms import MHSForm, DocumentForm
+from .forms import DocumentForm
 from django.contrib.admin.views.decorators import staff_member_required
 import csv
 import codecs
 import subprocess
 from random import randint
 
+"""
+ _random_with_N_digits returns a random number of length n
+ input: n::int
+ return: int
+"""
 def _random_with_N_digits(n):
     range_start = 10**(n-1)
     range_end = (10**n)-1
     return randint(range_start, range_end)
 
+"""
+index(request) is the view for the homepage
+"""
 def index(request):
     colleges  = GroupedData.objects.values_list('college', flat=True).distinct().order_by('college')
     leagues   = GroupedData.objects.values_list('college_league', flat=True).distinct().order_by('college_league')
@@ -29,38 +42,38 @@ def index(request):
                'currentBackUp': currentBackUpVersion
                }
 
-    if(request.method == 'POST'): #form.js will check for at least one college selected before submission
+    if(request.method == 'POST'):
         payload = json.loads(request.POST.get('json_data'))
         c = payload['colleges'] #list of colleges user specified from drop down
         pos = payload['positions'] #list of positions user specified from positions drop down
         sy = payload['starterYears'] #list of starterYears specified from positions drop down
         acy = payload['allConferenceYears'] #list of allConferenceYears positioned in drop down
 
-        starterYearFourOrMore = '4+' in sy
-        allConferenceYearsFourOrMore = '4+' in acy
+        starterYearFourOrMore = '4+' in sy #user selected '4+' in years starter dropdown
+        allConferenceYearsFourOrMore = '4+' in acy #user selected '4+' in all conference years dropdown
 
         multiplePlayersPerSchool = False
         if(payload['multipleHS'] == 'selected'):
-            multiplePlayersPerSchool = True
+            multiplePlayersPerSchool = True #user selected checkbox for filtering high schools with more than one player per school
 
-        players = None
+        players = None #this will be the returned data for query
 
         #if nothing is selected, default to search all
         if((len(c) == 0) and (len(pos) == 0) and (len(sy) == 0) and (len(acy) == 0)):
-            c = colleges;
+            c = colleges; #since c is all colleges, all data will be returned in the subsequent code
 
         if(len(c) > 0): #if a college is selected
             players = GroupedData.objects.filter(college__in=c)
 
         if(len(pos) > 0): #if a position is selected
-            if(players): #if there was a college selected
+            if(players): #if there was a college selected, filter existing players
                 players = players.filter(position__overlap=pos)
             else:
                 players = GroupedData.objects.filter(position__overlap=pos)
 
         if(len(sy) > 0): #if a starter year was selected
             if(players): #if there was a college selected or a position selected
-                if(starterYearFourOrMore): #if 4+ was selected
+                if(starterYearFourOrMore):
                     if(len(sy) == 1): #if only 4+ was selected
                         players = players.filter(starter_count__gte=4)
                     else: #if other things including 4+ was selected
@@ -73,7 +86,7 @@ def index(request):
                     if(len(sy) == 1):
                         players = GroupedData.objects.filter(starter_count__gte=4)
                     else:
-                        players = GroupedData.objects.filter(Q(starter_count__gte=4) | Q(starter_count__in=sy[:-1]))
+                        players = GroupedData.objects.filter(Q(starter_count__gte=4) | Q(starter_count__in=sy[:-1])) #slicing up to '4+'
                 else:
                     players = GroupedData.objects.filter(starter_count__in=sy)
 
@@ -97,21 +110,29 @@ def index(request):
                     players = GroupedData.objects.filter(accolade_count__in=acy)
 
         if(multiplePlayersPerSchool):
+            #getting all duplicate high school names in the same city
             dupeHS = players.values('high_school', 'highschoolcity') \
                        .annotate(hs_cnt=Count('high_school'), city_cnt=Count('highschoolcity')) \
                        .order_by() \
                        .filter(Q(hs_cnt__gt=1) & Q(city_cnt__gt=1))
 
+            #filtering players further
             players = players.filter(high_school__in=[item['high_school'] for item in dupeHS])
 
-        data  =  {'players': list(players.values())}
+        data  =  {'players': list(players.values())} #payload to return
         return JsonResponse(data)
 
     return render(request, 'map/index.html', context)
 
+"""
+about(request) is the view for the about page
+"""
 def about(request):
     return render(request, 'map/about.html')
 
+"""
+manualupload(request) is the view for the manual upload page
+"""
 def manualupload(request):
     positions = GroupedData.objects.annotate(arr_els=Func(F('position'), function='unnest')).values_list('arr_els', flat=True).distinct()
     colleges  = GroupedData.objects.values_list('college', flat=True).distinct().order_by('college')
@@ -149,7 +170,7 @@ def manualupload(request):
                                        payload['highSchoolLongitude'],
                                        payload['schoolType'])
         record.save()
-        #insert into document table to trigger the triger and group the inserted players
+        #insert into document table to trigger the trigger and group the inserted players
         doc = Documents(description="Manual Upload" + str(_random_with_N_digits(3)),
                        rosterData=None,
                        starterData=None,
@@ -157,9 +178,11 @@ def manualupload(request):
                        manual_upload=True)
         doc.save()
         return JsonResponse({"success":"true"})
-
     return render(request, 'map/manualupload.html', context)
 
+"""
+upload_file(request) is the view for the upload page
+"""
 @staff_member_required
 def upload_file(request):
     if(request.method == 'POST'):
@@ -169,52 +192,56 @@ def upload_file(request):
             b = save_starterData(form.cleaned_data['starterData'])
             c = save_accoladeData(form.cleaned_data['accoladeData'])
             form.save()
-            #writing backup file
+            #writing backup file. Output will go to ./fixtures directory as a .json file
             fn = "dumpfile" + str(_random_with_N_digits(10)) + ".json"
             json_dump = subprocess.run(["python", "manage.py", "dumpdata", "-o", "map/fixtures/" + fn, \
                                         "--exclude=admin", "--exclude=auth", "--exclude=contenttypes", \
                                         "--exclude=sessions", "--exclude=messages", "--exclude=staticfiles", \
                                         "--exclude=map.Documents", "--exclude=map.BackUp", "--exclude=map.HighSchoolData"])
-            old_version = BackUp.objects.filter(isCurrent=True).first()
+
+            #reassigning the current data version as the most recently uploaded dump
+            old_version = BackUp.objects.filter(isCurrent=True).first() #old version will be the current version
             old_version.isCurrent = False
             old_version.isLoaded = False
             old_version.save(update_fields=['isCurrent', 'isLoaded'])
-            print("Old version is: " + old_version.description + " " + "IsCurrent: " + str(old_version.isCurrent) + " IsLoaded: " + str(old_version.isLoaded))
 
             new_version = BackUp(description = form.cleaned_data['description'], file=fn, isCurrent=True, isLoaded=True)
             new_version.save()
-            print("New version is: " + new_version.description + " " + "IsCurrent: " + str(new_version.isCurrent) + " IsLoaded: " + str(new_version.isLoaded))
 
             if(a and b and c):
                 context = {'form': form, 'uploaded': True}
             else:
-                context = {'form': form, 'uploaded': False}
+                context = {'form': form, 'uploaded': False} #error handling case
             return render(request, 'map/upload.html', context)
     else:
         form = DocumentForm()
-
     return render(request, 'map/upload.html', {'form':form})
 
+"""
+ restore(request) is the view for the restore page
+"""
 @staff_member_required
 def restore(request):
     versions = reversed(BackUp.objects.all().values('description', 'uploaded_at'))
     if(request.method=='POST'):
         if(request.POST.get('json_data')):
             payload = json.loads(request.POST.get('json_data'))
+            #acquire old description and reassign isCurrent and isLoaded to false
             description = payload['version']
             old_version = BackUp.objects.filter(isCurrent=True).first()
-            old_version.isCurrent = False
-            old_version.isLoaded = False
-            old_version.save(update_fields=['isCurrent', 'isLoaded'])
-            print("Old version is: " + BackUp.objects.filter(description=old_version.description).first().description  + " " + "IsCurrent: " + str(BackUp.objects.filter(description=old_version.description).first().isCurrent) + " IsLoaded: " + str(BackUp.objects.filter(description=old_version.description).first().isLoaded))
+            descpt = old_version.description
+            fn = old_version.file
+            old_version.delete()
+            old_version_temp = BackUp(description=descpt, file=fn, isCurrent=False, isLoaded=False)
+            old_version_temp.save()
 
-
+            #update new_version which is the version selected
             new_version = BackUp.objects.filter(description=description).first()
             new_version.isCurrent = True
             new_version.isLoaded = False
             new_version.save(update_fields=['isCurrent', 'isLoaded'])
-            print("New version is: " + new_version.description + " " + "IsCurrent: " + str(new_version.isCurrent) + " IsLoaded: " + str(new_version.isLoaded))
 
+            #run respotre process
             backUpFile  = "map/fixtures/" + BackUp.objects.filter(description=description).get().filename()
             RosterData.objects.all().delete()
             StarterData.objects.all().delete()
@@ -226,16 +253,24 @@ def restore(request):
             currentBackUpVersion = BackUp.objects.filter(isCurrent=True).first()
             return render(request, 'map/restore.html', {'versions': versions,
                                                         'currentBackUp': currentBackUpVersion})
-    #acquire currentBackup to render
+
+    #acquire currentBackup to render upon refreshing the page
     new_version = BackUp.objects.filter(isCurrent=True).first()
-    if(HighSchoolMatchMaster.objects.all().exists()): #finish loading
-        new_version.isLoaded = True
-        new_version.save()
+    if(HighSchoolMatchMaster.objects.all().exists()): #if finished loading
+        try: #try catch to avoid duplicate description error
+            new_version.isLoaded = True
+            new_version.save(update_fields=['isLoaded'])
+        except:
+            pass
+
     currentBackUpVersion = BackUp.objects.filter(isCurrent=True).first()
     return render(request, 'map/restore.html', {'versions': versions,
                                                 'currentBackUp': currentBackUpVersion})
 
 
+"""
+save_rosterData(filename) saves an uploaded rosterdata.csv upload to the database
+"""
 def save_rosterData(filename):
     try:
         records = csv.reader(codecs.iterdecode(filename,'utf-8'))
@@ -271,6 +306,9 @@ def save_rosterData(filename):
     else:
         return True
 
+"""
+save_starterData(filename) saves an uploaded starterdata.csv file to the database
+"""
 def save_starterData(filename):
     try:
         records = csv.reader(codecs.iterdecode(filename,'utf-8'))
@@ -298,6 +336,9 @@ def save_starterData(filename):
     else:
         return True
 
+"""
+save_accoladeData(filename) saves an uploaded accolade.csv file to the database
+"""
 def save_accoladeData(filename):
     try:
         records = csv.reader(codecs.iterdecode(filename,'utf-8'))
