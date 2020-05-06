@@ -1,22 +1,23 @@
 var center_ = {lat: 32.560742, lng: -3.9314364}; //somewhere near the Mediterranean Sea
-var map;
-var markers = [];
-var heatMapData = [];
-var heatMap;
-var markerCluster;
-var firstLoad = true;
-var groupedLatLngData = {};
-var changeTableOnZoom = false;
-var dataTable;
-var infowindow;
+var map; //the map itself
+var markers = []; //an array of markers
+var heatMapData = []; //an array of data for the heat map
+var heatMap; //the head map itself
+var markerCluster; //a single marker cluster to be used for calculating clustering levels
+var firstLoad = true; //represents data on the map is loaded for the first time since a refresh
+var groupedLatLngData = {}; //an array of lat long values from the grouped data
+var changeTableOnZoom = false; //whether or not the table should change based on a marker click
+var dataTable; //the data table itself
+var infowindow; //a single data window (to prevent more than one opening at a time)
 var clickCounts = [0, 0]; //count clicks for heatmap and marker cluster
 
+//load the data onto the map
 function loadData(map, playerData){
-  if (firstLoad) {
+  if (firstLoad) { //if the data is being loaded for the first time, create a temporary info window
     infowindow = new google.maps.InfoWindow({
       content: "temp"
     });
-  } else {
+  } else { //if not, close the info window
     infowindow.close();
   }
 
@@ -30,12 +31,12 @@ function loadData(map, playerData){
   }
 
   clickCounts = [0, 0];
-  for (var i = 0; i < markers.length; i++) {
+  for (var i = 0; i < markers.length; i++) { //clear all markers from the map
     markers[i].setMap(null);
   }
   markers.length = 0;; //to be filled based on query
-  heatMapData.length = 0;; //data for heatmap
-  if(!firstLoad){
+  heatMapData.length = 0; //data for heatmap
+  if(!firstLoad){ //if this is the first load, clear clusters and marker labels
     markerCluster.setMap(null);
     markerCluster.clearMarkers();
   }
@@ -93,18 +94,18 @@ function loadData(map, playerData){
         position: pos,
         map: map,
         title: groupedLatLngData[highSchool]['hs'], //high school name
-        label: {
+        label: { //the label on the marker comes from the number of players from the associated highschool
           text: String(groupedLatLngData[highSchool]['playerCount']),
           fontWeight: "bold",
           color: "black"
         },
         number: groupedLatLngData[highSchool]['playerCount'],
-        icon: {
+        icon: { //import and adjust the icon to be used for markers
           url: "http://maps.google.com/mapfiles/kml/shapes/schools.png",
           scaledSize: new google.maps.Size(35, 35),
           labelOrigin: { x: 16, y: 26}
         },
-        animation: google.maps.Animation.DROP
+        animation: google.maps.Animation.DROP //add a drop animation
       });
 
       heatMapData.push({location: new google.maps.LatLng(latitude, longitude), weight: groupedLatLngData[highSchool]['playerCount']});
@@ -112,7 +113,7 @@ function loadData(map, playerData){
       var stateOrProvince = groupedLatLngData[highSchool]['hsStateOrProvince'];
       var country = "";
 
-      if (stateOrProvince == null) {
+      if (stateOrProvince == null) { //if the state or province is null, use the country instead
         stateOrProvince = "";
         country = ", " + groupedLatLngData[highSchool]['hsCountry'];
       } else {
@@ -132,7 +133,7 @@ function loadData(map, playerData){
            '</div>';
 
 
-      marker.addListener('click', function() {
+      marker.addListener('click', function() { //on click of a marker, change the info window and update the data in the table
         if (infowindow) {
           infowindow.close();
         }
@@ -180,8 +181,7 @@ function loadData(map, playerData){
     }
 
 
-    let mcOptions = {
-      //styles: clusterStyles,
+    let mcOptions = { //load in the info for the marker clusters usin the google maps cluster library
       gridSize: 45,
       minimumClusterSize: 2,
       imagePath: 'https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/m'
@@ -189,7 +189,7 @@ function loadData(map, playerData){
 
     markerCluster = new MarkerClusterer(map, markers, mcOptions);
 
-
+    //creates a custom calculator method so the markers cluster on student count and not marker (highschool) count
     markerCluster.setCalculator(function(markers, numStyles){
       var index = 0;
       var count = 0;
@@ -212,7 +212,7 @@ function loadData(map, playerData){
         index: index
       };
     });
-
+    //update the heatmap
      heatMap = new google.maps.visualization.HeatmapLayer({
        data: heatMapData
      });
@@ -315,14 +315,15 @@ function loadData(map, playerData){
    controlText.id                 = 'zoomControlText';
    controlUI.appendChild(controlText);
 
-   controlUI.addEventListener('click', function() {
+   controlUI.addEventListener('click', function() { //on click
     if(!controlUI.disabled){
       var bounds = new google.maps.LatLngBounds();
       map.fitBounds(bounds);
+      //for every marker in the current marker array, extend the border based on the position
       for (var i = 0; i < markers.length; i++) {
           bounds.extend(markers[i].getPosition());
       }
-      map.fitBounds(bounds);
+      map.fitBounds(bounds); //fit the map based on the newly assigned borders
       let table = document.getElementById('resultTableBody');
       let player_data = '';
       //table changes to marker-specific data on click
@@ -399,7 +400,7 @@ function MarkerControl(controlDiv, map) {
   controlText.id                 = 'markerControlText';
   controlUI.appendChild(controlText);
 
-  controlUI.addEventListener('click', function() {
+  controlUI.addEventListener('click', function() { //on click
     if(!controlUI.disabled){
       clickCounts[1] = clickCounts[1] + 1;
 
@@ -417,7 +418,7 @@ function MarkerControl(controlDiv, map) {
           for (var i = 0; i < markers.length; i++) {
            markers[i].setMap(map);
           }
-          var mcOptions = {
+          var mcOptions = { //load in the info for the marker clusters usin the google maps cluster library
             gridSize: 45,
             minimumClusterSize: 2,
             imagePath: 'https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/m'
@@ -426,6 +427,7 @@ function MarkerControl(controlDiv, map) {
 
           markerCluster = new MarkerClusterer(map, markers, mcOptions);
 
+          //creates a custom calculator method so the markers cluster on student count and not marker (highschool) count
           markerCluster.setCalculator(function(markers, numStyles){
             var index = 0;
             var count = 0;
@@ -454,9 +456,13 @@ function MarkerControl(controlDiv, map) {
 }
 
 
+/**
+ * The initMap initialized all values of the map to a default
+ * @constructor
+ */
 function initMap() {
    map = new google.maps.Map(
-      document.getElementById('map'), {
+      document.getElementById('map'), {//defult values are set for the map
         center: center_,
         zoom: 2,
         minZoom: 2,
@@ -468,13 +474,13 @@ function initMap() {
                 east: 180
             }
         },
-        mapTypeControlOptions: {
+        mapTypeControlOptions: { //set the map control options
            mapTypeIds: [
              google.maps.MapTypeId.ROADMAP,
              google.maps.MapTypeId.SATELLITE
            ]
          },
-        gestureHandling: 'greedy'
+        gestureHandling: 'greedy' //gives the map priority when zooming in and out on the page
       });
 
   var heatMapControlDiv = document.createElement('div');
