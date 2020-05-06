@@ -3,7 +3,7 @@
 <html>
     <head>
       <meta charset="utf-8">
-      <title>Upload File</title>
+      <title>Lafayette Soccer Project - Restore Data</title>
       <!-- bootstrap stuff -->
       <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
       integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
@@ -41,9 +41,9 @@
           </p>
           <p id="loaded-info">
             {% if currentBackUp.isLoaded %}
-              Current Data Version: Loaded
+              Current Data Version Status: Loaded
             {% else %}
-              Current Data Version: Not Loaded
+              Current Data Version Status: Loading...
             {% endif %}
           </p>
         </div>
@@ -105,14 +105,13 @@
          }
 
         $(document).on('submit', '#versionControlForm', function(e){
-          //e.preventDefault();
           $.ajaxSetup({
                   headers: { "X-CSRFToken": getCookie("csrftoken") }
           });
 
             $.ajax({
               type: 'POST',
-              url: "/restore",
+              url: window.location,
               data: { json_data: JSON.stringify({
                 version:$('#dbVersion').val(),
               })},

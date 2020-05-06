@@ -1,9 +1,9 @@
 function admin(){
-  window.location.href = 'http://127.0.0.1:8000/admin/'
+  window.location.href = '/admin'
 }
 
 function homePage(){
-  window.location.href = 'http://127.0.0.1:8000/'
+  window.location.href = '/'
 }
 
 function cameronLinkedIn(){

@@ -1,4 +1,9 @@
 /**
+  form.js is for submitting the main filter form
+*/
+
+
+/**
  * getCookie() is used to get the csrftoken for ajax call
 */
 var dt;
@@ -22,7 +27,6 @@ function getCookie(c_name)
 /**
  * _findLatestIndex(roster_year) returns the maped indices of ordered roster_years to the non-ordered
  * roster_years list for a player
- * for a player
  * @param roster_year the string of roster years from the db
  * @return list: list position of the roster years from oldest to most recent
 */

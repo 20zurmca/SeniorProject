@@ -3,7 +3,7 @@
 <html>
     <head>
       <meta charset="utf-8">
-      <title>Upload File</title>
+      <title>Lafayette Soccer Project - Upload File</title>
       <!-- bootstrap stuff -->
       <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
       integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
@@ -85,32 +85,25 @@
           return "";
        }
 
+
       $(document).on('submit', '#upload_form', function(e){
-        e.preventDefault(); //prevent refresh
         $.ajaxSetup({
             headers: { "X-CSRFToken": getCookie("csrftoken") }
           });
+
         $.ajax({
           type: 'POST',
           url: window.location,
-
-          success:function(response){
-            console.log(response);
-                if(response['success'] == 'true'){
-                  document.getElementById("loader1").style.display = "none";
-                  alert("The form was submitted successfully");
-                } else {
-                  alert("BUG REPORT: Problem With Uploading Data.")
-                }
-
+          success:function(){
+            document.getElementById("loader1").style.display = "none";
+            alert("The files were uploaded successfully. Now creating backup.");
           },
           error:function(){
-            console.log("Error With Form Submission.");
+            document.getElementById("loader1").style.display = "none";
+            alert("BUG REPORT: Problem With Uploading Data.")
           }
         });
       });
-
-
       </script>
     </body>
 </html>

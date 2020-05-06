@@ -106,7 +106,7 @@ class Documents(models.Model):
     starterData   = models.FileField(upload_to='documents/', null=True)
     accoladeData  = models.FileField(upload_to='documents/', null=True)
     uploaded_at   = models.DateTimeField(auto_now_add=True)
-    manual_upload = models.BooleanField(default=False)
+    manual_upload = models.BooleanField(default=False, blank=True)
 
 
 class BackUp(models.Model):

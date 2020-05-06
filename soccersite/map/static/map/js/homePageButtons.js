@@ -1,3 +1,9 @@
+/*
+ homePagebuttons.js provides client-side logic for interacting with buttons on
+ the homepage
+*/
+
+//blue submit button
 function submit() {
   document.getElementById('markerControl').style.fontWeight = "bold";
   document.getElementById('markerControl').disabled = false;
@@ -6,10 +12,11 @@ function submit() {
   if(document.getElementById('noQuerySelected')){
       document.getElementById('noQuerySelected').style.display = "none";
   }
-  submitted=true;
+  submitted=true; //declaration found on line 127 in index.html
   $('.loader').show();
 }
 
+//helper function for csv download
 function parseCell(tableCell){
   var parsedValue = tableCell.textContent;
   parsedValue = parsedValue.replace(/"/g, '""'); //replace all single quote with double quote
