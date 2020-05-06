@@ -1,4 +1,4 @@
-leagueDict ={
+leagueDict ={ #Make sure to add leagues in upper-case.
 
         'PATRIOT' : ['Lafayette College', 'Lehigh University', 'American University',
                       'Army West Point', 'Naval Academy', 'Boston University',
@@ -27,7 +27,6 @@ leagueDict ={
         'WAC' : ['Air Force Academy'],
 
         'AMERICAN ATHLETIC': ['SMU'],
-
     }
 
 def get_college_from_url(urlDomain):
