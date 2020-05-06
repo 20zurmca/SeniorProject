@@ -1,3 +1,7 @@
+/*
+  Selectors.js provides logic for handling the selectors
+*/
+
 leagueDict ={
 
         'PATRIOT' : ['Lafayette College', 'Lehigh University', 'American University',
@@ -30,11 +34,14 @@ leagueDict ={
 
     }
 
+//keeps track of selected leagues to assist with the effect when you select a league,
+//the appropriate colleges are selected as well
 priorSelectedLeagues = {'PATRIOT': false, 'IVY': false, 'PAC-12': false,
                         'COLONIAL ATHLETIC ASSOCIATION': false, 'ATLANTIC COAST': false,
                         'BIG EAST': false, 'A-10': false, 'BIG TEN': false, 'SOUTHERN': false,
                         'WAC': false, 'AMERICAN ATHLETIC': false};
 
+//constructing selector objects
 var leagueSelector = tail.select("#collegeLeagueSelector", {
   search: true,
   multiSelectAll: true,

@@ -1,4 +1,9 @@
 /**
+  form.js is for submitting the main filter form
+*/
+
+
+/**
  * getCookie() is used to get the csrftoken for ajax call
 */
 var dt;
