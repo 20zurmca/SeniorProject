@@ -20,7 +20,7 @@ CREATE TABLE boarding_schools_temp (city VARCHAR(30), institution VARCHAR(100), 
 \COPY boarding_schools_temp FROM 'boardingschools.csv' DELIMITER ',' CSV HEADER;
 
 CREATE TABLE unique_hs AS (
-	SELECT institution, stateorprovince, city, latitude, longitude
+	SELECT institution, stateorprovince, country, city, latitude, longitude
 	FROM map_highschooldata
 	WHERE school_type = 'PRIVATE'
 );
@@ -35,7 +35,7 @@ USING (
 WHERE LOWER(unique_hs.institution) = LOWER(temp1.Institution);
 
 CREATE TABLE unique_boarding_schools AS (
-	SELECT unique_hs.city, boarding_schools_temp.institution, boarding_schools_temp.stateorprovince, boarding_schools_temp.country, unique_hs.latitude, unique_hs.longitude, boarding_schools_temp.school_type
+	SELECT unique_hs.city, unique_hs.institution, unique_hs.stateorprovince, unique_hs.country, unique_hs.latitude, unique_hs.longitude, boarding_schools_temp.school_type
 	FROM unique_hs
 	JOIN boarding_schools_temp
 	ON LOWER(unique_hs.institution) = LOWER(boarding_schools_temp.institution) AND LOWER(unique_hs.stateorprovince) = LOWER(boarding_schools_temp.stateorprovince)
