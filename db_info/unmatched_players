@@ -74,6 +74,9 @@ ALTER TABLE roster_master_data DROP COLUMN GS;
 DELETE FROM roster_master_data
 WHERE High_School IS NULL AND Alternative_School IS NULL;
 
+-- Gets number of grouped up players before the match (used for seeing how much data was matched)
+-- select count(*) from (select first_name, last_name, home_town, state_or_country, high_school, college from roster_master_data group by first_name, last_name, home_town, state_or_country, high_school, college) as temp;
+
 
 DELETE FROM roster_master_data
 USING map_highschoolmatchmaster
