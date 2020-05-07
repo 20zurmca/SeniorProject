@@ -28,7 +28,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = 'j5ykq@a=t$uet6v3!jxem!nocm#572pjo1@r0@wvpk4^#!xs7q'
 GOOGLE_MAPS_API_KEY = os.environ['GOOGLE_MAPS_API_KEY']
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
 ALLOWED_HOSTS = ['139.147.9.235','127.0.0.1', 'localhost','soccer.cs.lafayette.edu']
 # Application definition
