@@ -133,6 +133,7 @@ def about(request):
 """
 manualupload(request) is the view for the manual upload page
 """
+@staff_member_required
 def manualupload(request):
     positions = GroupedData.objects.annotate(arr_els=Func(F('position'), function='unnest')).values_list('arr_els', flat=True).distinct()
     colleges  = GroupedData.objects.values_list('college', flat=True).distinct().order_by('college')
