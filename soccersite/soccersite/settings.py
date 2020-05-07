@@ -83,8 +83,8 @@ DATABASES = {
         'NAME': 'soccer',
         'USER': 'socceruser',
         'PASSWORD': 'seniorproject',
-        'HOST': 'localhost',
-        'PORT': '3333',
+        #'HOST': 'localhost',
+        #'PORT': '3333',
     }
 }
 
