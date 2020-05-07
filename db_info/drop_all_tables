@@ -10,6 +10,7 @@ DROP TABLE auth_user;
 DROP TABLE map_highschooldata;
 DROP TABLE map_highschoolmatchmaster;
 DROP TABLE map_documents;
+DROP TABLE map_backup;
 DROP TABLE map_groupeddata;
 DROP TABLE map_rosterdata;
 DROP TABLE map_starterdata;
