@@ -249,7 +249,7 @@ def restore(request):
             AccoladeData.objects.all().delete()
             GroupedData.objects.all().delete()
             HighSchoolMatchMaster.objects.all().delete()
-            p = subprocess.Popen(["python", "manage.py", "loaddata", backUpFile])
+            p = subprocess.Popen(["python3", "manage.py", "loaddata", backUpFile])
 
             currentBackUpVersion = BackUp.objects.filter(isCurrent=True).first()
             return render(request, 'map/restore.html', {'versions': versions,
