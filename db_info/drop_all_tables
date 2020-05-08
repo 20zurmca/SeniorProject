@@ -16,5 +16,6 @@ DROP TABLE map_rosterdata;
 DROP TABLE map_starterdata;
 DROP TABLE map_accoladedata;
 DROP TABLE auth_group;
+DROP TABLE unique_boarding_schools;
 DROP TRIGGER IF EXISTS update_db ON map_documents;
 DROP FUNCTION IF EXISTS update_db_func();
