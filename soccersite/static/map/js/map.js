@@ -1,22 +1,23 @@
 var center_ = {lat: 32.560742, lng: -3.9314364}; //somewhere near the Mediterranean Sea
-var map;
-var markers = [];
-var heatMapData = [];
-var heatMap;
-var markerCluster;
-var firstLoad = true;
-var groupedLatLngData = {};
-var changeTableOnZoom = false;
-var dataTable;
-var infowindow;
+var map; //the map itself
+var markers = []; //an array of markers
+var heatMapData = []; //an array of data for the heat map
+var heatMap; //the head map itself
+var markerCluster; //a single marker cluster to be used for calculating clustering levels
+var firstLoad = true; //represents data on the map is loaded for the first time since a refresh
+var groupedLatLngData = {}; //an array of lat long values from the grouped data
+var changeTableOnZoom = false; //whether or not the table should change based on a marker click
+var dataTable; //the data table itself
+var infowindow; //a single data window (to prevent more than one opening at a time)
 var clickCounts = [0, 0]; //count clicks for heatmap and marker cluster
 
+//load the data onto the map
 function loadData(map, playerData){
-  if (firstLoad) {
+  if (firstLoad) { //if the data is being loaded for the first time, create a temporary info window
     infowindow = new google.maps.InfoWindow({
       content: "temp"
     });
-  } else {
+  } else { //if not, close the info window
     infowindow.close();
   }
 
@@ -25,21 +26,20 @@ function loadData(map, playerData){
     document.getElementById('heatMapControl').style.fontWeight = "normal";
   }
 
-  if(clickCounts[1] % 2){
+  if(clickCounts[1] % 2){ //set markers off
     document.getElementById('markerControl').click();
   }
 
   clickCounts = [0, 0];
-  for (var i = 0; i < markers.length; i++) {
+  for (var i = 0; i < markers.length; i++) { //clear all markers from the map
     markers[i].setMap(null);
   }
   markers.length = 0;; //to be filled based on query
-  heatMapData.length = 0;; //data for heatmap
-  if(!firstLoad){
+  heatMapData.length = 0; //data for heatmap
+  if(!firstLoad){ //if this is the first load, clear clusters and marker labels
     markerCluster.setMap(null);
     markerCluster.clearMarkers();
   }
-
 
   groupedLatLngData = {};
   //grouping response data by lat and lng
@@ -48,30 +48,34 @@ function loadData(map, playerData){
     lng = playerData[i]['longitude'];
     key = String(lat) + lng;
     player = {};
-    player['rosterYear'] = playerData[i]['rosterYear'];
-    player['playerNumber'] = playerData[i]['playerNumber'];
-    player['firstName'] = playerData[i]['firstName'];
-    player['lastName'] = playerData[i]['lastName'];
-    player['year'] = playerData[i]['year'];
-    player['position1'] = playerData[i]['position1'];
-    player['height'] = playerData[i]['height'];
-    player['weight'] = playerData[i]['weight'];
-    player['homeTown'] = playerData[i]['homeTown'];
-    player['stateOrCountry'] = playerData[i]['stateOrCountry'];
-    player['highSchool'] = playerData[i]['highSchool'];
-    player['alternativeSchool'] = playerData[i]['alternativeSchool'];
+    player['roster_year'] = playerData[i]['roster_year'];
+    player['first_name'] = playerData[i]['first_name'];
+    player['last_name'] = playerData[i]['last_name'];
+    player['position'] = playerData[i]['position'];
+    player['heights'] = playerData[i]['heights'];
+    player['weights'] = playerData[i]['weights'];
+    player['home_town'] = playerData[i]['home_town'];
+    player['state_or_country'] = playerData[i]['state_or_country'];
+    player['high_school'] = playerData[i]['high_school'];
+    player['alternative_school'] = playerData[i]['alternative_school'];
     player['college'] = playerData[i]['college'];
-    player['collegeLeague'] = playerData[i]['collegeLeague'];
-    player['bioLink'] = playerData[i]['bioLink'];
-    player['isStarter'] = playerData[i]['isStarter'];
-    player['accolade'] = playerData[i]['accolade'];
+    player['college_league'] = playerData[i]['college_league'];
+    player['bio_link'] = playerData[i]['bio_link'];
+    player['starter_count'] = playerData[i]['starter_count'];
+    player['accolade_count'] = playerData[i]['accolade_count'];
 
     if(!groupedLatLngData[key]){ //new key found (new lat lng pair)
       groupedLatLngData[key] = {};
       groupedLatLngData[key]['playerCount'] = 1;
-      groupedLatLngData[key]['lat'] = playerData[i]['latitude'];
-      groupedLatLngData[key]['lng'] = playerData[i]['longitude'];
-      groupedLatLngData[key]['hs']  = playerData[i]['highSchool']
+      groupedLatLngData[key]['lat']                = playerData[i]['latitude'];
+      groupedLatLngData[key]['lng']                = playerData[i]['longitude'];
+      groupedLatLngData[key]['hs']                 = playerData[i]['high_school'];
+      if (playerData[i]['highschoolcity'] != null) {
+        groupedLatLngData[key]['hsCity']             = playerData[i]['highschoolcity'].toLowerCase();
+      }
+      groupedLatLngData[key]['hsStateOrProvince']  = playerData[i]['highschoolstateorcountry'];
+      groupedLatLngData[key]['hsStateOrProvince']  = playerData[i]['highschoolstateorprovince'];
+      groupedLatLngData[key]['hsCountry']          = playerData[i]['highschoolcountry'].toLowerCase();
       groupedLatLngData[key]['players'] = [];
       players = groupedLatLngData[key]['players'];
       players.push(player)
@@ -90,15 +94,31 @@ function loadData(map, playerData){
         position: pos,
         map: map,
         title: groupedLatLngData[highSchool]['hs'], //high school name
-        label: {
+        label: { //the label on the marker comes from the number of players from the associated highschool
           text: String(groupedLatLngData[highSchool]['playerCount']),
-          fontWeight: "bold"
+          fontWeight: "bold",
+          color: "black"
         },
         number: groupedLatLngData[highSchool]['playerCount'],
-        animation: google.maps.Animation.DROP
+        icon: { //import and adjust the icon to be used for markers
+          url: "http://maps.google.com/mapfiles/kml/shapes/schools.png",
+          scaledSize: new google.maps.Size(35, 35),
+          labelOrigin: { x: 16, y: 26}
+        },
+        animation: google.maps.Animation.DROP //add a drop animation
       });
 
       heatMapData.push({location: new google.maps.LatLng(latitude, longitude), weight: groupedLatLngData[highSchool]['playerCount']});
+
+      var stateOrProvince = groupedLatLngData[highSchool]['hsStateOrProvince'];
+      var country = "";
+
+      if (stateOrProvince == null) { //if the state or province is null, use the country instead
+        stateOrProvince = "";
+        country = ", " + groupedLatLngData[highSchool]['hsCountry'];
+      } else {
+        stateOrProvince = ", " + stateOrProvince;
+      }
 
       //building info window
       let contentString = '<div id="content">'+
@@ -106,12 +126,14 @@ function loadData(map, playerData){
            '</div>'+
            '<h1 id="firstHeading" class="firstHeading">'+ groupedLatLngData[highSchool]['hs'] +'</h1>'+
            '<div id="bodyContent">'+
-           '<p>'+'</p>'+
+           '<p style="text-transform:capitalize">'+groupedLatLngData[highSchool]['hsCity'] +
+           stateOrProvince + country + '</p>' +
+           '<p style="text-transform:capitalize">'+ "Student Count: " + groupedLatLngData[highSchool]['playerCount'] +
            '</div>'+
            '</div>';
 
 
-      marker.addListener('click', function() {
+      marker.addListener('click', function() { //on click of a marker, change the info window and update the data in the table
         if (infowindow) {
           infowindow.close();
         }
@@ -125,27 +147,32 @@ function loadData(map, playerData){
         infowindow.open(map);
         let table = document.getElementById('resultTableBody');
         let player_data = '';
+        let key = String(latitude) + longitude;
         //table changes to marker-specific data on click
-        for(let i = 0; i < groupedLatLngData[String(latitude) + longitude]['players'].length; i++){
-          player_data += '<tr>'
-          player_data += '<td>' + groupedLatLngData[String(latitude) + longitude]['players'][i]['rosterYear']    + '</td>';
-          player_data += '<td>' + groupedLatLngData[String(latitude) + longitude]['players'][i]['firstName']     + '</td>';
-          player_data += '<td>' + groupedLatLngData[String(latitude) + longitude]['players'][i]['lastName']      + '</td>';
-          player_data += '<td>' + groupedLatLngData[String(latitude) + longitude]['players'][i]['year']          + '</td>';
-          player_data += '<td>' + groupedLatLngData[String(latitude) + longitude]['players'][i]['position1']          + '</td>';
-          player_data += '<td>' + "will implement"     + '</td>';
-          player_data += '<td>' + "will implement"     + '</td>';
-          player_data += '<td>' + groupedLatLngData[String(latitude) + longitude]['players'][i]['collegeLeague']  + '</td>';
-          player_data += '<td>' + groupedLatLngData[String(latitude) + longitude]['players'][i]['college']        + '</td>';
-          player_data += '<td>' + groupedLatLngData[String(latitude) + longitude]['players'][i]['homeTown']       + '</td>';
-          player_data += '<td>' + groupedLatLngData[String(latitude) + longitude]['players'][i]['stateOrCountry'] + '</td>';
-          player_data += '<td>' + groupedLatLngData[String(latitude) + longitude]['players'][i]['highSchool']     + '</td>';
+        for(let i = 0; i < groupedLatLngData[key]['players'].length; i++){
+          let association = _findAssociativeIndices(groupedLatLngData[key]['players'][i]['roster_year']);
+          let currentBioLink = _getCurrentDataElement(groupedLatLngData[key]['players'][i]['bio_link'], association);
+          player_data += '<tr onclick = goToRosterPage("'.concat(currentBioLink).concat('")>');
+          player_data += '<td>' + _sortAggregateData(groupedLatLngData[key]['players'][i]['roster_year'])                                 + '</td>';
+          player_data += '<td>' + groupedLatLngData[key]['players'][i]['first_name']                                                      + '</td>';
+          player_data += '<td>' + groupedLatLngData[key]['players'][i]['last_name']                                                       + '</td>';
+          player_data += '<td>' + _getCurrentDataElement(groupedLatLngData[key]['players'][i]['position'], association)                   + '</td>';
+          player_data += '<td>' + convertToInches(_getCurrentDataElement(groupedLatLngData[key]['players'][i]['heights'], association))   + '</td>';
+          player_data += '<td>' + _getCurrentDataElement(groupedLatLngData[key]['players'][i]['weights'], association)                    + '</td>';
+          player_data += '<td>' + groupedLatLngData[key]['players'][i]['starter_count']                                                   + '</td>';
+          player_data += '<td>' + groupedLatLngData[key]['players'][i]['accolade_count']                                                  + '</td>';
+          player_data += '<td>' + groupedLatLngData[key]['players'][i]['college_league']                                                  + '</td>';
+          player_data += '<td>' + groupedLatLngData[key]['players'][i]['college']                                                         + '</td>';
+          player_data += '<td>' + groupedLatLngData[key]['players'][i]['home_town']                                                       + '</td>';
+          player_data += '<td>' + groupedLatLngData[key]['players'][i]['state_or_country']                                                + '</td>';
+          player_data += '<td>' + groupedLatLngData[key]['players'][i]['high_school']                                                     + '</td>';
           player_data += '</tr>';
         }
         table.innerHTML = player_data;
         changeTableOnZoom = true;
         dt = $('#resultTable').DataTable({
-          "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]]
+          "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]],
+          "scrollX": true
         });
         document.getElementById('resultTable').style.width = '98%';
       });
@@ -154,8 +181,7 @@ function loadData(map, playerData){
     }
 
 
-    let mcOptions = {
-      //styles: clusterStyles,
+    let mcOptions = { //load in the info for the marker clusters usin the google maps cluster library
       gridSize: 45,
       minimumClusterSize: 2,
       imagePath: 'https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/m'
@@ -163,7 +189,7 @@ function loadData(map, playerData){
 
     markerCluster = new MarkerClusterer(map, markers, mcOptions);
 
-
+    //creates a custom calculator method so the markers cluster on student count and not marker (highschool) count
     markerCluster.setCalculator(function(markers, numStyles){
       var index = 0;
       var count = 0;
@@ -186,14 +212,18 @@ function loadData(map, playerData){
         index: index
       };
     });
-
+    //update the heatmap
      heatMap = new google.maps.visualization.HeatmapLayer({
        data: heatMapData
      });
      firstLoad = false;
      $('.loader').hide();
+     if(playerData.length!=0) {
      document.location.href = "#map";
      document.getElementById('zoomControl').click();
+     } else {
+       alert("Query Returned No Results");
+     }
 }
 
 
@@ -281,18 +311,19 @@ function loadData(map, playerData){
    controlText.style.lineHeight   = '39px';
    controlText.style.paddingLeft  = '5px';
    controlText.style.paddingRight = '5px';
-   controlText.innerHTML          = 'Auto Zoom';
+   controlText.innerHTML          = 'Reset Table';
    controlText.id                 = 'zoomControlText';
    controlUI.appendChild(controlText);
 
-   controlUI.addEventListener('click', function() {
+   controlUI.addEventListener('click', function() { //on click
     if(!controlUI.disabled){
       var bounds = new google.maps.LatLngBounds();
       map.fitBounds(bounds);
+      //for every marker in the current marker array, extend the border based on the position
       for (var i = 0; i < markers.length; i++) {
           bounds.extend(markers[i].getPosition());
       }
-      map.fitBounds(bounds);
+      map.fitBounds(bounds); //fit the map based on the newly assigned borders
       let table = document.getElementById('resultTableBody');
       let player_data = '';
       //table changes to marker-specific data on click
@@ -300,25 +331,29 @@ function loadData(map, playerData){
         dt.destroy();
         for(var hs in groupedLatLngData){
           for(let i = 0; i < groupedLatLngData[hs]['players'].length; i++){
-            player_data += '<tr>';
-            player_data += '<td>' + groupedLatLngData[hs]['players'][i]['rosterYear']    + '</td>';
-            player_data += '<td>' + groupedLatLngData[hs]['players'][i]['firstName']     + '</td>';
-            player_data += '<td>' + groupedLatLngData[hs]['players'][i]['lastName']      + '</td>';
-            player_data += '<td>' + groupedLatLngData[hs]['players'][i]['year']          + '</td>';
-            player_data += '<td>' + groupedLatLngData[hs]['players'][i]['position1']          + '</td>';
-            player_data += '<td>' + "will implement"     + '</td>';
-            player_data += '<td>' + "will implement"     + '</td>';
-            player_data += '<td>' + groupedLatLngData[hs]['players'][i]['collegeLeague']  + '</td>';
-            player_data += '<td>' + groupedLatLngData[hs]['players'][i]['college']        + '</td>';
-            player_data += '<td>' + groupedLatLngData[hs]['players'][i]['homeTown']       + '</td>';
-            player_data += '<td>' + groupedLatLngData[hs]['players'][i]['stateOrCountry'] + '</td>';
-            player_data += '<td>' + groupedLatLngData[hs]['players'][i]['highSchool']     + '</td>';
+            let association = _findAssociativeIndices(groupedLatLngData[hs]['players'][i]['roster_year']);
+            let currentBioLink = _getCurrentDataElement(groupedLatLngData[hs]['players'][i]['bio_link'], association);
+            player_data += '<tr onclick = goToRosterPage("'.concat(currentBioLink).concat('")>');
+            player_data += '<td>' + _sortAggregateData(groupedLatLngData[hs]['players'][i]['roster_year'])                                + '</td>';
+            player_data += '<td>' + groupedLatLngData[hs]['players'][i]['first_name']                                                     + '</td>';
+            player_data += '<td>' + groupedLatLngData[hs]['players'][i]['last_name']                                                      + '</td>';
+            player_data += '<td>' + _getCurrentDataElement(groupedLatLngData[hs]['players'][i]['position'], association)                  + '</td>';
+            player_data += '<td>' + convertToInches(_getCurrentDataElement(groupedLatLngData[hs]['players'][i]['heights'], association))  + '</td>';
+            player_data += '<td>' +  _getCurrentDataElement(groupedLatLngData[hs]['players'][i]['weights'], association)                  + '</td>';
+            player_data += '<td>' + groupedLatLngData[hs]['players'][i]['starter_count']                                                  + '</td>';
+            player_data += '<td>' + groupedLatLngData[hs]['players'][i]['accolade_count']                                                 + '</td>';
+            player_data += '<td>' + groupedLatLngData[hs]['players'][i]['college_league']                                                 + '</td>';
+            player_data += '<td>' + groupedLatLngData[hs]['players'][i]['college']                                                        + '</td>';
+            player_data += '<td>' + groupedLatLngData[hs]['players'][i]['home_town']                                                      + '</td>';
+            player_data += '<td>' + groupedLatLngData[hs]['players'][i]['state_or_country']                                               + '</td>';
+            player_data += '<td>' + groupedLatLngData[hs]['players'][i]['high_school']                                                    + '</td>';
             player_data += '</tr>';
           }
         }
         table.innerHTML = player_data;
         dt = $('#resultTable').DataTable({
-          "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]]
+          "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]],
+          "scrollX": true
         });
         changeTableOnZoom = false;
       }
@@ -365,7 +400,7 @@ function MarkerControl(controlDiv, map) {
   controlText.id                 = 'markerControlText';
   controlUI.appendChild(controlText);
 
-  controlUI.addEventListener('click', function() {
+  controlUI.addEventListener('click', function() { //on click
     if(!controlUI.disabled){
       clickCounts[1] = clickCounts[1] + 1;
 
@@ -383,7 +418,7 @@ function MarkerControl(controlDiv, map) {
           for (var i = 0; i < markers.length; i++) {
            markers[i].setMap(map);
           }
-          var mcOptions = {
+          var mcOptions = { //load in the info for the marker clusters usin the google maps cluster library
             gridSize: 45,
             minimumClusterSize: 2,
             imagePath: 'https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/m'
@@ -392,6 +427,7 @@ function MarkerControl(controlDiv, map) {
 
           markerCluster = new MarkerClusterer(map, markers, mcOptions);
 
+          //creates a custom calculator method so the markers cluster on student count and not marker (highschool) count
           markerCluster.setCalculator(function(markers, numStyles){
             var index = 0;
             var count = 0;
@@ -420,9 +456,13 @@ function MarkerControl(controlDiv, map) {
 }
 
 
+/**
+ * The initMap initialized all values of the map to a default
+ * @constructor
+ */
 function initMap() {
    map = new google.maps.Map(
-      document.getElementById('map'), {
+      document.getElementById('map'), {//defult values are set for the map
         center: center_,
         zoom: 2,
         minZoom: 2,
@@ -434,7 +474,13 @@ function initMap() {
                 east: 180
             }
         },
-        gestureHandling: 'greedy'
+        mapTypeControlOptions: { //set the map control options
+           mapTypeIds: [
+             google.maps.MapTypeId.ROADMAP,
+             google.maps.MapTypeId.SATELLITE
+           ]
+         },
+        gestureHandling: 'greedy' //gives the map priority when zooming in and out on the page
       });
 
   var heatMapControlDiv = document.createElement('div');

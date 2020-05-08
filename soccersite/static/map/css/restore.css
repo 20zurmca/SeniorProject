@@ -2,23 +2,6 @@ body {
   background-color: #21252b;
 }
 
-.loader-wrapper{
-  text-align: center;
-  padding-bottom: 15px;
-}
-
-
-.loader {
-  border: 16px solid #f3f3f3;
-  border-radius: 50%;
-  border-top: 16px solid #21252b;
-  width: 70px;
-  height: 70px;
-  -webkit-animation: spin 2s linear infinite; /* Safari */
-  animation: spin 0.8s linear infinite;
-  display: none;
-}
-
 .container-bgimage{
   background-image: url('../img/grass.png');
   background-size: cover;
@@ -30,6 +13,20 @@ body {
   margin-top: 850px;
   text-align: center;
   margin-bottom: 50px;
+}
+
+.data-version{
+  font-family: 'Cabin', sans-serif;
+  margin-left: 2.5%;
+  margin-bottom: 4%;
+}
+
+#version-info{
+  color: white;
+}
+
+#loaded-info{
+  color:white;
 }
 
 #footer_name {
@@ -92,19 +89,21 @@ padding-left: 40%;
   color: #ffffff;
 }
 
-
-.upload-data-form{
-  display: inline-block;
-  position:absolute;
-  left:30%;
-}
-
 .version-form{
   display: inline-block;
   margin-left: 35%;
   position: absolute;
-  left:35%;
-  bottom:  300px;
+  text-align: center;
+  top: 250px;
+}
+
+#versionControlForm{
+  text-align: center;
+  padding-left:100px;
+}
+
+#restoreButton{
+  margin-right: 75px;
 }
 
 #banner{

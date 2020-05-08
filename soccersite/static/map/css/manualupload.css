@@ -1,0 +1,91 @@
+body {
+ background-color: #21252b;
+}
+
+a {
+ color: 	#00BFFF
+}
+
+hr.line_sep {
+ border: 1px solid white;
+ margin-top: 0px;
+}
+
+
+.footer_image {
+ background-repeat: no-repeat;
+ margin-top: 50px;
+ text-align: center;
+ margin-bottom: 50px;
+}
+
+#footer_name {
+ color: white;
+}
+
+#about_toolbar{
+ position: absolute;
+ font-size: 20px;
+ right:10px;
+ top: 0px;
+}
+
+.button_default {
+ height: 86px;
+ line-height: 76px;
+ vertical-align: top;
+ text-align: center;
+ background-color: #21252b;
+ color: #ffffff;
+}
+
+.button_default:hover {
+ background-color: #343a40;
+ color: #ffffff;
+}
+
+.block{
+ display: inline;
+ background-color: #21252b;
+}
+
+.blocktext{
+ display: inline;
+ background-color: #21252b;
+ color: white;
+ font-family: 'Cabin', sans-serif;
+ font-style: italic;
+ margin-left: 20px;
+ font-size: 15px;
+}
+
+.block:hover {
+ background-color: #343a40;
+}
+
+
+.header-button{
+ text-align: right;
+ margin-top: 5px;
+}
+
+.header{
+ text-align: center;
+ margin-bottom: 50px;
+ padding-top: 50px;
+ font-weight: bold;
+ color: white;
+}
+
+label{
+  color: white;
+}
+
+.form-group{
+  margin-left:35%;
+  width:30%;
+}
+
+#button1{
+  margin-left: 48%;
+}
