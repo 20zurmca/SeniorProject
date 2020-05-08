@@ -81,6 +81,10 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
         'NAME': 'soccer',
+        'USER': 'socceruser',
+        'PASSWORD': 'seniorproject',
+        'HOST': 'localhost',
+        'PORT':
     },
     'remote' :{
         'ENGINE': 'django.db.backends.postgresql_psycopg2',

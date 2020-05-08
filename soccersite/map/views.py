@@ -195,7 +195,7 @@ def upload_file(request):
             form.save()
             #writing backup file. Output will go to ./fixtures directory as a .json file
             fn = "dumpfile" + str(_random_with_N_digits(10)) + ".json"
-            json_dump = subprocess.run(["python", "manage.py", "dumpdata", "-o", "map/fixtures/" + fn, \
+            json_dump = subprocess.run(["python3", "manage.py", "dumpdata", "-o", "map/fixtures/" + fn, \
                                         "--exclude=admin", "--exclude=auth", "--exclude=contenttypes", \
                                         "--exclude=sessions", "--exclude=messages", "--exclude=staticfiles", \
                                         "--exclude=map.Documents", "--exclude=map.BackUp", "--exclude=map.HighSchoolData"])
