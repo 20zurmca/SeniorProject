@@ -1,9 +1,9 @@
 function admin(){
-  window.location.href = 'http://127.0.0.1:8000/admin/'
+  window.location.href = '/admin'
 }
 
 function homePage(){
-  window.location.href = 'http://127.0.0.1:8000/'
+  window.location.href = '/'
 }
 
 function cameronLinkedIn(){
@@ -18,8 +18,6 @@ function mattLinkedIn(){
   window.open("https://www.linkedin.com/in/matthew-gerber", target="_blank");
 }
 
-document.getElementById("returnButton").addEventListener("click", homePage, false);
-document.getElementById("adminButton").addEventListener("click", admin, false);
 document.getElementById("camProfile").addEventListener("click", cameronLinkedIn, false);
 document.getElementById("josephProfile").addEventListener("click", josephLinkedIn, false);
 document.getElementById("mattProfile").addEventListener("click", mattLinkedIn, false);
