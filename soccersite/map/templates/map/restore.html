@@ -115,7 +115,8 @@
               data: { json_data: JSON.stringify({
                 version:$('#dbVersion').val(),
               })},
-              success:function(response){
+              success:function(){
+                alert("Successful restore. Please wait while data loads.")
 
               },
               error:function(){
