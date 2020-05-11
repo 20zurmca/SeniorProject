@@ -210,10 +210,10 @@ def upload_file(request):
             new_version.save()
 
             if(a and b and c):
-                context = {'form': form, 'uploaded': True}
+                context = {'form': form}
+                return render(request, 'map/upload.html', context)
             else:
-                context = {'form': form, 'uploaded': False} #error handling case
-            return render(request, 'map/upload.html', context)
+                return HttpResponse("Files were not uploaded correctly. Please refresh and try again. Make sure the right files match to the correct input fields.")            
     else:
         form = DocumentForm()
     return render(request, 'map/upload.html', {'form':form})
@@ -249,7 +249,7 @@ def restore(request):
             AccoladeData.objects.all().delete()
             GroupedData.objects.all().delete()
             HighSchoolMatchMaster.objects.all().delete()
-            p = subprocess.Popen(["python", "manage.py", "loaddata", backUpFile])
+            p = subprocess.Popen(["python3", "manage.py", "loaddata", backUpFile])
 
             currentBackUpVersion = BackUp.objects.filter(isCurrent=True).first()
             return render(request, 'map/restore.html', {'versions': versions,
