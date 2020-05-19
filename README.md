@@ -8,6 +8,8 @@ Senior Project for Lafayette College
 ./templates contains template .csv files for adding data to the project for future roster years
 ./test_files are test .csv files to upload (ONLY FOR LOCAL DEVELOPMENT)
 
+Website Address: https://soccer.cs.lafayette.edu
+
 
 Copyright (C) <5/6/20>  <Dennis Bohn, Cameron Zurmuhl, Joseph Teddick, Matt Gerber, Xingwen Wei>
 
