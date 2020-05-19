@@ -277,7 +277,7 @@ DROP TABLE roster_boarding_final;
 
 
 CREATE TABLE grouped_data_temp AS (
-	select first_name, last_name, home_town, state_or_country, high_school, MAX(alternative_school) AS alternative_school, college, college_league, MAX(city) AS highSchoolCity, MAX(stateorprovince) AS highSchoolStateOrProvince, MAX(country) AS highSchoolCountry, MAX(school_type) AS school_type, COUNT(is_starter = 'Y') AS starter_count, COUNT(accolade) AS accolade_count, MAX(latitude) AS latitude, MAX(longitude) AS longitude, ARRAY_AGG(roster_year) AS roster_year, ARRAY_AGG(year) AS year, ARRAY_AGG(position1) AS position, ARRAY_AGG(height) AS height, ARRAY_AGG(weight) AS weight, ARRAY_AGG(bio_link) AS bio_link
+	select first_name, last_name, home_town, state_or_country, high_school, MAX(alternative_school) AS alternative_school, college, college_league, MAX(city) AS highSchoolCity, MAX(stateorprovince) AS highSchoolStateOrProvince, MAX(country) AS highSchoolCountry, MAX(school_type) AS school_type, ARRAY_AGG(is_starter = 'Y') AS starter_count, COUNT(accolade) AS accolade_count, MAX(latitude) AS latitude, MAX(longitude) AS longitude, ARRAY_AGG(roster_year) AS roster_year, ARRAY_AGG(year) AS year, ARRAY_AGG(position1) AS position, ARRAY_AGG(height) AS height, ARRAY_AGG(weight) AS weight, ARRAY_AGG(bio_link) AS bio_link
 	FROM map_highschoolmatchmaster
 	GROUP BY first_name, last_name, home_town, state_or_country, high_school, college, college_league
 );
@@ -549,7 +549,7 @@ CREATE OR REPLACE FUNCTION update_db_func() RETURNS TRIGGER AS $$
 		-- Group entries
 
 		CREATE TABLE grouped_data_temp AS (
-			select first_name, last_name, home_town, state_or_country, high_school, MAX(alternative_school) AS alternative_school, college, college_league, MAX(city) AS highSchoolCity, MAX(stateorprovince) AS highSchoolStateOrProvince, MAX(country) AS highSchoolCountry, MAX(school_type) AS school_type, COUNT(is_starter = 'Y') AS starter_count, COUNT(accolade) AS accolade_count, MAX(latitude) AS latitude, MAX(longitude) AS longitude, ARRAY_AGG(roster_year) AS roster_year, ARRAY_AGG(year) AS year, ARRAY_AGG(position1) AS position, ARRAY_AGG(height) AS height, ARRAY_AGG(weight) AS weight, ARRAY_AGG(bio_link) AS bio_link
+			select first_name, last_name, home_town, state_or_country, high_school, MAX(alternative_school) AS alternative_school, college, college_league, MAX(city) AS highSchoolCity, MAX(stateorprovince) AS highSchoolStateOrProvince, MAX(country) AS highSchoolCountry, MAX(school_type) AS school_type, ARRAY_AGG(is_starter = 'Y') AS starter_count, COUNT(accolade) AS accolade_count, MAX(latitude) AS latitude, MAX(longitude) AS longitude, ARRAY_AGG(roster_year) AS roster_year, ARRAY_AGG(year) AS year, ARRAY_AGG(position1) AS position, ARRAY_AGG(height) AS height, ARRAY_AGG(weight) AS weight, ARRAY_AGG(bio_link) AS bio_link
 			FROM map_highschoolmatchmaster
 			GROUP BY first_name, last_name, home_town, state_or_country, high_school, college, college_league
 		);
