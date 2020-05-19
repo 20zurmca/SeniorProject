@@ -145,6 +145,9 @@ def manualupload(request):
     if(request.method=='POST'):
         payload = json.loads(request.POST.get('json_data'))
         mostRecentId = HighSchoolMatchMaster.objects.values_list('id', flat=True).order_by('id').latest('id')
+        allConference = playload['accolade']
+        if(allConference == 'None'):
+            allConference = None
         record = HighSchoolMatchMaster(mostRecentId + 1,
                                        payload['rosterYear'],
                                        payload['playerNumber'],
@@ -162,7 +165,7 @@ def manualupload(request):
                                        payload['collegeLeague'],
                                        payload['bioLink'],
                                        payload['isStarter'],
-                                       payload['accolade'],
+                                       allConference,
                                        payload['highSchoolCity'],
                                        payload['highSchool'],
                                        payload['highSchoolStateOrProvince'],
@@ -213,7 +216,7 @@ def upload_file(request):
                 context = {'form': form}
                 return render(request, 'map/upload.html', context)
             else:
-                return HttpResponse("Files were not uploaded correctly. Please refresh and try again. Make sure the right files match to the correct input fields.")            
+                return HttpResponse("Files were not uploaded correctly. Please refresh and try again. Make sure the right files match to the correct input fields.")
     else:
         form = DocumentForm()
     return render(request, 'map/upload.html', {'form':form})
