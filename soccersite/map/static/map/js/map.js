@@ -101,7 +101,7 @@ function loadData(map, playerData){
         },
         number: groupedLatLngData[highSchool]['playerCount'],
         icon: { //import and adjust the icon to be used for markers
-          url: "http://maps.google.com/mapfiles/kml/shapes/schools.png",
+          url: "https://maps.google.com/mapfiles/kml/shapes/schools.png",
           scaledSize: new google.maps.Size(35, 35),
           labelOrigin: { x: 16, y: 26}
         },
@@ -159,7 +159,7 @@ function loadData(map, playerData){
           player_data += '<td>' + _getCurrentDataElement(groupedLatLngData[key]['players'][i]['position'], association)                   + '</td>';
           player_data += '<td>' + convertToInches(_getCurrentDataElement(groupedLatLngData[key]['players'][i]['heights'], association))   + '</td>';
           player_data += '<td>' + _getCurrentDataElement(groupedLatLngData[key]['players'][i]['weights'], association)                    + '</td>';
-          player_data += '<td>' + groupedLatLngData[key]['players'][i]['starter_count']                                                   + '</td>';
+          player_data += '<td>' + _calc_starter(groupedLatLngData[key]['players'][i]['starter_count'])                                    + '</td>';
           player_data += '<td>' + groupedLatLngData[key]['players'][i]['accolade_count']                                                  + '</td>';
           player_data += '<td>' + groupedLatLngData[key]['players'][i]['college_league']                                                  + '</td>';
           player_data += '<td>' + groupedLatLngData[key]['players'][i]['college']                                                         + '</td>';
@@ -340,7 +340,7 @@ function loadData(map, playerData){
             player_data += '<td>' + _getCurrentDataElement(groupedLatLngData[hs]['players'][i]['position'], association)                  + '</td>';
             player_data += '<td>' + convertToInches(_getCurrentDataElement(groupedLatLngData[hs]['players'][i]['heights'], association))  + '</td>';
             player_data += '<td>' +  _getCurrentDataElement(groupedLatLngData[hs]['players'][i]['weights'], association)                  + '</td>';
-            player_data += '<td>' + groupedLatLngData[hs]['players'][i]['starter_count']                                                  + '</td>';
+            player_data += '<td>' + _calc_starter(groupedLatLngData[hs]['players'][i]['starter_count'])                                   + '</td>';
             player_data += '<td>' + groupedLatLngData[hs]['players'][i]['accolade_count']                                                 + '</td>';
             player_data += '<td>' + groupedLatLngData[hs]['players'][i]['college_league']                                                 + '</td>';
             player_data += '<td>' + groupedLatLngData[hs]['players'][i]['college']                                                        + '</td>';

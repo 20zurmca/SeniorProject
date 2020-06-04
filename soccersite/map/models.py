@@ -91,7 +91,7 @@ class HighSchoolMatchMaster(models.Model):
     college_league     = models.CharField(max_length=50, null=True)
     bio_link           = models.CharField(max_length=100, null=True)
     is_starter         = models.CharField(max_length=1, null=True)
-    accolade           = models.CharField(max_length=20, null=True)
+    accolade           = models.CharField(max_length=20, null=True, blank=True)
     city               = models.CharField(max_length=30, null=True)
     institution        = models.CharField(max_length=100, null=True)
     stateorprovince    = models.CharField(max_length=20, null=True)

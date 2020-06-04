@@ -44,12 +44,16 @@ def index(request):
 
     if(request.method == 'POST'):
         payload = json.loads(request.POST.get('json_data'))
-        c = payload['colleges'] #list of colleges user specified from drop down
-        pos = payload['positions'] #list of positions user specified from positions drop down
-        sy = payload['starterYears'] #list of starterYears specified from positions drop down
-        acy = payload['allConferenceYears'] #list of allConferenceYears positioned in drop down
+        c       = payload['colleges'] #list of colleges user specified from drop down
+        pos     = payload['positions'] #list of positions user specified from positions drop down
+        sy      = payload['starterYears'] #list of starterYears specified from positions drop down
+        acy     = payload['allConferenceYears'] #list of allConferenceYears positioned in drop down
 
         starterYearFourOrMore = '4+' in sy #user selected '4+' in years starter dropdown
+        threeYearStarter      = '3' in sy
+        twoYearStarter        = '2' in sy
+        oneYearStarter        = '1' in sy
+        noYearStarter         = '0' in sy
         allConferenceYearsFourOrMore = '4+' in acy #user selected '4+' in all conference years dropdown
 
         multiplePlayersPerSchool = False
@@ -70,6 +74,7 @@ def index(request):
                 players = players.filter(position__overlap=pos)
             else:
                 players = GroupedData.objects.filter(position__overlap=pos)
+
 
         if(len(sy) > 0): #if a starter year was selected
             if(players): #if there was a college selected or a position selected
@@ -145,31 +150,34 @@ def manualupload(request):
     if(request.method=='POST'):
         payload = json.loads(request.POST.get('json_data'))
         mostRecentId = HighSchoolMatchMaster.objects.values_list('id', flat=True).order_by('id').latest('id')
-        allConference = playload['accolade']
+        allConference = payload['accolade']
+        starter = payload['isStarter']
         if(allConference == 'None'):
             allConference = None
+        if(starter == 'N'):
+            starter = None
         record = HighSchoolMatchMaster(mostRecentId + 1,
                                        payload['rosterYear'],
-                                       payload['playerNumber'],
-                                       payload['firstName'],
-                                       payload['lastName'],
-                                       payload['classYear'],
-                                       payload['position'],
-                                       payload['height'],
+                                       payload['playerNumber'].strip(),
+                                       payload['firstName'].strip(),
+                                       payload['lastName'].strip(),
+                                       payload['classYear'].strip(),
+                                       payload['position'].strip(),
+                                       payload['height'].strip(),
                                        payload['weight'],
-                                       payload['homeTown'],
-                                       payload['stateOrCountry'],
-                                       payload['highSchool'],
-                                       payload['alternativeSchool'],
+                                       payload['homeTown'].strip(),
+                                       payload['stateOrCountry'].strip(),
+                                       payload['highSchool'].strip(),
+                                       payload['alternativeSchool'].strip(),
                                        payload['college'],
                                        payload['collegeLeague'],
-                                       payload['bioLink'],
-                                       payload['isStarter'],
+                                       payload['bioLink'].strip(),
+                                       starter,
                                        allConference,
-                                       payload['highSchoolCity'],
-                                       payload['highSchool'],
-                                       payload['highSchoolStateOrProvince'],
-                                       payload['highSchoolCountry'],
+                                       payload['highSchoolCity'].strip(),
+                                       payload['highSchool'].strip(),
+                                       payload['highSchoolStateOrProvince'].strip(),
+                                       payload['highSchoolCountry'].strip(),
                                        payload['highSchoolLatitude'],
                                        payload['highSchoolLongitude'],
                                        payload['schoolType'])
