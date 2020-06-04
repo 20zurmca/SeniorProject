@@ -1,5 +1,5 @@
 # SeniorProject
-Senior Project for Lafayette College
+Senior Project for Lafayette College. https://soccer.cs.lafayette.edu/
 
 ./data contains data for the creating the initial database
 ./db_info contains SQL scripts to set up the database
