@@ -82,18 +82,6 @@ function getCookie(c_name)
    window.open(page, "_blank");
  }
 
- function _calc_starter(starterBooleans){
-   let count = 0;
-   if(starterBooleans){
-     for(var i = 0; i < starterBooleans.length; i++){
-       if(starterBooleans[i] == 'true'){
-         count++;
-       }
-     }
-   }
-   return count;
- }
-
 $(document).on('submit', '#filterForm', function(e){
   e.preventDefault(); //prevent refresh
 
@@ -118,6 +106,7 @@ $(document).on('submit', '#filterForm', function(e){
       multipleHS:multipleChecked
     })},
     success:function(response){
+      console.log(response['players'])
       loadData(map, response['players']); //loading data in map.js
       var player_data = '';
       if(dt){
@@ -134,7 +123,7 @@ $(document).on('submit', '#filterForm', function(e){
         player_data += '<td>' + _getCurrentDataElement(value.position, association)                  + '</td>';
         player_data += '<td>' + convertToInches(_getCurrentDataElement(value.heights, association))  + '</td>';
         player_data += '<td>' + _getCurrentDataElement(value.weights, association)                   + '</td>';
-        player_data += '<td>' + _calc_starter(value.starter_count)                                   + '</td>';
+        player_data += '<td>' + value.starter_count                                                  + '</td>';
         player_data += '<td>' + value.accolade_count                                                 + '</td>';
         player_data += '<td>' + value.college_league                                                 + '</td>';
         player_data += '<td>' + value.college                                                        + '</td>';

@@ -50,10 +50,6 @@ def index(request):
         acy     = payload['allConferenceYears'] #list of allConferenceYears positioned in drop down
 
         starterYearFourOrMore = '4+' in sy #user selected '4+' in years starter dropdown
-        threeYearStarter      = '3' in sy
-        twoYearStarter        = '2' in sy
-        oneYearStarter        = '1' in sy
-        noYearStarter         = '0' in sy
         allConferenceYearsFourOrMore = '4+' in acy #user selected '4+' in all conference years dropdown
 
         multiplePlayersPerSchool = False
