@@ -625,7 +625,7 @@
       $(document).on('submit', '#matchedHighSchoolPlayerForm', function(e){
         e.preventDefault(); //prevent refresh
 
-        if($('#heightInput').val() && !$('#heightInput').val().match("^([3-9])'([1-9]|10|11)$")){
+        if($('#heightInput').val() && !$('#heightInput').val().match("^([3-9])'([0-9]|10|11)$")){
           alert("ERROR: Format height as feet'inches. Examples: 5'11, 5'9, 6'1, 6'0. Min Height: 3'0, Max height: 9'11");
           return;
         }
